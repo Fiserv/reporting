@@ -1265,6 +1265,37 @@ paths:
                     dateType: ExpiryDate
                     currency: USD
                     timeZone: EST
+              Disbursement Search based on ApplyDate:
+                description: Disbursement Search based on ApplyDate
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  limit: 5
+                  fields:
+                    - Country
+                    - ApprovalCode
+                    - TransactionStatus
+                    - RecipientTypeKey
+                    - Currency
+                  filters:
+                    dateType: ApplyDate
+                    currency: USD
+                    timeZone: EST
+              Disbursement Search based on PaymentDate:
+                description: Disbursement Search based on PaymentDate
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  limit: 5
+                  fields:
+                    - PaymentDate
+                    - ApplyDate
+                    - FeeAmount
+                    - MerchantStatus
+                  filters:
+                    dateType: PaymentDate
+                    currency: USD
+                    timeZone: EST
         required: true
       responses:
         '200':
@@ -9128,59 +9159,10 @@ components:
               - CreateDate
               - Currency
               - CurrencyKey
-              - DfaAccountNumber
-              - DfaBalanceDate
-              - DfaClosingAvailable
-              - DfaClosingLedger
-              - DfaMid
-              - DfaOpeningAvailable
-              - DfaOpeningLedger
-              - DfaPendingAmount
-              - DfaPendingTxns
-              - DfaPreviousPendingAmount
-              - DfaPreviousPendingTxns
               - Email
               - ExpiryDate
               - FeeAmount
               - FundingAccount
-              - FundsAccount
-              - FundsAcctLastFour
-              - FundsActivityID
-              - FundsActualBalance
-              - FundsAmount
-              - FundsApplyDate
-              - FundsAvailableBalance
-              - FundsChannelType
-              - FundsComments
-              - FundsCreateDate
-              - FundsCurrency
-              - FundsCurrencyKey
-              - FundsExpiryDate
-              - FundsFeeAmount
-              - FundsMerchantName
-              - FundsMid
-              - FundsOrigId
-              - FundsPaymentChannel
-              - FundsPaymentChannelKey
-              - FundsPaymentDate
-              - FundsPaymentId
-              - FundsPaymentStatus
-              - FundsPaymentStatusKey
-              - FundsPaymentTime
-              - FundsReferenceId
-              - FundsTSCreateDate
-              - FundsTxnClaimNumber
-              - FundsTxnDate
-              - FundsTxnDesc
-              - FundsTxnId
-              - FundsTxnPaymentNumber
-              - FundsTxnStatus
-              - FundsTxnStatusKey
-              - FundsTxnTime
-              - FundsTxnType
-              - FundsTxnTypeNm
-              - FundsTxnTypeNmKey
-              - FundsVendorId
               - MerchantId
               - MerchantName
               - MerchantStatus
@@ -9200,8 +9182,6 @@ components:
               - PaymentTypeKey
               - PaymentVendorId
               - PostalCode
-              - ProcessingDate
-              - ProcessingTime
               - RecipientClient
               - RecipientComments
               - RecipientCompany
@@ -9447,7 +9427,7 @@ components:
             - BYN
             - VES
             - ZMW
-        Timezone:
+        timeZone:
           type: string
           description: TimeZone of the transaction.
           example: UTC
@@ -9705,58 +9685,6 @@ components:
           type: string
           description: Currency of the transaction. (Code)
           example: '1'
-        dfaAccountNumber:
-          type: string
-          description: The account number of the merchant.
-          example: '123456789123'
-        dfaBalanceDate:
-          type: string
-          description: The funds date the totals were calculated.
-          example: 12/31/2020
-        dfaClosingAvailable:
-          type: number
-          description: The closing available balance of the funds account.
-          format: double
-          example: 999.99
-        dfaClosingLedger:
-          type: number
-          description: The closing ledger balance of the funds account.
-          format: double
-          example: 999.99
-        dfaMid:
-          type: string
-          description: The merchant id of the funds transaction.
-          example: '123456789123'
-        dfaOpeningAvailable:
-          type: number
-          description: The opening available balance of the funds account.
-          format: double
-          example: 999.99
-        dfaOpeningLedger:
-          type: number
-          description: The opening ledger balance of the funds account.
-          format: double
-          example: 999.99
-        dfaPendingAmount:
-          type: number
-          description: The net pending amounts.
-          format: double
-          example: 999.99
-        dfaPendingTxns:
-          type: number
-          description: The net pending transactions.
-          format: double
-          example: 1
-        dfaPreviousPendingAmount:
-          type: number
-          description: Net pending amount on the prior days balance date.
-          format: double
-          example: 999.99
-        dfaPreviousPendingTxns:
-          type: number
-          description: Net pending count on the prior days balance date.
-          format: double
-          example: 1
         email:
           type: string
           description: Recipient email address.
@@ -9774,407 +9702,6 @@ components:
           type: string
           description: Disbursement funding account.
           example: '123456789123'
-        fundsAccount:
-          type: string
-          description: Disbursement funding account.
-          example: '12345678909876'
-        fundsAcctLastFour:
-          type: string
-          description: Last four digits of the payment account.
-          example: '9242'
-        fundsActivityID:
-          type: string
-          description: Unique id for this record.
-          example: abcd1234-ab12-ab12-ab12-123456abcdef
-        fundsActualBalance:
-          type: number
-          description: The actual total balance of the funds account.
-          format: double
-          example: 999.99
-        fundsAmount:
-          type: number
-          description: The amount of the transaction.
-          format: double
-          example: 999.99
-        fundsApplyDate:
-          type: string
-          description: Date to apply the disbursement.
-          example: 12/31/2020
-        fundsAvailableBalance:
-          type: number
-          description: The available balance of the funds account.
-          format: double
-          example: 999.99
-        fundsChannelType:
-          type: string
-          description: The channel type for fund activity report.  IE ACH, DEBIT.
-          example: ACH
-        fundsComments:
-          type: string
-          description: Comments associated to the payment transaction.
-          example: Valid payment
-        fundsCreateDate:
-          type: string
-          description: The funds date the payment was created.
-          example: 12/31/2020
-        fundsCurrency:
-          type: string
-          description: Currency of the transaction.
-          example: USD
-          enum:
-            - Unknown
-            - USD
-            - AFN
-            - DZD
-            - ARS
-            - AMD
-            - AWG
-            - AUD
-            - AZN
-            - BSD
-            - BHD
-            - THB
-            - PAB
-            - BBD
-            - BYR
-            - BZD
-            - BMD
-            - VEF
-            - BOB
-            - BRL
-            - BND
-            - BGN
-            - BIF
-            - CAD
-            - CVE
-            - KYD
-            - XOF
-            - XAF
-            - XPF
-            - CLP
-            - COP
-            - KMF
-            - BAM
-            - NIO
-            - CRC
-            - HRK
-            - CUP
-            - CZK
-            - GMD
-            - DKK
-            - MKD
-            - DJF
-            - STD
-            - DOP
-            - VND
-            - XCD
-            - EGP
-            - SVC
-            - ETB
-            - EUR
-            - FKP
-            - FJD
-            - HUF
-            - CDF
-            - GHS
-            - GIP
-            - HTG
-            - PYG
-            - GNF
-            - GWP
-            - GYD
-            - HKD
-            - UAH
-            - ISK
-            - INR
-            - IRR
-            - IQD
-            - JMD
-            - JOD
-            - KES
-            - PGK
-            - LAK
-            - KWD
-            - MWK
-            - ZMK
-            - AOA
-            - MMK
-            - GEL
-            - LVL
-            - LBP
-            - ALL
-            - HNL
-            - SLL
-            - LRD
-            - LYD
-            - SZL
-            - LTL
-            - LSL
-            - MGA
-            - MYR
-            - MUR
-            - MZN
-            - MXN
-            - MXV
-            - MDL
-            - MAD
-            - BOV
-            - NGN
-            - ERN
-            - NAD
-            - NPR
-            - ANG
-            - ILS
-            - RON
-            - TWD
-            - TRY
-            - NZD
-            - BTN
-            - KPW
-            - NOK
-            - PEN
-            - MRO
-            - TOP
-            - PKR
-            - MOP
-            - UYU
-            - PHP
-            - GBP
-            - BWP
-            - QAR
-            - GTQ
-            - ZAR
-            - OMR
-            - KHR
-            - MVR
-            - IDR
-            - RUB
-            - RWF
-            - SHP
-            - SAR
-            - XDR
-            - RSD
-            - SCR
-            - SGD
-            - SBD
-            - KGS
-            - SOS
-            - TJS
-            - LKR
-            - SDG
-            - SRD
-            - SEK
-            - CHF
-            - SYP
-            - BDT
-            - WST
-            - TZS
-            - KZT
-            - TTD
-            - MNT
-            - TND
-            - AED
-            - UGX
-            - COU
-            - CLF
-            - UYI
-            - USN
-            - USS
-            - UZS
-            - VUV
-            - CHE
-            - CHW
-            - KRW
-            - YER
-            - JPY
-            - CNY
-            - PLN
-            - XBA
-            - XTS
-            - XBB
-            - XBD
-            - XBC
-            - XAU
-            - XPD
-            - XPT
-            - XAG
-            - XXX
-            - XFU
-            - TMT
-            - ZWL
-            - CUC
-            - SSP
-            - XUA
-            - XSU
-            - BYN
-            - VES
-            - ZMW
-        fundsCurrencyKey:
-          type: string
-          description: Currency of the transaction. (Code)
-          example: '1'
-        fundsExpiryDate:
-          type: string
-          description: Expiry date of the transaction.
-          example: 12/31/2020
-        fundsFeeAmount:
-          type: number
-          description: The fee associated to the payment transaction.
-          format: double
-          example: 999.99
-        fundsMerchantName:
-          type: string
-          description: The name of the merchant.
-          example: Acme Co
-        fundsMid:
-          type: string
-          description: The merchant id of the funds transaction.
-          example: '123456789123'
-        fundsOrigId:
-          type: string
-          description: Originator id of the merchant.
-          example: '123456789123'
-        fundsPaymentChannel:
-          type: string
-          description: The channel type for fund activity report.  IE ACH, DEBIT.
-          example: Debit
-          enum:
-            - Unknown
-            - ACH
-            - Prepaid
-            - Debit
-            - VENMO
-        fundsPaymentChannelKey:
-          type: string
-          description: The channel type for fund activity report.  IE ACH, DEBIT. (Code)
-          example: '3'
-        fundsPaymentDate:
-          type: string
-          description: The date of the payment.
-          example: 12/31/2020
-        fundsPaymentId:
-          type: string
-          description: Unique key to find the payment for each transaction. In case of multi recpients multiple payments associated with single transaction.
-          example: abcd1234-ab12-ab12-ab12-123456abcdef
-        fundsPaymentStatus:
-          type: string
-          description: The status of the payment.
-          example: Accepted
-          enum:
-            - Unknown
-            - Failed
-            - Pending
-            - Selected
-            - Accepted
-            - Rejected
-            - Disbursed
-            - Declined
-            - FraudHold
-            - Cancelled
-            - Expired
-            - Chargeback
-            - AuthFailed
-            - RetryExceeded
-            - ACHReversal
-            - ACHReversalFailed
-            - DeliveryNotificationFailed
-            - InhouseReversal
-            - ReversalSuccess
-            - ReversalPending
-            - ReversalFailed
-            - InProcess
-        fundsPaymentStatusKey:
-          type: string
-          description: The status of the payment. (Code)
-          example: '4'
-        fundsPaymentTime:
-          type: string
-          description: The date time of the payment.
-          example: '2020-12-31 00:00:00.000'
-        fundsReferenceId:
-          type: string
-          description: Reference id of the transaction.
-          example: abcd1234-ab12-ab12-ab12-123456abcdef
-        fundsTSCreateDate:
-          type: string
-          description: The funds timestamp the payment was created.
-          example: '2020-12-31 00:00:00.000'
-        fundsTxnClaimNumber:
-          type: string
-          description: The claim number for a reference of the transaction. This is passed through by the client on the reference fields.
-          example: 47-21C7-01B
-        fundsTxnDate:
-          type: string
-          description: Transaction date.
-          example: 12/31/2020
-        fundsTxnDesc:
-          type: string
-          description: Description associated to the payment transaction.
-          example: SUCCESS
-        fundsTxnId:
-          type: string
-          description: System generated unique transaction id.
-          example: TID-abcd1234-ab12-ab12-ab12-123456abcdef
-        fundsTxnPaymentNumber:
-          type: string
-          description: The payment number for a reference of the transaction. This is passed by the client on the reference fields.
-          example: 115061248A
-        fundsTxnStatus:
-          type: string
-          description: The status of the transaction.
-          example: Approved
-          enum:
-            - Unknown
-            - InProcess
-            - PendingApproval
-            - PendingDisbursement
-            - Cancelled
-            - Failed
-            - Completed
-            - Expired
-            - Approved
-            - Deferred
-            - Exhausted
-            - Reversed
-        fundsTxnStatusKey:
-          type: string
-          description: The status of the transaction. (Code)
-          example: '8'
-        fundsTxnTime:
-          type: string
-          description: The date time of the transaction.
-          example: '2020-12-31 00:00:00.000'
-        fundsTxnType:
-          type: string
-          description: The transaction type for fund activity report. IE Initiation, disbursement, adjustment.
-          example: DISBURSED
-        fundsTxnTypeNm:
-          type: string
-          description: The transaction type for fund activity report. IE Initiation, disbursement, adjustment.
-          example: Disbursed
-          enum:
-            - Unknown
-            - Settled
-            - Disbursed
-            - Debited
-            - InhouseReversed
-            - Initialized
-            - CreditRejected
-            - Cancelled
-            - DebitRejected
-            - Reversed
-            - Expired
-            - Rejected
-            - Credited
-            - Deposited
-        fundsTxnTypeNmKey:
-          type: string
-          description: The transaction type for fund activity report. IE Initiation, disbursement, adjustment. (Code)
-          example: '2'
-        fundsVendorId:
-          type: string
-          description: Vendor id provided by the merchant also known as merchant customer id.
-          example: NB2XV2NIW5RPXLVHMCSW
         merchantId:
           type: string
           description: System generated unique merchant id.
@@ -10292,14 +9819,6 @@ components:
           type: string
           description: The zip code where the recipient resides.
           example: '99999'
-        processingDate:
-          type: string
-          description: Processing date of the transaction.
-          example: 12/31/2020
-        processingTime:
-          type: string
-          description: Processing date and time of the transaction.
-          example: '2020-12-31 00:00:00.000'
         recipientClient:
           type: string
           description: Client company name.
@@ -15035,13 +14554,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
