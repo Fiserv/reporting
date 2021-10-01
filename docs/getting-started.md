@@ -63,4 +63,4 @@ For customers using our closed loop ValueLink product, the following information
 
 #### Prepaid Unclaimed Property
 
-For customers using our closed loop ValueLink product, the following information is available. Prepaid account balances are snapshotted on a rolling 30-day basis. Information (age of the card, time since last activity) associated with accounts with non-zero balances is available through this interface...
+For customers using our closed loop ValueLink product, the following information is available. Prepaid account balances are snapshotted on a rolling 30-day basis. Information (age of the card, time since last activity) associated with accounts with non-zero balances is available through this interface.
