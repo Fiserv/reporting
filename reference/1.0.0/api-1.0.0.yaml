@@ -973,6 +973,13 @@ paths:
               fromDate: '20210801'
               toDate: '20210807'
               limit: 1
+              fields:
+                - AccountStatus
+                - AuthCode
+                - ConsortiumDesc
+                - Source
+              filters:
+                ClosedLoopSearchType: '0'
         required: true
       responses:
         '200':
@@ -2575,7 +2582,6 @@ components:
               - PlatformID
               - PosEntryMode
               - PostedIndicator
-              - PrimaryStopReason
               - ProcessedNetAmount
               - ProcessedRefundAmount
               - ProcessedRejectAmount
@@ -2593,10 +2599,6 @@ components:
               - RejectCount
               - RejectReason
               - RejectReasonCD
-              - RetailerFeeAmount
-              - RetailerFeeCapInd
-              - RetailerFeePerTranAmount
-              - RetailerFeePerTranRate
               - SalesCount
               - SalesTaxAmount
               - ServiceCode
@@ -3541,10 +3543,6 @@ components:
           type: string
           description: Posted Indicator.
           example: X
-        primaryStopReason:
-          type: string
-          description: Primary Stop Reason
-          example: '1'
         processedNetAmount:
           type: number
           description: Processed Net Amount.
@@ -3738,25 +3736,6 @@ components:
           type: string
           description: Tranaction Reject Reason
           example: '999'
-        retailerFeeAmount:
-          type: number
-          description: Retailer Fee Amount
-          format: double
-          example: 0.99999
-        retailerFeeCapInd:
-          type: string
-          description: Retailer Fee Cap Ind
-          example: U
-        retailerFeePerTranAmount:
-          type: number
-          description: Retailer Fee Per Tran Amount
-          format: double
-          example: 0.99999
-        retailerFeePerTranRate:
-          type: number
-          description: Retailer Fee Per Tran Rate
-          format: double
-          example: 0.99999
         salesCount:
           type: integer
           description: Sales Count.
@@ -4889,7 +4868,6 @@ components:
               - Id
               - LeadID
               - MerchantCategoryCode
-              - NetworkTokenOfferingType
               - Phone
               - Platform
               - PlatformKey
@@ -4984,10 +4962,6 @@ components:
           type: string
           description: The 4-character Merchant Category Code, as defined by Visa, but used across the industry.
           example: '1234'
-        networkTokenOfferingType:
-          type: string
-          description: Indicates the offering type of the Network Token capability at a store level.
-          example: 99-XXXXXXX
         phone:
           type: string
           description: The phone number on file associated with the merchant.
@@ -5078,10 +5052,7 @@ components:
               - AffnKey
               - Ath
               - AthKey
-              - B2bProgram
-              - B2bProgramKey
               - Bin
-              - BinLength
               - BinMap
               - BinMapKey
               - CardBrand
@@ -5094,14 +5065,10 @@ components:
               - CountryKey
               - Cu24
               - Cu24Key
-              - Day
               - Details
               - DetailsKey
               - Ebt
               - EbtKey
-              - Fsa
-              - FundSource
-              - FundSourceKey
               - Highacct
               - Id
               - Interac
@@ -5112,21 +5079,11 @@ components:
               - IssuerKey
               - Jeanie
               - JeanieKey
-              - LargeTicket
               - Lowacct
               - Maestro
               - MaestroKey
-              - Month
               - Nyce
               - NyceKey
-              - PanLength
-              - PanMaxLength
-              - PanMinLength
-              - Prepaid
-              - ProcessingIndicator
-              - ProcessingIndicatorKey
-              - ProductSubType
-              - ProductSubTypeKey
               - Pulse
               - PulseKey
               - Regulated
@@ -5137,12 +5094,10 @@ components:
               - ShazamKey
               - Star
               - StarKey
-              - TokenBin
               - Type
               - TypeKey
               - Visa
               - VisaKey
-              - Year
         filters:
           $ref: '#/components/schemas/BinFilters'
       description: Request object for Bin search
@@ -5281,31 +5236,10 @@ components:
           type: string
           description: Identifies the routing eligibility to ATH network. (Code)
           example: '0'
-        b2bProgram:
-          type: string
-          description: Identifies Business-to-Business Virtual Payments Product Offering
-          example: Not Specified
-          enum:
-            - NotSpecified
-            - Program1
-            - Program2
-            - Program3
-            - Program4
-            - Program5
-            - Program6
-        b2bProgramKey:
-          type: string
-          description: Identifies Business-to-Business Virtual Payments Product Offering (Code)
-          example: '0'
         bin:
           type: string
           description: A textual representation of numeric description of the bin.
           example: '999999999'
-        binLength:
-          type: integer
-          description: Length of the BIN
-          format: int64
-          example: 9
         binMap:
           type: integer
           description: A numeric description of the bin.
@@ -5796,11 +5730,6 @@ components:
           type: string
           description: Identifies the routing eligibility to CU24 network. (Code)
           example: '0'
-        day:
-          type: integer
-          description: The day this record was last updated
-          format: int32
-          example: 12
         details:
           type: string
           description: A detailed identification of the card type.
@@ -5840,25 +5769,6 @@ components:
         ebtKey:
           type: string
           description: Identifies the routing eligibility to EBT network. (Code)
-          example: '0'
-        fsa:
-          type: string
-          description: FSA Indicator (Y/N)
-          example: 'Y'
-        fundSource:
-          type: string
-          description: Identifies the source of the funds associated with the primary account for the card
-          example: Network Only
-          enum:
-            - NetworkOnly
-            - Credit
-            - Debit
-            - Prepaid
-            - Charge
-            - DeferredDebitVisa
-        fundSourceKey:
-          type: string
-          description: Identifies the source of the funds associated with the primary account for the card (Code)
           example: '0'
         highacct:
           type: string
@@ -5927,10 +5837,6 @@ components:
           type: string
           description: Identifies the routing eligibility to Jeanie network. (Code)
           example: '0'
-        largeTicket:
-          type: string
-          description: Large Ticket Indicator (Y/N)
-          example: 'Y'
         lowacct:
           type: string
           description: Lowest numerical Account number associated with this Bin
@@ -5952,11 +5858,6 @@ components:
           type: string
           description: Identifies the routing eligibility to Maestro network. (Code)
           example: '0'
-        month:
-          type: integer
-          description: The month this record was last updated
-          format: int32
-          example: 10
         nyce:
           type: string
           description: Identifies the routing eligibility to NYCE network.
@@ -5974,68 +5875,6 @@ components:
           type: string
           description: Identifies the routing eligibility to NYCE network. (Code)
           example: '1'
-        panLength:
-          type: integer
-          description: Length of the PAN
-          format: int64
-          example: 16
-        panMaxLength:
-          type: integer
-          description: Primary Account Number (PAN) Maximum Length
-          format: int32
-          example: 9
-        panMinLength:
-          type: integer
-          description: Primary Account Number (PAN) Minimum Length
-          format: int32
-          example: 9
-        prepaid:
-          type: string
-          description: Prepaid Indicator (Y/N)
-          example: 'Y'
-        processingIndicator:
-          type: string
-          description: Account Level Processing Indicator
-          example: Unknown
-          enum:
-            - Unknown
-            - NotApplicable
-            - AccountLevel
-        processingIndicatorKey:
-          type: string
-          description: Account Level Processing Indicator (Code)
-          example: '0'
-        productSubType:
-          type: string
-          description: Identifies product sub-type
-          example: Unknown
-          enum:
-            - Unknown
-            - BrazilAgriMaintenanceAcct
-            - BrazilAgriDebitAcct
-            - BrazilAgri
-            - BrazilAgriInvestmentLoan
-            - BrazilCargo
-            - Construction
-            - Distribution
-            - LargeMarketEnterprise
-            - SmallMarketEnterprise
-            - Healthcare
-            - VisaLargePurchaseAdvantage
-            - VisaMobileAgent
-            - InteroperableMobileBranchlessBanking
-            - VisaMobileGeneral
-            - MerchantAgentMerchantPayment
-            - ServiceAdvantage
-            - BrazilFoodSupermarket
-            - BrazilFuel
-            - VisaValeMealVoucher
-            - VisaValeFoodVoucher
-            - BrazilFoodOrRestaurant
-        productSubTypeKey:
-          type: string
-          description: Identifies product sub-type (Code)
-          example: '0'
         pulse:
           type: string
           description: Identifies the routing eligibility to Pulse network.
@@ -6112,10 +5951,6 @@ components:
           type: string
           description: Identifies the routing eligibility to Star network. (Code)
           example: '1'
-        tokenBin:
-          type: string
-          description: Token Bin Indicator (Y/N)
-          example: 'Y'
         type:
           type: string
           description: Identifies the card as credit, debit or prepaid.
@@ -6146,11 +5981,6 @@ components:
           type: string
           description: Identifies the routing eligibility to Visa network. (Code)
           example: '0'
-        year:
-          type: integer
-          description: The year this record was last updated
-          format: int32
-          example: 2021
     PrepaidAccountObj:
       type: object
       properties:
@@ -6495,8 +6325,6 @@ components:
               - CashBackAmount
               - CheckSum
               - Clerk
-              - CntFinancial
-              - CntNonFinancial
               - ConsortiumDesc
               - ConsortiumID
               - ConsortiumIDKey
@@ -6511,8 +6339,6 @@ components:
               - ExcessiveActivitySize
               - ExchangeRate
               - ExpirationDate
-              - ExtRequestCode
-              - ExtRequestCodeKey
               - ExtResponseCode
               - ExtResponseCodeKey
               - Financial
@@ -6541,6 +6367,8 @@ components:
               - MfaltMerchantNo
               - MfmerchantNo
               - Offset
+              - OrigExtRequestCodeDesc
+              - OrigExtRequestCodeDescKey
               - PackId
               - PackageAmount
               - PostDate
@@ -6771,16 +6599,6 @@ components:
           type: string
           description: Merchant-generated to identify individual clerks
           example: CLERK
-        cntFinancial:
-          type: integer
-          description: Balance Enquiries Count in one card
-          format: int64
-          example: 999
-        cntNonFinancial:
-          type: integer
-          description: Balance Enquiries Count in one card
-          format: int64
-          example: 999
         consortiumDesc:
           type: string
           description: Consortium description assigned by the client for the gift card program
@@ -6843,14 +6661,6 @@ components:
           type: string
           description: Account expiration date is returned on approved transactions & declined transactions due to card being expired (EST)
           example: 01/01/2025
-        extRequestCode:
-          type: integer
-          description: Numeric request code Description assigned to the activity performed-See Code Supplement
-          format: int32
-        extRequestCodeKey:
-          type: string
-          description: Numeric request code Description assigned to the activity performed-See Code Supplement (Code)
-          example: ''
         extResponseCode:
           type: integer
           description: External Response Code of the activity-See Code Supplement
@@ -6969,6 +6779,14 @@ components:
           type: string
           description: Offset for the merchant, only available if the merchant requested this functionality.
           example: '0'
+        origExtRequestCodeDesc:
+          type: integer
+          description: Numeric request code Description assigned to the activity performed-See Code Supplement
+          format: int32
+        origExtRequestCodeDescKey:
+          type: string
+          description: Numeric request code Description assigned to the activity performed-See Code Supplement (Code)
+          example: ''
         packId:
           type: string
           description: The unique package ID that is populated if the card is part of a multi-pack
@@ -10498,7 +10316,6 @@ components:
               - ReferenceNumber
               - Relevance
               - RelevanceKey
-              - RequestDate
               - RespondedDate
               - ResponseReceived
               - RetrievalRequestId
@@ -11873,10 +11690,6 @@ components:
           type: string
           description: Denotes whether the chargeback should be seen by the merchant. (Code)
           example: '1'
-        requestDate:
-          type: string
-          description: Request Date
-          example: 12/31/2021
         respondedDate:
           type: string
           description: Responded on date.
@@ -12743,6 +12556,8 @@ components:
               - NativeRejectCode
               - Network
               - NetworkKey
+              - NetworkTokenIndicator
+              - NetworkTokenIndicatorKey
               - NetworkTokenNumber
               - OdometerReading
               - OldAccountNumber
@@ -13792,39 +13607,39 @@ components:
         emvAppCryptogram:
           type: string
           description: Identifies the Online Card Authentication cryptogram generated by the card during the transaction
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 98765432ABCDEFGH
         emvAppInterchangeProfile:
           type: string
           description: Identifies a series of indicators reflecting the specific functions supported by the chip card application
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 99ZZ
         emvAppTxnCounter:
           type: string
           description: Identifies the counter from the card. Used to identify possible fraud
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: '9999'
         emvAppVersionNumber:
           type: string
           description: Identifies the Application identifier (AID) of the chip application
-          example: 99999999ZZZZZZZZZ
+          example: 99ZZ
         emvCVMResult:
           type: string
           description: Identifies the Cardholder Verification Method (CVM) used for the transaction
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 999ZZZ
         emvChipAuthResult:
           type: string
           description: Identifies the card authentication results for a chip card
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: Z
         emvChipTxnInd:
           type: string
           description: Identifies if it is a chip transaction
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: Z
         emvCryptoInfoData:
           type: string
           description: Identifies the type of Application Cryptogram (AC) carried in the transaction
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 9Z
         emvDedicatedFileName:
           type: string
           description: Identifies the Application identifier (AID) of the chip application
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 999999ABCDEFGHIJKLMNOPQRSTUVWXYZ
         emvExpDate:
           type: string
           description: Identifies the expiration date of the application
@@ -13832,15 +13647,15 @@ components:
         emvIssuerAppData:
           type: string
           description: Identifies the various card-related data which is transmitted from the issuer
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 9876543210ABCDEFGHIJKLMNOPQRSTUVWXYZ
         emvIssuerAuthData:
           type: string
           description: Identifies the Issuer Authentication Data sent by the issuer to the card in the authorization response
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 999999ABCDEFGHIJKLMNOPQRSTUVWXYZ
         emvTermCapProfile:
           type: string
           description: Identifies the card data input,  Cardholder Verification Method (CVM) & the security capabilities supported by the chip terminal
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 999ZZZ
         emvTermCountryCode:
           type: string
           description: Identifies the country where the merchant device is located
@@ -13848,11 +13663,11 @@ components:
         emvTermVerificationResult:
           type: string
           description: Identifies the results of risk management performed by the device
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 98765ABCDE
         emvTxnType:
           type: string
           description: Identifies the type of EMV financial transaction as represented by the first two digits of the processing code
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 9Z
         entryModeIndicator:
           type: string
           description: Identifies the account number method of data entry; the PIN pad capabilities
@@ -13872,7 +13687,7 @@ components:
         folioNumber:
           type: string
           description: Identifies the portfolio number associated with the transaction
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: 012345ABCD
         formFactor:
           type: string
           description: Identifies the Form Factor in the chip
@@ -14275,6 +14090,18 @@ components:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
           example: '2'
+        networkTokenIndicator:
+          type: string
+          description: Identifies the value that merchant sent in the Cardholder ID field as PAN or NT
+          example: Value Not Provided
+          enum:
+            - Unknown
+            - NT
+            - PAN
+        networkTokenIndicatorKey:
+          type: string
+          description: Identifies the value that merchant sent in the Cardholder ID field as PAN or NT (Code)
+          example: '0'
         networkTokenNumber:
           type: string
           description: Network Token Number
@@ -14351,7 +14178,7 @@ components:
         posTermCap:
           type: string
           description: Identifies the term-cap sent in the initial or original authorization request
-          example: 9999999ZZZZZZZZ
+          example: 9AZ
         processor:
           type: string
           description: Identifies the originating platform (Switch).
@@ -14445,7 +14272,7 @@ components:
         rentalReturnCity:
           type: string
           description: Renter Return City
-          example: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: ABCDEFGHIJKLM
         rentalReturnCountry:
           type: string
           description: Country where the car was returned to the rental agency.
@@ -14589,7 +14416,7 @@ components:
         terminalSerialNumber:
           type: string
           description: Identifies the Interface Device (IFD) serial number
-          example: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+          example: ABCD9876
         terminalType:
           type: string
           description: Identifies the terminal type
@@ -14909,13 +14736,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
