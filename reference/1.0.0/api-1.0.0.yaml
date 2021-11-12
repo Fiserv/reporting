@@ -10114,7 +10114,6 @@ components:
         caseNumber:
           type: string
           description: Case Number
-          example: '212494451501'
         dateType:
           type: string
           description: Search/Analysis date type. default value is chargeback date
