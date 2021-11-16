@@ -9265,6 +9265,10 @@ components:
           $ref: '#/components/schemas/DisbursementsFilters'
       description: Request object for disbursement summary report creation
     DisbursementsFilters:
+      required:
+        - currency
+        - dateType
+        - timeZone
       type: object
       properties:
         dateType:
