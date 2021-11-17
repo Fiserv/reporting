@@ -969,17 +969,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PrepaidTransactionSearchRequest'
-            example:
-              fromDate: '20210801'
-              toDate: '20210807'
-              limit: 1
-              fields:
-                - AccountStatus
-                - AuthCode
-                - ConsortiumDesc
-                - Source
-              filters:
-                ClosedLoopSearchType: '0'
         required: true
       responses:
         '200':
@@ -1264,8 +1253,9 @@ paths:
                   toDate: '20210807'
                   summaryBy: PaymentStatus
                   filters:
-                    dateType: ApplyDate
+                    dateType: ExpiryDate
                     currency: USD
+                    timeZone: UTC
               Disbursement Summary based on PaymentChannel:
                 description: Disbursement Summary based on PaymentChannel
                 value:
@@ -1273,8 +1263,9 @@ paths:
                   toDate: '20210807'
                   summaryBy: PaymentChannel
                   filters:
-                    dateType: ApplyDate
+                    dateType: ExpiryDate
                     currency: USD
+                    timeZone: Greenwich
               Disbursement Summary based on PaymentType:
                 description: Disbursement Summary based on PaymentType
                 value:
@@ -1282,8 +1273,9 @@ paths:
                   toDate: '20210807'
                   summaryBy: PaymentType
                   filters:
-                    dateType: ApplyDate
+                    dateType: ExpiryDate
                     currency: USD
+                    timeZone: EST
               Disbursement Summary based on TransactionStatus:
                 description: Disbursement Summary based on TransactionStatus
                 value:
@@ -1291,8 +1283,9 @@ paths:
                   toDate: '20210807'
                   summaryBy: TransactionStatus
                   filters:
-                    dateType: ApplyDate
+                    dateType: ExpiryDate
                     currency: USD
+                    timeZone: EST
         required: true
       responses:
         '200':
@@ -1339,7 +1332,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Search
+      x-proxy-name: Summary
       x-group-name: Disbursements
   /v1/disbursement/search:
     post:
@@ -2569,7 +2562,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -4827,7 +4820,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -4928,10 +4921,6 @@ components:
             - Chase
             - Salem
             - Tampa
-        siteID:
-          type: string
-          description: Platform specific Site ID
-          example: '1111111'
       description: Various filter options for sites queries
     SitesSearchRequest:
       type: object
@@ -6357,184 +6346,6 @@ components:
         filters:
           $ref: '#/components/schemas/PrepaidAccountFilters'
       description: Request object for Prepaid Accounts search.
-    PrepaidTransactionFilters:
-      type: object
-      description: Various filter options for prepaid transaction queries
-    PrepaidTransactionSearchRequest:
-      required:
-        - fromDate
-        - limit
-        - toDate
-      type: object
-      properties:
-        fromDate:
-          type: string
-          description: yyyymmdd string denoting the start date for the query
-          example: '20210801'
-        toDate:
-          type: string
-          description: yyyymmdd string denoting the end date for the query
-          example: '20210807'
-        limit:
-          maximum: 1000000
-          minimum: 1
-          type: integer
-          description: The maximum number of records that will be returned
-          format: int32
-          example: 1
-          default: 10
-        fields:
-          type: array
-          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-          items:
-            type: string
-            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            enum:
-              - AccountNo
-              - AccountOrigin
-              - AccountOriginKey
-              - AccountStatus
-              - AccountStatusKey
-              - ActivationAltMerchantNo
-              - ActivationDate
-              - ActivationLocDesc
-              - ActivationMIDDesc
-              - ActivationMerchantNo
-              - ActivationMonth
-              - ActivationQuarter
-              - ActivationTime
-              - ActivationWeek
-              - ActivationYear
-              - ActivityDay
-              - ActivityMonth
-              - ActivityQuarter
-              - ActivityWeek
-              - ActivityYear
-              - AltAccountNo
-              - AltMerchantNo
-              - Amount
-              - AuthCode
-              - Balance
-              - BaseAmount
-              - BaseCashBackAmount
-              - BaseCurrencyCode
-              - BaseCurrencyCodeKey
-              - BaseFundedAmount
-              - BaseLockAmt
-              - BatchNo
-              - BonusAmt
-              - CampaignEndDate
-              - CardClass
-              - CardCostAmt
-              - CashBackAmount
-              - CheckSum
-              - Clerk
-              - ConsortiumDesc
-              - ConsortiumID
-              - ConsortiumIDKey
-              - ConsumerBaseFundedAmount
-              - ConsumerFundedAmount
-              - CouponId
-              - CurrencyCode
-              - CurrencyCodeKey
-              - DiscountAmount
-              - EscheatTxn
-              - ExcessiveActivityInterval
-              - ExcessiveActivitySize
-              - ExchangeRate
-              - ExpirationDate
-              - ExtResponseCode
-              - ExtResponseCodeKey
-              - Financial
-              - FinancialKey
-              - FundedAmount
-              - FundingId
-              - GyftId
-              - LinkedDiscountAmt
-              - LinkedLoyaltyAcct
-              - LocalLockAmt
-              - LockId
-              - LoyaltyReqAcct
-              - LoyaltyReqConsort
-              - LtoAltMid
-              - LtoFundUsed
-              - LtoMid
-              - MasterLoyaltyAcct
-              - MasterLoyaltyConsort
-              - MemoField
-              - MerchantFundBal
-              - MerchantNo
-              - Messaging
-              - MfEnable
-              - MfLocDesc
-              - MfMIDDesc
-              - MfaltMerchantNo
-              - MfmerchantNo
-              - Offset
-              - OrigExtRequestCodeDesc
-              - OrigExtRequestCodeDescKey
-              - PackId
-              - PackageAmount
-              - PostDate
-              - PrevAccountStatus
-              - PrimaryPromoCode
-              - ProcessedDate
-              - ProcessedTime
-              - PromotionDesc
-              - PromotionID
-              - PromotionIDKey
-              - ReasonCode
-              - ReasonCodeKey
-              - ReferenceNum
-              - ReplaceSerialNo
-              - ReportingAmount
-              - ReportingCashBackAmount
-              - ReportingCurrencyCode
-              - ReportingCurrencyCodeKey
-              - ReportingFundedAmount
-              - RequestCode
-              - RequestCodeKey
-              - RequestGroupCode
-              - RequestGroupCodeKey
-              - ResponseCode
-              - ResponseCodeKey
-              - Reversed
-              - ReversedKey
-              - ReversedTimestampDate
-              - ReversedTimestampTime
-              - RewardAmount
-              - RouteInfo
-              - SerialNo
-              - Sign
-              - Source
-              - SourceKey
-              - TargetConsortiumCode
-              - TargetPromoCode
-              - TermTxnNo
-              - TerminalNo
-              - TimestampEST
-              - TimestampGMT
-              - TimestampLCL
-              - TransactionDate
-              - TransactionDateEst
-              - TransactionDateGMT
-              - TransactionDateLocal
-              - TransactionDayGMT
-              - TransactionLocDesc
-              - TransactionMIDDesc
-              - TransactionTimeEst
-              - TransactionTimeGMT
-              - TransactionTimeLocal
-              - TxnGroupId
-              - TxnId
-              - UpliftAmount
-              - User1
-              - User2
-              - UserID
-              - WicNo
-        filters:
-          $ref: '#/components/schemas/PrepaidTransactionFilters'
-      description: Request object for Prepaid Transactions search.
     PrepaidTransactionObj:
       type: object
       properties:
@@ -7136,6 +6947,191 @@ components:
           type: string
           description: '11 digit Store/Location ID # where GC transaction activity occurred (a.k.a.- Alternate MID)'
           example: '974767'
+    PrepaidTransactionFilters:
+      type: object
+      description: Various filter options for prepaid transaction queries
+      example:
+        closedLoopSearchType:
+          - '0'
+    PrepaidTransactionSearchRequest:
+      required:
+        - fromDate
+        - limit
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        limit:
+          maximum: 1000000
+          minimum: 1
+          type: integer
+          description: The maximum number of records that will be returned
+          format: int32
+          example: 3
+          default: 10
+        fields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - ConsortiumDesc
+            - PromotionDesc
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["ConsortiumDesc","PromotionDesc"]'
+            enum:
+              - AccountNo
+              - AccountOrigin
+              - AccountOriginKey
+              - AccountStatus
+              - AccountStatusKey
+              - ActivationAltMerchantNo
+              - ActivationDate
+              - ActivationLocDesc
+              - ActivationMIDDesc
+              - ActivationMerchantNo
+              - ActivationMonth
+              - ActivationQuarter
+              - ActivationTime
+              - ActivationWeek
+              - ActivationYear
+              - ActivityDay
+              - ActivityMonth
+              - ActivityQuarter
+              - ActivityWeek
+              - ActivityYear
+              - AltAccountNo
+              - AltMerchantNo
+              - Amount
+              - AuthCode
+              - Balance
+              - BaseAmount
+              - BaseCashBackAmount
+              - BaseCurrencyCode
+              - BaseCurrencyCodeKey
+              - BaseFundedAmount
+              - BaseLockAmt
+              - BatchNo
+              - BonusAmt
+              - CampaignEndDate
+              - CardClass
+              - CardCostAmt
+              - CashBackAmount
+              - CheckSum
+              - Clerk
+              - ConsortiumDesc
+              - ConsortiumID
+              - ConsortiumIDKey
+              - ConsumerBaseFundedAmount
+              - ConsumerFundedAmount
+              - CouponId
+              - CurrencyCode
+              - CurrencyCodeKey
+              - DiscountAmount
+              - EscheatTxn
+              - ExcessiveActivityInterval
+              - ExcessiveActivitySize
+              - ExchangeRate
+              - ExpirationDate
+              - ExtResponseCode
+              - ExtResponseCodeKey
+              - Financial
+              - FinancialKey
+              - FundedAmount
+              - FundingId
+              - GyftId
+              - LinkedDiscountAmt
+              - LinkedLoyaltyAcct
+              - LocalLockAmt
+              - LockId
+              - LoyaltyReqAcct
+              - LoyaltyReqConsort
+              - LtoAltMid
+              - LtoFundUsed
+              - LtoMid
+              - MasterLoyaltyAcct
+              - MasterLoyaltyConsort
+              - MemoField
+              - MerchantFundBal
+              - MerchantNo
+              - Messaging
+              - MfEnable
+              - MfLocDesc
+              - MfMIDDesc
+              - MfaltMerchantNo
+              - MfmerchantNo
+              - Offset
+              - OrigExtRequestCodeDesc
+              - OrigExtRequestCodeDescKey
+              - PackId
+              - PackageAmount
+              - PostDate
+              - PrevAccountStatus
+              - PrimaryPromoCode
+              - ProcessedDate
+              - ProcessedTime
+              - PromotionDesc
+              - PromotionID
+              - PromotionIDKey
+              - ReasonCode
+              - ReasonCodeKey
+              - ReferenceNum
+              - ReplaceSerialNo
+              - ReportingAmount
+              - ReportingCashBackAmount
+              - ReportingCurrencyCode
+              - ReportingCurrencyCodeKey
+              - ReportingFundedAmount
+              - RequestCode
+              - RequestCodeKey
+              - RequestGroupCode
+              - RequestGroupCodeKey
+              - ResponseCode
+              - ResponseCodeKey
+              - Reversed
+              - ReversedKey
+              - ReversedTimestampDate
+              - ReversedTimestampTime
+              - RewardAmount
+              - RouteInfo
+              - SerialNo
+              - Sign
+              - Source
+              - SourceKey
+              - TargetConsortiumCode
+              - TargetPromoCode
+              - TermTxnNo
+              - TerminalNo
+              - TimestampEST
+              - TimestampGMT
+              - TimestampLCL
+              - TransactionDate
+              - TransactionDateEst
+              - TransactionDateGMT
+              - TransactionDateLocal
+              - TransactionDayGMT
+              - TransactionLocDesc
+              - TransactionMIDDesc
+              - TransactionTimeEst
+              - TransactionTimeGMT
+              - TransactionTimeLocal
+              - TxnGroupId
+              - TxnId
+              - UpliftAmount
+              - User1
+              - User2
+              - UserID
+              - WicNo
+        filters:
+          $ref: '#/components/schemas/PrepaidTransactionFilters'
+      description: Request object for Prepaid Transactions search.
     FundingFilters:
       type: object
       properties:
@@ -7263,7 +7259,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -9259,7 +9255,7 @@ components:
         summaryBy:
           type: string
           description: Summary grouped by this field
-          example: Network
+          example: PaymentStatus
           enum:
             - PaymentStatus
             - PaymentType
@@ -9269,6 +9265,10 @@ components:
           $ref: '#/components/schemas/DisbursementsFilters'
       description: Request object for disbursement summary report creation
     DisbursementsFilters:
+      required:
+        - currency
+        - dateType
+        - timeZone
       type: object
       properties:
         dateType:
@@ -10152,7 +10152,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -10347,7 +10347,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -12556,7 +12556,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
