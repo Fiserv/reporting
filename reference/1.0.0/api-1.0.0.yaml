@@ -969,10 +969,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PrepaidTransactionSearchRequest'
-            example:
-              fromDate: '20210801'
-              toDate: '20210807'
-              limit: 1
         required: true
       responses:
         '200':
@@ -1230,6 +1226,114 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
       x-group-name: Funding
+  /v1/disbursement/summary:
+    post:
+      tags:
+        - Disbursements
+      summary: Summary
+      description: Provides a list of disbursements payments and their attributes based on optional filter criteria.
+      operationId: summary
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisbursementSummaryRequest'
+            examples:
+              Disbursement Summary based on PaymentStatus:
+                description: Disbursement Summary based on PaymentStatus
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  summaryBy: PaymentStatus
+                  filters:
+                    dateType: ExpiryDate
+                    currency: USD
+                    timeZone: UTC
+              Disbursement Summary based on PaymentChannel:
+                description: Disbursement Summary based on PaymentChannel
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  summaryBy: PaymentChannel
+                  filters:
+                    dateType: ExpiryDate
+                    currency: USD
+                    timeZone: Greenwich
+              Disbursement Summary based on PaymentType:
+                description: Disbursement Summary based on PaymentType
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  summaryBy: PaymentType
+                  filters:
+                    dateType: ExpiryDate
+                    currency: USD
+                    timeZone: EST
+              Disbursement Summary based on TransactionStatus:
+                description: Disbursement Summary based on TransactionStatus
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  summaryBy: TransactionStatus
+                  filters:
+                    dateType: ExpiryDate
+                    currency: USD
+                    timeZone: EST
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DisbursementsObj'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Summary
+      x-group-name: Disbursements
   /v1/disbursement/search:
     post:
       tags:
@@ -2284,6 +2388,7 @@ components:
               - SetupAutoReload
               - ReturnReversal
               - Cashback
+              - Forced
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -2457,7 +2562,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -3919,6 +4024,7 @@ components:
             - SetupAutoReload
             - ReturnReversal
             - Cashback
+            - Forced
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
@@ -4714,7 +4820,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -4815,10 +4921,6 @@ components:
             - Chase
             - Salem
             - Tampa
-        siteID:
-          type: string
-          description: Platform specific Site ID
-          example: '1111111'
       description: Various filter options for sites queries
     SitesSearchRequest:
       type: object
@@ -6244,184 +6346,6 @@ components:
         filters:
           $ref: '#/components/schemas/PrepaidAccountFilters'
       description: Request object for Prepaid Accounts search.
-    PrepaidTransactionFilters:
-      type: object
-      description: Various filter options for prepaid transaction queries
-    PrepaidTransactionSearchRequest:
-      required:
-        - fromDate
-        - limit
-        - toDate
-      type: object
-      properties:
-        fromDate:
-          type: string
-          description: yyyymmdd string denoting the start date for the query
-          example: '20210801'
-        toDate:
-          type: string
-          description: yyyymmdd string denoting the end date for the query
-          example: '20210807'
-        limit:
-          maximum: 1000000
-          minimum: 1
-          type: integer
-          description: The maximum number of records that will be returned
-          format: int32
-          example: 1
-          default: 10
-        fields:
-          type: array
-          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-          items:
-            type: string
-            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            enum:
-              - AccountNo
-              - AccountOrigin
-              - AccountOriginKey
-              - AccountStatus
-              - AccountStatusKey
-              - ActivationAltMerchantNo
-              - ActivationDate
-              - ActivationLocDesc
-              - ActivationMIDDesc
-              - ActivationMerchantNo
-              - ActivationMonth
-              - ActivationQuarter
-              - ActivationTime
-              - ActivationWeek
-              - ActivationYear
-              - ActivityDay
-              - ActivityMonth
-              - ActivityQuarter
-              - ActivityWeek
-              - ActivityYear
-              - AltAccountNo
-              - AltMerchantNo
-              - Amount
-              - AuthCode
-              - Balance
-              - BaseAmount
-              - BaseCashBackAmount
-              - BaseCurrencyCode
-              - BaseCurrencyCodeKey
-              - BaseFundedAmount
-              - BaseLockAmt
-              - BatchNo
-              - BonusAmt
-              - CampaignEndDate
-              - CardClass
-              - CardCostAmt
-              - CashBackAmount
-              - CheckSum
-              - Clerk
-              - ConsortiumDesc
-              - ConsortiumID
-              - ConsortiumIDKey
-              - ConsumerBaseFundedAmount
-              - ConsumerFundedAmount
-              - CouponId
-              - CurrencyCode
-              - CurrencyCodeKey
-              - DiscountAmount
-              - EscheatTxn
-              - ExcessiveActivityInterval
-              - ExcessiveActivitySize
-              - ExchangeRate
-              - ExpirationDate
-              - ExtResponseCode
-              - ExtResponseCodeKey
-              - Financial
-              - FinancialKey
-              - FundedAmount
-              - FundingId
-              - GyftId
-              - LinkedDiscountAmt
-              - LinkedLoyaltyAcct
-              - LocalLockAmt
-              - LockId
-              - LoyaltyReqAcct
-              - LoyaltyReqConsort
-              - LtoAltMid
-              - LtoFundUsed
-              - LtoMid
-              - MasterLoyaltyAcct
-              - MasterLoyaltyConsort
-              - MemoField
-              - MerchantFundBal
-              - MerchantNo
-              - Messaging
-              - MfEnable
-              - MfLocDesc
-              - MfMIDDesc
-              - MfaltMerchantNo
-              - MfmerchantNo
-              - Offset
-              - OrigExtRequestCodeDesc
-              - OrigExtRequestCodeDescKey
-              - PackId
-              - PackageAmount
-              - PostDate
-              - PrevAccountStatus
-              - PrimaryPromoCode
-              - ProcessedDate
-              - ProcessedTime
-              - PromotionDesc
-              - PromotionID
-              - PromotionIDKey
-              - ReasonCode
-              - ReasonCodeKey
-              - ReferenceNum
-              - ReplaceSerialNo
-              - ReportingAmount
-              - ReportingCashBackAmount
-              - ReportingCurrencyCode
-              - ReportingCurrencyCodeKey
-              - ReportingFundedAmount
-              - RequestCode
-              - RequestCodeKey
-              - RequestGroupCode
-              - RequestGroupCodeKey
-              - ResponseCode
-              - ResponseCodeKey
-              - Reversed
-              - ReversedKey
-              - ReversedTimestampDate
-              - ReversedTimestampTime
-              - RewardAmount
-              - RouteInfo
-              - SerialNo
-              - Sign
-              - Source
-              - SourceKey
-              - TargetConsortiumCode
-              - TargetPromoCode
-              - TermTxnNo
-              - TerminalNo
-              - TimestampEST
-              - TimestampGMT
-              - TimestampLCL
-              - TransactionDate
-              - TransactionDateEst
-              - TransactionDateGMT
-              - TransactionDateLocal
-              - TransactionDayGMT
-              - TransactionLocDesc
-              - TransactionMIDDesc
-              - TransactionTimeEst
-              - TransactionTimeGMT
-              - TransactionTimeLocal
-              - TxnGroupId
-              - TxnId
-              - UpliftAmount
-              - User1
-              - User2
-              - UserID
-              - WicNo
-        filters:
-          $ref: '#/components/schemas/PrepaidTransactionFilters'
-      description: Request object for Prepaid Transactions search.
     PrepaidTransactionObj:
       type: object
       properties:
@@ -7023,6 +6947,191 @@ components:
           type: string
           description: '11 digit Store/Location ID # where GC transaction activity occurred (a.k.a.- Alternate MID)'
           example: '974767'
+    PrepaidTransactionFilters:
+      type: object
+      description: Various filter options for prepaid transaction queries
+      example:
+        closedLoopSearchType:
+          - '0'
+    PrepaidTransactionSearchRequest:
+      required:
+        - fromDate
+        - limit
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        limit:
+          maximum: 1000000
+          minimum: 1
+          type: integer
+          description: The maximum number of records that will be returned
+          format: int32
+          example: 3
+          default: 10
+        fields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - ConsortiumDesc
+            - PromotionDesc
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["ConsortiumDesc","PromotionDesc"]'
+            enum:
+              - AccountNo
+              - AccountOrigin
+              - AccountOriginKey
+              - AccountStatus
+              - AccountStatusKey
+              - ActivationAltMerchantNo
+              - ActivationDate
+              - ActivationLocDesc
+              - ActivationMIDDesc
+              - ActivationMerchantNo
+              - ActivationMonth
+              - ActivationQuarter
+              - ActivationTime
+              - ActivationWeek
+              - ActivationYear
+              - ActivityDay
+              - ActivityMonth
+              - ActivityQuarter
+              - ActivityWeek
+              - ActivityYear
+              - AltAccountNo
+              - AltMerchantNo
+              - Amount
+              - AuthCode
+              - Balance
+              - BaseAmount
+              - BaseCashBackAmount
+              - BaseCurrencyCode
+              - BaseCurrencyCodeKey
+              - BaseFundedAmount
+              - BaseLockAmt
+              - BatchNo
+              - BonusAmt
+              - CampaignEndDate
+              - CardClass
+              - CardCostAmt
+              - CashBackAmount
+              - CheckSum
+              - Clerk
+              - ConsortiumDesc
+              - ConsortiumID
+              - ConsortiumIDKey
+              - ConsumerBaseFundedAmount
+              - ConsumerFundedAmount
+              - CouponId
+              - CurrencyCode
+              - CurrencyCodeKey
+              - DiscountAmount
+              - EscheatTxn
+              - ExcessiveActivityInterval
+              - ExcessiveActivitySize
+              - ExchangeRate
+              - ExpirationDate
+              - ExtResponseCode
+              - ExtResponseCodeKey
+              - Financial
+              - FinancialKey
+              - FundedAmount
+              - FundingId
+              - GyftId
+              - LinkedDiscountAmt
+              - LinkedLoyaltyAcct
+              - LocalLockAmt
+              - LockId
+              - LoyaltyReqAcct
+              - LoyaltyReqConsort
+              - LtoAltMid
+              - LtoFundUsed
+              - LtoMid
+              - MasterLoyaltyAcct
+              - MasterLoyaltyConsort
+              - MemoField
+              - MerchantFundBal
+              - MerchantNo
+              - Messaging
+              - MfEnable
+              - MfLocDesc
+              - MfMIDDesc
+              - MfaltMerchantNo
+              - MfmerchantNo
+              - Offset
+              - OrigExtRequestCodeDesc
+              - OrigExtRequestCodeDescKey
+              - PackId
+              - PackageAmount
+              - PostDate
+              - PrevAccountStatus
+              - PrimaryPromoCode
+              - ProcessedDate
+              - ProcessedTime
+              - PromotionDesc
+              - PromotionID
+              - PromotionIDKey
+              - ReasonCode
+              - ReasonCodeKey
+              - ReferenceNum
+              - ReplaceSerialNo
+              - ReportingAmount
+              - ReportingCashBackAmount
+              - ReportingCurrencyCode
+              - ReportingCurrencyCodeKey
+              - ReportingFundedAmount
+              - RequestCode
+              - RequestCodeKey
+              - RequestGroupCode
+              - RequestGroupCodeKey
+              - ResponseCode
+              - ResponseCodeKey
+              - Reversed
+              - ReversedKey
+              - ReversedTimestampDate
+              - ReversedTimestampTime
+              - RewardAmount
+              - RouteInfo
+              - SerialNo
+              - Sign
+              - Source
+              - SourceKey
+              - TargetConsortiumCode
+              - TargetPromoCode
+              - TermTxnNo
+              - TerminalNo
+              - TimestampEST
+              - TimestampGMT
+              - TimestampLCL
+              - TransactionDate
+              - TransactionDateEst
+              - TransactionDateGMT
+              - TransactionDateLocal
+              - TransactionDayGMT
+              - TransactionLocDesc
+              - TransactionMIDDesc
+              - TransactionTimeEst
+              - TransactionTimeGMT
+              - TransactionTimeLocal
+              - TxnGroupId
+              - TxnId
+              - UpliftAmount
+              - User1
+              - User2
+              - UserID
+              - WicNo
+        filters:
+          $ref: '#/components/schemas/PrepaidTransactionFilters'
+      description: Request object for Prepaid Transactions search.
     FundingFilters:
       type: object
       properties:
@@ -7150,7 +7259,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -8918,6 +9027,18 @@ components:
             - PFMCAuthFeeAVS
             - PFMCCVC2GlobalAuthFee
             - Visa3DSFee
+            - ConsAVSAuthFee
+            - VCRResponsefee1
+            - MCTPEACQMERCHADVICECODE
+            - MCAuthConnectivityFee
+            - MCClearingConnectivityFee
+            - VICNPKEYENTEREDNOECIFEE
+            - VIUSCBPSPARTICIPATIONFEE
+            - NWLateAcptDay020VisaDMS
+            - VINEVERAPPROVEREATTEMPTFEE
+            - VINEVERAPPROVEREATTEMPTFEEXBOR
+            - VIMARKETPLACEPROGRAMFEE
+            - NWAcptDay020InterlinkSMS
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -9117,10 +9238,9 @@ components:
           type: string
           description: Value Date
           example: 12/31/2020
-    DisbursementSearchRequest:
+    DisbursementSummaryRequest:
       required:
         - fromDate
-        - limit
         - toDate
       type: object
       properties:
@@ -9132,99 +9252,23 @@ components:
           type: string
           description: yyyymmdd string denoting the end date for the query
           example: '20210807'
-        limit:
-          maximum: 1000000
-          minimum: 1
-          type: integer
-          description: The maximum number of records that will be returned
-          format: int32
-          example: 1
-          default: 10
-        fields:
-          type: array
-          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-          items:
-            type: string
-            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            enum:
-              - AccountLastFour
-              - ApplyDate
-              - ApprovalCode
-              - ApprovalCodeKey
-              - BankName
-              - City
-              - Comments
-              - ControlNumber
-              - Country
-              - CreateDate
-              - Currency
-              - CurrencyKey
-              - Email
-              - ExpiryDate
-              - FeeAmount
-              - FundingAccount
-              - MerchantId
-              - MerchantName
-              - MerchantStatus
-              - MerchantStatusKey
-              - Mid
-              - OrigId
-              - PaymentAmount
-              - PaymentChannel
-              - PaymentChannelKey
-              - PaymentDate
-              - PaymentId
-              - PaymentRecipientId
-              - PaymentStatus
-              - PaymentStatusKey
-              - PaymentTime
-              - PaymentType
-              - PaymentTypeKey
-              - PaymentVendorId
-              - PostalCode
-              - RecipientClient
-              - RecipientComments
-              - RecipientCompany
-              - RecipientExtension
-              - RecipientFName
-              - RecipientGuest
-              - RecipientGuestKey
-              - RecipientId
-              - RecipientIdentifier
-              - RecipientIdentifierValue
-              - RecipientLName
-              - RecipientPhone
-              - RecipientReason
-              - RecipientReasonKey
-              - RecipientStatus
-              - RecipientStatusKey
-              - RecipientTin
-              - RecipientType
-              - RecipientTypeKey
-              - ReferenceId
-              - ReturnCode
-              - RoutingNumber
-              - SettlementDate
-              - SettlementStatus
-              - SettlementStatusKey
-              - State
-              - StateKey
-              - StreetOne
-              - StreetTwo
-              - TransactionAmount
-              - TransactionClaimNumber
-              - TransactionCreateDate
-              - TransactionDate
-              - TransactionId
-              - TransactionPaymentNumber
-              - TransactionStatus
-              - TransactionStatusKey
-              - TxnDesc
-              - VendorId
+        summaryBy:
+          type: string
+          description: Summary grouped by this field
+          example: PaymentStatus
+          enum:
+            - PaymentStatus
+            - PaymentType
+            - PaymentChannel
+            - TransactionStatus
         filters:
           $ref: '#/components/schemas/DisbursementsFilters'
-      description: Request object for Disbursement search
+      description: Request object for disbursement summary report creation
     DisbursementsFilters:
+      required:
+        - currency
+        - dateType
+        - timeZone
       type: object
       properties:
         dateType:
@@ -10087,13 +10131,116 @@ components:
           type: string
           description: Vendor id provided by the merchant also known as merchant customer id.
           example: NB2XV2NIW5RPXLVHMCSW
+    DisbursementSearchRequest:
+      required:
+        - fromDate
+        - limit
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        limit:
+          maximum: 1000000
+          minimum: 1
+          type: integer
+          description: The maximum number of records that will be returned
+          format: int32
+          example: 3
+          default: 10
+        fields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            enum:
+              - AccountLastFour
+              - ApplyDate
+              - ApprovalCode
+              - ApprovalCodeKey
+              - BankName
+              - City
+              - Comments
+              - ControlNumber
+              - Country
+              - CreateDate
+              - Currency
+              - CurrencyKey
+              - Email
+              - ExpiryDate
+              - FeeAmount
+              - FundingAccount
+              - MerchantId
+              - MerchantName
+              - MerchantStatus
+              - MerchantStatusKey
+              - Mid
+              - OrigId
+              - PaymentAmount
+              - PaymentChannel
+              - PaymentChannelKey
+              - PaymentDate
+              - PaymentId
+              - PaymentRecipientId
+              - PaymentStatus
+              - PaymentStatusKey
+              - PaymentTime
+              - PaymentType
+              - PaymentTypeKey
+              - PaymentVendorId
+              - PostalCode
+              - RecipientClient
+              - RecipientComments
+              - RecipientCompany
+              - RecipientExtension
+              - RecipientFName
+              - RecipientGuest
+              - RecipientGuestKey
+              - RecipientId
+              - RecipientIdentifier
+              - RecipientIdentifierValue
+              - RecipientLName
+              - RecipientPhone
+              - RecipientReason
+              - RecipientReasonKey
+              - RecipientStatus
+              - RecipientStatusKey
+              - RecipientTin
+              - RecipientType
+              - RecipientTypeKey
+              - ReferenceId
+              - ReturnCode
+              - RoutingNumber
+              - SettlementDate
+              - SettlementStatus
+              - SettlementStatusKey
+              - State
+              - StateKey
+              - StreetOne
+              - StreetTwo
+              - TransactionAmount
+              - TransactionClaimNumber
+              - TransactionCreateDate
+              - TransactionDate
+              - TransactionId
+              - TransactionPaymentNumber
+              - TransactionStatus
+              - TransactionStatusKey
+              - TxnDesc
+              - VendorId
+        filters:
+          $ref: '#/components/schemas/DisbursementsFilters'
+      description: Request object for Disbursement search
     ChargebackFilters:
       type: object
       properties:
-        caseNumber:
-          type: string
-          description: Case Number
-          example: '212494451501'
         dateType:
           type: string
           description: Search/Analysis date type. default value is chargeback date
@@ -10200,7 +10347,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -10698,6 +10845,12 @@ components:
             - DuplicateCopy
             - CoveredBySellerProtectionFraud
             - ProblemWithRemittance
+            - CreditPostedAsDebit
+            - TakeoverIDTheft
+            - CardNotReceived
+            - AccountToAccountTransferWrongAccount
+            - AccountToAccountTransferWrongAmount
+            - AccountToAccountTransferNoQuickAvailability
         ReasonKey:
           type: string
           description: Descriptive reason associated with a specific Chargeback. (Code)
@@ -12295,6 +12448,7 @@ components:
               - SetupAutoReload
               - ReturnReversal
               - Cashback
+              - Forced
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -12402,7 +12556,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
-          example: 1
+          example: 3
           default: 10
         fields:
           type: array
@@ -13143,6 +13297,12 @@ components:
             - MacVerificationError
             - MacSynchError
             - EncryptionError
+            - AddCustAuthRequired
+            - InvalidAuthLifeCycle
+            - DiffValuePinEncryptError
+            - InvalidEffectiveDate
+            - UnmatchedVoucherInfo
+            - ItemSuspectedStopPay
         assocRespCodeKey:
           type: string
           description: Identifies the initial association response code for the transaction. (Code)
@@ -13551,6 +13711,12 @@ components:
             - MacVerificationError
             - MacSynchError
             - EncryptionError
+            - AddCustAuthRequired
+            - InvalidAuthLifeCycle
+            - DiffValuePinEncryptError
+            - InvalidEffectiveDate
+            - UnmatchedVoucherInfo
+            - ItemSuspectedStopPay
         declineReasonKey:
           type: string
           description: Identifies the decline reason for the transaction. (Code)
@@ -13753,7 +13919,7 @@ components:
             - DieselPremium
             - GasOther
             - DieselOther
-            - Other
+            - FuelOther
             - MethanolUnleaded57
             - MethanolUnleadedPlus57
             - MethanolUnleadedSuper57
@@ -13809,6 +13975,147 @@ components:
             - WhiteGas
             - HeatingOil
             - LPGBottled
+            - GeneralMerchandise
+            - Cigarettes
+            - TobaccoOther
+            - NonAlcoholicPackagedBeverage
+            - HotDispensedBeverages
+            - ColdDispensedBeverages
+            - FrozenDispensedBeverages
+            - OtherBeverages
+            - Ice
+            - PackagedIceCream
+            - SaltySnacks
+            - AlternativeSnacks
+            - SweetSnacksPackaged
+            - Candy
+            - FluidMilkProducts
+            - OtherDairy
+            - Juice
+            - GroceriesEdible
+            - GroceriesNonEdible
+            - GroceriesPerishable
+            - Publications
+            - BreadPackaged
+            - FrozenFoods
+            - HealthAndBeautyCare
+            - BeerAlcoholic
+            - BeerNonAlcoholic
+            - Wine
+            - Liquor
+            - PackagedSandwich
+            - PreparedFoods
+            - DeliItem
+            - FoodService
+            - LotteryInstant
+            - LotteryOnline
+            - LotteryOther
+            - MoneyOrder
+            - MoneyOrderVendorPayment
+            - MoneyOrderPayrollCheck
+            - MoneyOrderGiftCert
+            - MoneyOrderRefundCheck
+            - MoneyOrderOfficialCheck
+            - MoneyOrderRebateCheck
+            - MoneyOrderDividendCheck
+            - MoneyOrderUtilityCheck
+            - MoneyOrderOther
+            - StoreServices
+            - HomeDelivery
+            - MerchandiseOther
+            - SplitTenderPrepaidCard
+            - BuypassDefault
+            - BuypassDefaultTax
+            - BuypassDefaultCash
+            - Discount1
+            - Discount2
+            - Discount3
+            - Discount4
+            - Discount5
+            - Coupon1
+            - Coupon2
+            - Coupon3
+            - Coupon4
+            - Coupon5
+            - LotteryPayoutInstant
+            - LotteryPayoutOnline
+            - LotteryPayoutOther
+            - SplitTender
+            - TaxExemptionCredit
+            - NegativeOther
+            - ReservedBuypassHostDiscounts
+            - Tax1
+            - Tax2
+            - Tax3
+            - Tax4
+            - Tax5
+            - CashBack
+            - CashBackFee
+            - Fee1
+            - Fee2
+            - Fee3
+            - Fee4
+            - Fee5
+            - AdministrativeOther
+            - GeneralAutomotiveMerchandise
+            - MotorOil
+            - CarWash
+            - OilChange
+            - OilFilter
+            - WorkOrder
+            - AntiFreeze
+            - WasherFluid
+            - BrakeFluid
+            - Tires
+            - FederalExciseTax
+            - TireRotation
+            - Batteries
+            - Lube
+            - Inspection
+            - Labor
+            - Towing
+            - RoadService
+            - AutoAccessories
+            - AutoParts
+            - PreventiveMaintenance
+            - ACService
+            - EngineService
+            - TransmissionnService
+            - BrakeService
+            - ExhaustService
+            - BodyWork
+            - AutomotiveGlass
+            - PartServiceOther
+            - Storage
+            - AircraftGroundHandling
+            - AircraftGroundPowerUnit
+            - AircraftLabor
+            - AircraftWorkOrder
+            - AircraftMaintenance
+            - AircarftService
+            - Transportation
+            - Deicing
+            - RampFee
+            - Catering
+            - HangarFee
+            - LandingFee
+            - CallOutFee
+            - AircraftRental
+            - InstructionFee
+            - FlightPlansWeatherBrief
+            - CharterFee
+            - CommunicationFee
+            - AircraftCleaning
+            - CargoHandling
+            - AircraftAccessories
+            - AviationOther
+            - MarineOther
+            - MarineService
+            - MarineLabor
+            - MarineWorkOrder
+            - LaunchFee
+            - SlipRental
+            - MarineServiceOther
         merchandiseCodeKey:
           type: string
           description: Describes the type of fuel purchased. (Code)
@@ -14461,6 +14768,7 @@ components:
             - SetupAutoReload
             - ReturnReversal
             - Cashback
+            - Forced
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
