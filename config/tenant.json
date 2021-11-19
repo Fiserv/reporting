@@ -61,13 +61,11 @@
 			"template": "bug.md",
 			"assignees": "vinatha.kongara@fiserv.com"
 		},
-
 		"feedback": {
 			"label": "feedback,reporting",
 			"template": "feedback.md",
 			"assignees": "vinatha.kongara@fiserv.com"
 		},
-
 		"enhancement": {
 			"label": "enhancement,reporting",
 			"template": "feature.md",
