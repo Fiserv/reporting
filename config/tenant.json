@@ -59,19 +59,19 @@
 		"bug": {
 			"label": "bug,reporting",
 			"template": "bug.md",
-			"assignees": ""
+			"assignees": "vinatha.kongara@fiserv.com"
 		},
 
 		"feedback": {
 			"label": "feedback,reporting",
 			"template": "feedback.md",
-			"assignees": ""
+			"assignees": "vinatha.kongara@fiserv.com"
 		},
 
 		"enhancement": {
 			"label": "enhancement,reporting",
 			"template": "feature.md",
-			"assignees": ""
+			"assignees": "vinatha.kongara@fiserv.com"
 		}
 	}]
 }
