@@ -54,5 +54,22 @@
         "value": true
       }
     ]
-  }
+  },
+   "supportConfig": [{ 
+		"bug": {
+			"label": "bug,reporting",
+			"template": "bug.md",
+			"assignees": "kongaravinatha"
+		},
+		"feedback": {
+			"label": "feedback,reporting",
+			"template": "feedback.md",
+			"assignees": "kongaravinatha"
+		},
+		"enhancement": {
+			"label": "enhancement,reporting",
+			"template": "feature.md",
+			"assignees": "kongaravinatha"
+		}
+	}]
 }
