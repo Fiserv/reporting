@@ -10856,11 +10856,10 @@ components:
             - ApprovalCode
             - Amount
             - AuthCode
-            - OrdNo
           items:
             type: string
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            example: '["Network","ApprovalCode","Amount","AuthCode","OrdNo"]'
+            example: '["Network","ApprovalCode","Amount","AuthCode"]'
             enum:
               - ECIndicator
               - ECIndicatorKey
