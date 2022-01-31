@@ -5357,7 +5357,7 @@ components:
           #BinFilters:
           type: object
           properties:
-            binID:
+            bin:
               type: string
           description: Various filter options for bin queries
       #description: Request object for Bin search
