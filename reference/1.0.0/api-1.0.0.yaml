@@ -4559,7 +4559,7 @@ components:
           type: string
           description: Number assigned to each group of settled transactions.
           example: '00012346'
-        bin:
+        binId:
           type: string
           description: The unique identifier for the bin associated with the card.
           example: '123456'
@@ -5265,7 +5265,7 @@ components:
     BinFilters:
       type: object
       properties:
-        bin:
+        binID:
           type: string
       description: Various filter options for bin queries
     BinsSearchRequest:
