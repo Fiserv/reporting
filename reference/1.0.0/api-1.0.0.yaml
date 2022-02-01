@@ -5265,8 +5265,10 @@ components:
     BinFilters:
       type: object
       properties:
-        binID:
+        bin:
           type: string
+          description: Unique Bin
+          example: '582023'
       description: Various filter options for bin queries
     BinsSearchRequest:
       required:
