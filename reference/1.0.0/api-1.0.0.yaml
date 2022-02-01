@@ -834,7 +834,7 @@ paths:
                 value:
                   limit: 5
                   filters:
-                    bin: '582023'
+                    bin: '41516200'
         required: true
       responses:
         '200':
@@ -2581,12 +2581,12 @@ components:
           type: string
           description: Search/Analysis date type. default value is settle date
           example: SettleDate
+          default: SettleDate
           enum:
             - AuthDate
             - SettleDate
             - FundedDate
             - RecordDate
-          default: SettleDate
       description: Various filter options for settlement transaction queries
     SettlementSummaryRequest:
       required:
@@ -4241,12 +4241,12 @@ components:
           type: string
           description: Search/Analysis date type. default value is retrieval date
           example: RetrievalDate
+          default: RetrievalDate
           enum:
             - AuthDate
             - StatusDate
             - DueDate
             - RetrievalDate
-          default: RetrievalDate
         siteIDs:
           type: array
           description: Retrievals associated with one of the Site IDs specified
@@ -5268,7 +5268,7 @@ components:
         bin:
           type: string
           description: Unique Bin
-          example: '582023'
+          example: '41516200'
       description: Various filter options for bin queries
     BinsSearchRequest:
       required:
@@ -11612,6 +11612,7 @@ components:
           type: string
           description: Search/Analysis date type. default value is chargeback date
           example: ChargebackDate
+          default: ChargebackDate
           enum:
             - AuthDate
             - ChargebackDate
@@ -11619,7 +11620,6 @@ components:
             - AdjustmentDate
             - DueDate
             - RecordDate
-          default: ChargebackDate
         siteIDs:
           type: array
           description: Chargebacks associated with one of the Site IDs specified
