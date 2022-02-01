@@ -6,7 +6,6 @@ const SwaggerParser = require('@apidevtools/swagger-parser');
 
 const args = process.argv.slice(2);
 const folder = '../' + (args?.[0] || 'references/1.0.0');
-console.log(folder);
 
 const failValidation = (message) => {
   console.log('------------------------- VALIDATOR FAILED --------------------------')
