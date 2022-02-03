@@ -834,7 +834,7 @@ paths:
                 value:
                   limit: 5
                   filters:
-                    binID: '582023'
+                    bin: '41516200'
         required: true
       responses:
         '200':
@@ -5265,10 +5265,10 @@ components:
     BinFilters:
       type: object
       properties:
-        binID:
+        bin:
           type: string
-          description: Unique Bin ID
-          example: '582023'
+          description: Unique Bin
+          example: '41516200'
       description: Various filter options for bin queries
     BinsSearchRequest:
       required:
@@ -9219,6 +9219,33 @@ components:
             - GOOGSupportDebitAcctVerify
             - NWTicketRtrRequestDiscDMS
             - VIACQB2BVIRTUALSVCFEEINTL
+            - MCEUAcquirerAuth
+            - MCEUAcquirerAuthMax
+            - VisaUSAPFCredit
+            - VisaUSAPFDebit
+            - MCGlobalFreightUS
+            - MCGlobalFreightCN
+            - MCGlobalFreightEU
+            - McAcqConnectivityFee
+            - McAcqLicenseFee
+            - VisaAssessmentFeeHST
+            - AuthSetUpFee
+            - AuthSvcFeeApproved
+            - AuthSvcFeeDeclined
+            - AuthSvcFeeDscApproved
+            - AuthSvcFeeDscDeclined
+            - McGlblTravelFeeEU
+            - PFVisaIasfSingle
+            - PFVisaIasfMulti
+            - VatCommission
+            - OpenFxMC
+            - OpenFxVI
+            - MCForeign
+            - VIForeign
+            - OpenFxAmex
+            - CupAsses
+            - CupLicense
+            - CupAcquirer
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -16394,13 +16421,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
