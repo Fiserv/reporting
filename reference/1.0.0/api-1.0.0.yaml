@@ -18,6 +18,8 @@ tags:
     description: Disbursements details and summaries
   - name: Prepaid
     description: Prepaid Transaction & Account details and summaries.
+  - name: CommerceHub
+    description: CommerceHub search and summary details
   - name: Reference
     description: Reference Information & details
   - name: User Management
@@ -1448,6 +1450,167 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
       x-group-name: Disbursements
+  /v1/chub/summary:
+    post:
+      tags:
+        - CommerceHub
+      summary: Summary
+      description: Returns an aggregated view of authorization transactions (pre-settle) utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
+      operationId: getSummary
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommerceHubSummaryRequest'
+            examples:
+              CommerceHub summary by Transaction Month:
+                description: CommerceHub summary by Transaction Month
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  summaryBy: TxnMonth
+                  filters:
+                    currency:
+                      - USD
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthorizationSummaryResponse'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Summary
+      x-group-name: CommerceHub
+  /v1/chub/search:
+    post:
+      tags:
+        - CommerceHub
+      summary: Search
+      description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
+      operationId: search_4
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommerceHubSearchRequest'
+            examples:
+              CommerceHub Reporting Search:
+                description: CommerceHub Reporting Search
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  limit: 3
+                  fields:
+                    - ApprovalCode
+                    - AccountNumber
+                    - Amount
+                    - Currency
+                    - PaymentMethod
+                    - Network
+                  filters:
+                    approvalCodes:
+                      - Approved
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommerceHubReportingObj'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Search
+      x-group-name: CommerceHub
   /v1/chargeback/summary:
     post:
       tags:
@@ -1552,7 +1715,7 @@ paths:
         - Chargebacks
       summary: Search
       description: Provides a list of chargebacks and their attributes based on optional filter criteria.
-      operationId: search_4
+      operationId: search_5
       parameters:
         - name: apiKey
           in: header
@@ -1645,7 +1808,7 @@ paths:
         - Authorizations
       summary: Summary
       description: Returns an aggregated view of authorization transactions (pre-settle) utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
-      operationId: getSummary
+      operationId: getSummary_1
       parameters:
         - name: apiKey
           in: header
@@ -1742,7 +1905,7 @@ paths:
         - Authorizations
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_5
+      operationId: search_6
       parameters:
         - name: apiKey
           in: header
@@ -10282,6 +10445,1167 @@ components:
         filters:
           $ref: '#/components/schemas/DisbursementsFilters'
       description: Request object for Disbursement search
+    CommerceHubReportingFilters:
+      type: object
+      properties:
+        approvalCodes:
+          type: array
+          description: Any transactions matching with any one of the specified Approval Codes
+          example:
+            - Approved
+          items:
+            type: string
+            description: Any transactions matching with any one of the specified Approval Codes
+            example: '["Approved"]'
+            enum:
+              - Unknown
+              - Approved
+              - Declined
+        paymentMethods:
+          type: array
+          description: Any transactions matching with any one of the specified Payment Methods
+          example:
+            - EMV
+          items:
+            type: string
+            description: Any transactions matching with any one of the specified Payment Methods
+            example: '["EMV"]'
+            enum:
+              - Unknown
+              - Manual
+              - MagneticStripe
+              - OCR
+              - EMV
+              - ContactlessChip
+              - MobileECommerce
+              - Fallback
+              - BarCode
+              - NotSpecified
+              - CredentialOnFile
+              - ContactlessMagneticStripe
+        networks:
+          type: array
+          description: Any transactions matching with any one of the specified Networks
+          example:
+            - Master
+          items:
+            type: string
+            description: Any transactions matching with any one of the specified Networks
+            example: '["Master"]'
+            enum:
+              - Unknown
+              - Amex
+              - Visa
+              - Master
+              - Discover
+              - Pulse
+              - Accel
+              - Interlink
+              - Jeanie
+              - Maestro
+              - NYCE
+              - CU24
+              - Shazam
+              - EBT
+              - AFFN
+              - Telecheck
+              - Diners
+              - PayPal
+              - ValueLink
+              - Private
+              - Debit
+              - Voyager
+              - ATH
+              - JCB
+              - StarNE
+              - StarSE
+              - StarW
+              - StarAccess
+              - FleetCor
+              - SVS
+              - WEX
+              - Incomm
+              - Interac
+              - NA
+              - Moneris
+              - VaultedCard
+              - PAVD
+              - MCSend
+              - UnionPay
+              - FraudFlex
+              - Certegy
+              - MCI
+              - PaypalVenmo
+        types:
+          type: array
+          description: Any transactions matching with any one of the specified Transaction Types
+          example:
+            - Purchase
+          items:
+            type: string
+            description: Any transactions matching with any one of the specified Transaction Types
+            example: '["Purchase"]'
+            enum:
+              - Unknown
+              - Totals
+              - Purchase
+              - PreAuthRequest
+              - PreAuthComplete
+              - Reversal
+              - Return
+              - Cancellation
+              - MailAuth
+              - Activate
+              - Recharge
+              - Verification
+              - TeleCheck
+              - StartFueling
+              - DoNotUse
+              - Fee
+              - Withdrawal
+              - Deposit
+              - Transfer
+              - Balance
+              - FraudScore
+              - GenToken
+              - Adjustment
+              - ReportAsLost
+              - CloseAccount
+              - FreezeAccount
+              - UnfreezeAccount
+              - History
+              - TimeoutReversal
+              - SetupAutoReload
+              - ReturnReversal
+              - Cashback
+              - Forced
+        currency:
+          type: array
+          description: Transactions associated with a particular
+          example:
+            - USD
+          items:
+            type: string
+            description: Transactions associated with a particular
+            example: '["USD"]'
+            enum:
+              - Unknown
+              - USD
+              - AFN
+              - DZD
+              - ARS
+              - AMD
+              - AWG
+              - AUD
+              - AZN
+              - BSD
+              - BHD
+              - THB
+              - PAB
+              - BBD
+              - BYR
+              - BZD
+              - BMD
+              - VEF
+              - BOB
+              - BRL
+              - BND
+              - BGN
+              - BIF
+              - CAD
+              - CVE
+              - KYD
+              - XOF
+              - XAF
+              - XPF
+              - CLP
+              - COP
+              - KMF
+              - BAM
+              - NIO
+              - CRC
+              - HRK
+              - CUP
+              - CZK
+              - GMD
+              - DKK
+              - MKD
+              - DJF
+              - STD
+              - DOP
+              - VND
+              - XCD
+              - EGP
+              - SVC
+              - ETB
+              - EUR
+              - FKP
+              - FJD
+              - HUF
+              - CDF
+              - GHS
+              - GIP
+              - HTG
+              - PYG
+              - GNF
+              - GWP
+              - GYD
+              - HKD
+              - UAH
+              - ISK
+              - INR
+              - IRR
+              - IQD
+              - JMD
+              - JOD
+              - KES
+              - PGK
+              - LAK
+              - KWD
+              - MWK
+              - ZMK
+              - AOA
+              - MMK
+              - GEL
+              - LVL
+              - LBP
+              - ALL
+              - HNL
+              - SLL
+              - LRD
+              - LYD
+              - SZL
+              - LTL
+              - LSL
+              - MGA
+              - MYR
+              - MUR
+              - MZN
+              - MXN
+              - MXV
+              - MDL
+              - MAD
+              - BOV
+              - NGN
+              - ERN
+              - NAD
+              - NPR
+              - ANG
+              - ILS
+              - RON
+              - TWD
+              - TRY
+              - NZD
+              - BTN
+              - KPW
+              - NOK
+              - PEN
+              - MRO
+              - TOP
+              - PKR
+              - MOP
+              - UYU
+              - PHP
+              - GBP
+              - BWP
+              - QAR
+              - GTQ
+              - ZAR
+              - OMR
+              - KHR
+              - MVR
+              - IDR
+              - RUB
+              - RWF
+              - SHP
+              - SAR
+              - XDR
+              - RSD
+              - SCR
+              - SGD
+              - SBD
+              - KGS
+              - SOS
+              - TJS
+              - LKR
+              - SDG
+              - SRD
+              - SEK
+              - CHF
+              - SYP
+              - BDT
+              - WST
+              - TZS
+              - KZT
+              - TTD
+              - MNT
+              - TND
+              - AED
+              - UGX
+              - COU
+              - CLF
+              - UYI
+              - USN
+              - USS
+              - UZS
+              - VUV
+              - CHE
+              - CHW
+              - KRW
+              - YER
+              - JPY
+              - CNY
+              - PLN
+              - XBA
+              - XTS
+              - XBB
+              - XBD
+              - XBC
+              - XAU
+              - XPD
+              - XPT
+              - XAG
+              - XXX
+              - XFU
+              - TMT
+              - ZWL
+              - CUC
+              - SSP
+              - XUA
+              - XSU
+              - BYN
+              - VES
+              - ZMW
+        authCode:
+          type: string
+          description: Auth Code, Full match
+          example: I7B1Q1
+        first6:
+          maxLength: 6
+          minLength: 6
+          type: string
+          description: 'First 6 of the card #, Full match'
+          example: '528757'
+        last4:
+          maxLength: 4
+          minLength: 4
+          type: string
+          description: 'Last 4 of the card #, Full match'
+          example: '0000'
+      description: Various filter options for authorizations queries
+    CommerceHubSummaryRequest:
+      required:
+        - fromDate
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        summaryBy:
+          type: string
+          description: Summary grouped by this field
+          example: Network
+          enum:
+            - TxnDay
+            - TxnWeek
+            - TxnMonth
+            - TxnQuarter
+            - TxnYear
+            - Network
+            - TxnType
+            - PaymentMethod
+            - TxnState
+            - SourceType
+        filters:
+          $ref: '#/components/schemas/CommerceHubReportingFilters'
+      description: Request object for authorization summary report creation
+    AuthorizationSummaryResponse:
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency Information
+          example: USD
+        value:
+          type: string
+          description: The value of the summary by field
+          example: Visa
+        countTotal:
+          type: integer
+          description: The total count of all matching rows grouped by supplied options
+          format: int64
+          example: 757
+        amountTotal:
+          type: number
+          description: The total transaction currency amount of all matching rows grouped by supplied options
+          format: double
+          example: 11909212
+        approvedCount:
+          type: integer
+          description: The total approved count of all matching rows grouped by supplied options
+          format: int64
+          example: 721
+      description: Summary response object which maps the data points returned from the summary request
+    CommerceHubSearchRequest:
+      required:
+        - fromDate
+        - limit
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        limit:
+          maximum: 1000000
+          minimum: 1
+          type: integer
+          description: The maximum number of records that will be returned
+          format: int32
+          example: 3
+          default: 10
+        fields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - Network
+            - ApprovalCode
+            - Amount
+            - AuthCode
+            - OrdNo
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["Network","ApprovalCode","Amount","AuthCode","OrdNo"]'
+            enum:
+              - ECIndicator
+              - ECIndicatorKey
+              - AccountNumber
+              - Amount
+              - ApiTraceID
+              - ApprovalCode
+              - ApprovalCodeKey
+              - AuthCode
+              - AuthType
+              - AuthTypeKey
+              - BillingAddress
+              - BillingCity
+              - BillingCountry
+              - BillingHouse
+              - BillingStPrvnc
+              - BillingZip
+              - CardExpiryDate
+              - ClientRequestID
+              - Currency
+              - CurrencyKey
+              - CustomerName
+              - DirectedRoutingNetwork
+              - DirectedRoutingNetworkKey
+              - ErrorCode
+              - ErrorMessage
+              - InvoiceNumber
+              - MerchantID
+              - MobileInteraction
+              - MobileInteractionKey
+              - MrchInvcNum
+              - MrchOrdrID
+              - MrchTranID
+              - Network
+              - NetworkKey
+              - OrderID
+              - Origin
+              - OriginKey
+              - PaymentMethod
+              - PaymentMethodKey
+              - PosConditionCode
+              - PosConditionCodeKey
+              - PrimTranID
+              - RecurringTypeInd
+              - RecurringTypeIndKey
+              - RequestAmount
+              - Response
+              - SiteID
+              - SourceType
+              - SourceTypeKey
+              - StoreID
+              - TerminalID
+              - TransactionDate
+              - TransactionDateTime
+              - TransactionID
+              - TransactionTime
+              - TxnState
+              - TxnStateKey
+              - TxnType
+              - TxnTypeKey
+        filters:
+          $ref: '#/components/schemas/CommerceHubReportingFilters'
+      description: Request details for authorization search
+    CommerceHubReportingObj:
+      type: object
+      properties:
+        ECIndicator:
+          type: string
+          description: The Electronic Commerce Indicator used for the transaction.
+          example: Secure E-Comm
+          enum:
+            - Unknown
+            - SingleMail
+            - Recurring
+            - Installment
+            - SecureEComm
+            - NonAuthEComm
+            - EncryptedEComm
+            - NonSecureEComm
+            - DeferredTxn
+            - OptionalRegionalUse
+            - SingleMailRetail
+            - ReAuthTxn
+            - IVR
+        ECIndicatorKey:
+          type: string
+          description: The Electronic Commerce Indicator used for the transaction. (Code)
+          example: '4'
+        accountNumber:
+          type: string
+          description: Date of the authorization transaction.
+          example: 123456XXXXXXXX5555
+        amount:
+          type: number
+          description: The amount of the transaction.
+          format: double
+          example: 9.99
+        apiTraceID:
+          type: string
+          description: The trace id for the incoming API call to CommerceHub.
+          example: 5fcd13e2ec114c58b5216c542a4ce4d7
+        approvalCode:
+          type: string
+          description: Identifies if the authorization was approved or declined.
+          example: Approved
+          enum:
+            - Unknown
+            - Approved
+            - Declined
+        approvalCodeKey:
+          type: string
+          description: Identifies if the authorization was approved or declined. (Code)
+          example: '1'
+        authCode:
+          type: string
+          description: Authorization code from Association(s). Generally 6/7 alphanumeric code that gets printed on the receipt.
+          example: GD6HDE7
+        authType:
+          type: string
+          description: Identifies the type of the authorization.
+          example: Purchase
+          enum:
+            - Unknown
+            - Totals
+            - Purchase
+            - PreAuthRequest
+            - PreAuthComplete
+            - Reversal
+            - Return
+            - Cancellation
+            - MailAuth
+            - Activate
+            - Recharge
+            - Verification
+            - TeleCheck
+            - StartFueling
+            - DoNotUse
+            - Fee
+            - Withdrawal
+            - Deposit
+            - Transfer
+            - Balance
+            - FraudScore
+            - GenToken
+            - Adjustment
+            - ReportAsLost
+            - CloseAccount
+            - FreezeAccount
+            - UnfreezeAccount
+            - History
+            - TimeoutReversal
+            - SetupAutoReload
+            - ReturnReversal
+            - Cashback
+            - Forced
+        authTypeKey:
+          type: string
+          description: Identifies the type of the authorization. (Code)
+          example: '2'
+        billingAddress:
+          type: string
+          description: Street address.
+          example: 1 Sample Way
+        billingCity:
+          type: string
+          description: City or locality.
+          example: Anytown
+        billingCountry:
+          type: string
+          description: The country code.
+          example: USA
+        billingHouse:
+          type: string
+          description: Secondary address information e.g. house number or name.
+          example: ''
+        billingStPrvnc:
+          type: string
+          description: State or province name.
+          example: TX
+        billingZip:
+          type: string
+          description: The Zip/Postal code.
+          example: '00000'
+        cardExpiryDate:
+          type: string
+          description: Indicates expiration date on card.
+          example: 12/24
+        clientRequestID:
+          type: string
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control.
+          example: 5fcd13e2ec114c58b5216c542a4ce4d7
+        currency:
+          type: string
+          description: Currency code used for the transaction.
+          example: USD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+        currencyKey:
+          type: string
+          description: Currency code used for the transaction. (Code)
+          example: '1'
+        customerName:
+          type: string
+          description: Name on the Card.
+          example: JXXXXXXXE
+        directedRoutingNetwork:
+          type: string
+          description: Directed Routing Network.
+          example: Visa
+          enum:
+            - Unknown
+            - Amex
+            - Visa
+            - Master
+            - Discover
+            - Pulse
+            - Accel
+            - Interlink
+            - Jeanie
+            - Maestro
+            - NYCE
+            - CU24
+            - Shazam
+            - EBT
+            - AFFN
+            - Telecheck
+            - Diners
+            - PayPal
+            - ValueLink
+            - Private
+            - Debit
+            - Voyager
+            - ATH
+            - JCB
+            - StarNE
+            - StarSE
+            - StarW
+            - StarAccess
+            - FleetCor
+            - SVS
+            - WEX
+            - Incomm
+            - Interac
+            - NA
+            - Moneris
+            - VaultedCard
+            - PAVD
+            - MCSend
+            - UnionPay
+            - FraudFlex
+            - Certegy
+            - MCI
+            - PaypalVenmo
+        directedRoutingNetworkKey:
+          type: string
+          description: Directed Routing Network. (Code)
+          example: '2'
+        errorCode:
+          type: string
+          description: The code for the error.
+          example: '999'
+        errorMessage:
+          type: string
+          description: The description of the error.
+          example: ''
+        invoiceNumber:
+          type: string
+          description: The merchant provided invoice number.
+          example: '11111111'
+        merchantID:
+          type: string
+          description: A unique ID used to identify the Merchant. The merchant must use the value assigned by the acquirer or the gateway when submitting a transaction. Utilized for clients that support dynamic descriptor, or support multiple stores in the same app.
+          example: ''
+        mobileInteraction:
+          type: string
+          description: Mobile method of interaction.
+          example: Phone Number
+          enum:
+            - Unknown
+            - PHONE_NUMBER
+            - QR_CODE
+        mobileInteractionKey:
+          type: string
+          description: Mobile method of interaction. (Code)
+          example: '1'
+        mrchInvcNum:
+          type: string
+          description: The merchant provided invoice number.
+          example: '11111111'
+        mrchOrdrID:
+          type: string
+          description: The merchant provided order identifier.
+          example: '11111111'
+        mrchTranID:
+          type: string
+          description: The merchant provided transaction identifier.
+          example: ''
+        network:
+          type: string
+          description: Name of the authorizing network associated with the transaction.
+          example: Visa
+          enum:
+            - Unknown
+            - Amex
+            - Visa
+            - Master
+            - Discover
+            - Pulse
+            - Accel
+            - Interlink
+            - Jeanie
+            - Maestro
+            - NYCE
+            - CU24
+            - Shazam
+            - EBT
+            - AFFN
+            - Telecheck
+            - Diners
+            - PayPal
+            - ValueLink
+            - Private
+            - Debit
+            - Voyager
+            - ATH
+            - JCB
+            - StarNE
+            - StarSE
+            - StarW
+            - StarAccess
+            - FleetCor
+            - SVS
+            - WEX
+            - Incomm
+            - Interac
+            - NA
+            - Moneris
+            - VaultedCard
+            - PAVD
+            - MCSend
+            - UnionPay
+            - FraudFlex
+            - Certegy
+            - MCI
+            - PaypalVenmo
+        networkKey:
+          type: string
+          description: Name of the authorizing network associated with the transaction. (Code)
+          example: '2'
+        orderID:
+          type: string
+          description: The merchant provided order identifier.
+          example: '11111111'
+        origin:
+          type: string
+          description: The origin of the transaction.
+          example: E-Comm
+          enum:
+            - Unknown
+            - ECOM
+            - MOTO
+            - POS
+        originKey:
+          type: string
+          description: The origin of the transaction. (Code)
+          example: '1'
+        paymentMethod:
+          type: string
+          description: Identifies the method of payment used on the transaction.
+          example: Mobile & ECommerce
+          enum:
+            - Unknown
+            - Manual
+            - MagneticStripe
+            - OCR
+            - EMV
+            - ContactlessChip
+            - MobileECommerce
+            - Fallback
+            - BarCode
+            - NotSpecified
+            - CredentialOnFile
+            - ContactlessMagneticStripe
+        paymentMethodKey:
+          type: string
+          description: Identifies the method of payment used on the transaction. (Code)
+          example: '6'
+        posConditionCode:
+          type: string
+          description: An identifier used to indicate the transaction condition at the Point-of-Sale (POS).
+          example: Cardholder Not Present - E-commerce
+          enum:
+            - Unknown
+            - CARD_PRESENT
+            - CARD_PRESENT_UNSPECIFIED
+            - CARD_PRESENT_UNATTENDED
+            - CARD_PRESENT_FRAUD
+            - CARD_PRESENT_MAG_NOT_READ
+            - CARD_PRESENT_IDENTIFIED
+            - CARD_NOT_PRESENT_RECURRING
+            - CARD_NOT_PRESENT_INSTALLMENT
+            - CARD_NOT_PRESENT_DEFERRED
+            - CARD_NOT_PRESENT_F2F
+            - CARD_NOT_PRESENT_MOTO
+            - CARD_NOT_PRESENT_ECOM
+        posConditionCodeKey:
+          type: string
+          description: An identifier used to indicate the transaction condition at the Point-of-Sale (POS). (Code)
+          example: '12'
+        primTranID:
+          type: string
+          description: The primary identifier of the transaction.
+          example: '634677466478466474'
+        recurringTypeInd:
+          type: string
+          description: Describes the recurrence type for the transaction.
+          example: One Time
+          enum:
+            - OneTime
+            - Recurring
+            - Installment
+            - CardOnFile
+            - Deferred
+        recurringTypeIndKey:
+          type: string
+          description: Describes the recurrence type for the transaction. (Code)
+          example: '0'
+        requestAmount:
+          type: number
+          description: The amount of the transaction.
+          format: double
+          example: 9.99
+        siteID:
+          type: string
+          description: The location ID or number used to identify the unique site and merchant.
+          example: ''
+        sourceType:
+          type: string
+          description: The Source of the transaction.
+          example: Apple Pay
+          enum:
+            - Unknown
+            - PaymentCard
+            - ApplePay
+            - GooglePay
+            - DecryptedWallet
+            - PaymentToken
+            - Payment3DS
+        sourceTypeKey:
+          type: string
+          description: The Source of the transaction. (Code)
+          example: '2'
+        storeID:
+          type: string
+          description: An optional outlet ID for clients that support multiple stores in the same app.
+          example: ''
+        terminalID:
+          type: string
+          description: Identifies the specific device or point of entry where the transaction originated. For example, pump number, lane number, terminal number, etc.
+          example: ''
+        transactionDate:
+          type: string
+          description: Date of the transaction.
+          example: '20201224'
+        transactionID:
+          type: string
+          description: The merchant provided transaction identifier.
+          example: ''
+        transactionTime:
+          type: integer
+          description: Time (EPOCH) of the transaction.
+          format: int64
+          example: 78747874878748
+        txnState:
+          type: string
+          description: Current state of the transaction.
+          example: Authorized
+          enum:
+            - Unknown
+            - AUTHORIZED
+            - CAPTURED
+            - CHECKED
+            - DECLINED
+            - VOIDED
+            - GATEWAY_ERROR
+            - VERIFIED
+        txnStateKey:
+          type: string
+          description: Current state of the transaction. (Code)
+          example: '1'
+        txnType:
+          type: string
+          description: Identifies the type of the authorization.
+          example: Purchase
+          enum:
+            - Unknown
+            - Totals
+            - Purchase
+            - PreAuthRequest
+            - PreAuthComplete
+            - Reversal
+            - Return
+            - Cancellation
+            - MailAuth
+            - Activate
+            - Recharge
+            - Verification
+            - TeleCheck
+            - StartFueling
+            - DoNotUse
+            - Fee
+            - Withdrawal
+            - Deposit
+            - Transfer
+            - Balance
+            - FraudScore
+            - GenToken
+            - Adjustment
+            - ReportAsLost
+            - CloseAccount
+            - FreezeAccount
+            - UnfreezeAccount
+            - History
+            - TimeoutReversal
+            - SetupAutoReload
+            - ReturnReversal
+            - Cashback
+            - Forced
+        txnTypeKey:
+          type: string
+          description: Identifies the type of the authorization. (Code)
+          example: '2'
     ChargebackFilters:
       type: object
       properties:
@@ -12568,33 +13892,6 @@ components:
         filters:
           $ref: '#/components/schemas/AuthorizationFilters'
       description: Request object for authorization summary report creation
-    AuthorizationSummaryResponse:
-      type: object
-      properties:
-        currency:
-          type: string
-          description: Currency Information
-          example: USD
-        value:
-          type: string
-          description: The value of the summary by field
-          example: Visa
-        countTotal:
-          type: integer
-          description: The total count of all matching rows grouped by supplied options
-          format: int64
-          example: 757
-        amountTotal:
-          type: number
-          description: The total transaction currency amount of all matching rows grouped by supplied options
-          format: double
-          example: 11909212
-        approvedCount:
-          type: integer
-          description: The total approved count of all matching rows grouped by supplied options
-          format: int64
-          example: 721
-      description: Summary response object which maps the data points returned from the summary request
     AuthorizationSearchRequest:
       required:
         - fromDate
