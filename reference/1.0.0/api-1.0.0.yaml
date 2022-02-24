@@ -2161,6 +2161,9 @@ components:
           example: DM_Entitlements_DisputeManagerAccess
         attributeValues:
           type: array
+          description: Determines the user attribute value for respective application
+          example:
+            - '4'
           items:
             type: string
             description: Determines the user attribute value for respective application
@@ -2221,6 +2224,10 @@ components:
           $ref: '#/components/schemas/NamedReferenceDto'
         clientAccess:
           type: array
+          description: Client ID's(Every merchant is associated with unique client id)
+          example:
+            - fiserv
+            - firstdata
           items:
             type: string
             description: Client ID's(Every merchant is associated with unique client id)
