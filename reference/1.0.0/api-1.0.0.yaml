@@ -2572,6 +2572,7 @@ components:
               - ReturnReversal
               - Cashback
               - Forced
+              - PaymentInitialization
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -4208,6 +4209,7 @@ components:
             - ReturnReversal
             - Cashback
             - Forced
+            - PaymentInitialization
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
@@ -10752,6 +10754,7 @@ components:
               - ReturnReversal
               - Cashback
               - Forced
+              - PaymentInitialization
         currency:
           type: array
           description: Transactions associated with a particular
@@ -11215,6 +11218,7 @@ components:
             - ReturnReversal
             - Cashback
             - Forced
+            - PaymentInitialization
         authTypeKey:
           type: string
           description: Identifies the type of the authorization. (Code)
@@ -11774,6 +11778,7 @@ components:
             - ReturnReversal
             - Cashback
             - Forced
+            - PaymentInitialization
         txnTypeKey:
           type: string
           description: Identifies the type of the authorization. (Code)
@@ -14011,6 +14016,7 @@ components:
               - ReturnReversal
               - Cashback
               - Forced
+              - PaymentInitialization
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -14908,6 +14914,7 @@ components:
             - IncompleteTotals
             - InvalidServiceType
             - InvalidPassword
+            - ReversalAccepted
         assocRespCodeKey:
           type: string
           description: Identifies the initial association response code for the transaction. (Code)
@@ -15404,6 +15411,7 @@ components:
             - IncompleteTotals
             - InvalidServiceType
             - InvalidPassword
+            - ReversalAccepted
         declineReasonKey:
           type: string
           description: Identifies the decline reason for the transaction. (Code)
@@ -16512,6 +16520,7 @@ components:
             - ReturnReversal
             - Cashback
             - Forced
+            - PaymentInitialization
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
@@ -16605,13 +16614,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
