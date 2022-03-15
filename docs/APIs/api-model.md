@@ -22,7 +22,7 @@ type: tab
 title: Request
 -->
 
-```json
+```
 curl -X 'POST' \
   'http://localhost:5005/v1/funding/summary' \
   -H 'accept: application/json' \
