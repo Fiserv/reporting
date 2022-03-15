@@ -42,7 +42,6 @@ title: Response
 ##### Successful response (200)
 
 ```json
-[
   {
     "currency": "USD",
     "processedNetSales": 3101.22,
@@ -55,8 +54,6 @@ title: Response
     "processedDeposit": 2979.581,
     "processedAmountPaid": 2979.581
   }
-]
-
 ```
 
 #### ![twoicon](../../assets/images/twoicon(2).jpg) Sales Trend
