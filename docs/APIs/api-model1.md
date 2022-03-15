@@ -22,7 +22,7 @@ type: tab
 titles: Request, Response
 -->
 
-```json
+```
 curl -X 'POST' \
   'http://localhost:5005/v1/funding/summary' \
   -H 'accept: application/json' \
@@ -41,7 +41,6 @@ type: tab
 ##### Successful response (200)
 
 ```json
-[
   {
     "currency": "USD",
     "processedNetSales": 3101.22,
@@ -54,7 +53,6 @@ type: tab
     "processedDeposit": 2979.581,
     "processedAmountPaid": 2979.581
   }
-]
 
 ```
 
