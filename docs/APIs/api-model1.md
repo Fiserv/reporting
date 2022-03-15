@@ -22,16 +22,12 @@ type: tab
 title: Request
 -->
 
-```
-curl -X 'POST' \
-  'http://localhost:5005/v1/funding/summary' \
-  -H 'accept: application/json' \
-  -H 'apiKey: YOUR KEY' \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "fromDate": "20210801",
-        "toDate": "20210807"
-      }'
+```json
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "age": 25
+}
 ```
 
 <!--
