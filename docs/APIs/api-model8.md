@@ -57,6 +57,7 @@ type: tab
 ]
 
 ```
+<!-- type: tab-end -->
 
 #### ![twoicon](../../assets/images/twoicon(2).jpg) Sales Trend
 
@@ -194,6 +195,7 @@ type: tab
   }
 ]
 ```
+<!-- type: tab-end -->
 
 #### ![threeicon](../../assets/images/threeicon(3).jpg) Associations
 
@@ -270,6 +272,7 @@ type: tab
   }
 ]
 ```
+<!-- type: tab-end -->
 
 #### ![fouricon](../../assets/images/fouricon(4).jpg) Chargebacks
 
@@ -336,6 +339,7 @@ type: tab
   }
 ]
 ```
+<!-- type: tab-end -->
 
 #### ![fiveicon](../../assets/images/fiveicon(5).jpg) Sales Details
 
@@ -444,3 +448,4 @@ type: tab
 ]
 
 ```
+<!-- type: tab-end -->
