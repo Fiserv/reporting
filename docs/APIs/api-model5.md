@@ -19,7 +19,7 @@ Funding summary pulled for the dates specified for the 2 stores. There are many 
 
 <!--
 type: tab
-titles: Request, Response
+titles: Request
 -->
 
 ```
@@ -36,6 +36,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
+titles: Response
 -->
 
 ##### Successful response (200)
@@ -68,7 +69,7 @@ Sales (via Authorizations) trend pulled for the specified dates for the 2 stores
 
 <!--
 type: tab
-title: Request, Response
+titles: Request
 -->
 
 ```
@@ -87,6 +88,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
+titles: Response
 -->
 
 ##### Successful response (200)
