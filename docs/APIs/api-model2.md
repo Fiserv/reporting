@@ -4,8 +4,6 @@ You can build your own integrated merchant portal experience utilizing the APIs 
  
 Here is a sample Merchant Dashboard we created to show case the APIs. Click here (coming soon) on your favorite browser to see the dashboard live in-action and trace the exact API calls invoked. 
 
-![merchantportal](../../assets/images/merchantportal.png)
-
 
 #### ![oneicon](../../assets/images/oneicon(1).png)  Funding Summary
 
