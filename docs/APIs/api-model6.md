@@ -207,7 +207,7 @@ Authorization summary pulled for the dates specified for the 2 stores by the Cre
 
 <!--
 type: tab
-title: Request
+titles: Request
 -->
 
 ```
@@ -235,7 +235,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
-title: Response
+titles: Response
 -->
 
 ##### Successful response (200)
@@ -282,7 +282,7 @@ Chargeback summary pulled for the specified dates for the 2 stores based on the 
 
 <!--
 type: tab
-title: Request
+titles: Request
 -->
 
 ```json
@@ -300,7 +300,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
-title: Response
+titles: Response
 -->
 
 ##### Successful response (200)
@@ -347,7 +347,7 @@ title: Response
 
 <!--
 type: tab
-title: Request
+titles: Request
 -->
 
 ```json
@@ -390,7 +390,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
-title: Response
+titles: Response
 -->
 
 ##### Successful response (200)
