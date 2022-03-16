@@ -55,6 +55,8 @@ type: tab
   }
 
 ```
+
+
 #### ![twoicon](../../assets/images/twoicon(2).jpg) Sales Trend
 
 Sales (via Authorizations) trend pulled for the specified dates for the 2 stores
@@ -66,7 +68,7 @@ Sales (via Authorizations) trend pulled for the specified dates for the 2 stores
 
 <!--
 type: tab
-title: Request
+title: Request, Response
 -->
 
 ```
@@ -85,12 +87,12 @@ curl -X 'POST' \
 
 <!--
 type: tab
-title: Response
 -->
 
 ##### Successful response (200)
 
 ```json
+{
   {
     "currency": "USD",
     "value": "20210802",
@@ -189,6 +191,7 @@ title: Response
     "amountTotal": 496.61,
     "approvedCount": 98
   }
+ }
 ```
 
 #### ![threeicon](../../assets/images/threeicon(3).jpg) Associations
