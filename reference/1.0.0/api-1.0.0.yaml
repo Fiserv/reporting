@@ -6471,8 +6471,13 @@ components:
     PrepaidAccountFilters:
       type: object
       description: Various filter options for prepaid account queries
+      example:
+        closedLoopSearchType:
+          - '0'
     PrepaidAccountSearchRequest:
       required:
+        - activationFromDate
+        - activationToDate
         - asOfDate
         - limit
       type: object
@@ -6488,16 +6493,24 @@ components:
           description: The maximum number of records that will be returned
           format: int32
           default: 10
-        activationMinDate:
+        activationFromDate:
           type: string
-        activationMaxDate:
+          description: yyyymmdd string denoting the min date for the query
+          example: '20210801'
+        activationToDate:
           type: string
+          description: yyyymmdd string denoting the max date for the query
+          example: '20210807'
         fields:
           type: array
           description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - Consortium
+            - Promotion
           items:
             type: string
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["Consortium","Promotion"]'
             enum:
               - AccountNo
               - ActivationBaseAmount
@@ -16644,13 +16657,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
