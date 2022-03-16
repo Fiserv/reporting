@@ -2573,6 +2573,8 @@ components:
               - Cashback
               - Forced
               - PaymentInitialization
+              - Check
+              - DirectDebitMandate
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -4210,6 +4212,8 @@ components:
             - Cashback
             - Forced
             - PaymentInitialization
+            - Check
+            - DirectDebitMandate
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
@@ -6282,15 +6286,27 @@ components:
         activationLocation:
           type: string
           description: Alternate Merchant Number associated with the transaction.
-          example: '974767'
+          example: ''
         activationLocationDescription:
           type: string
           description: Name of Location in which card was activated.
           example: ACTIVATION LOCATION NAME
+        activationLocationKey:
+          type: string
+          description: Alternate Merchant Number associated with the transaction. (Code)
+          example: ''
         activationMerchantDescription:
           type: string
           description: Activation Merchant Name associated with the transaction.
           example: ACTIVATION MERCHANT NAME
+        activationMerchantNo:
+          type: string
+          description: '11 digit Merchant ID # where the GC was activated. Designates a group of locations and exists as a higher level to location'
+          example: ''
+        activationMerchantNoKey:
+          type: string
+          description: '11 digit Merchant ID # where the GC was activated. Designates a group of locations and exists as a higher level to location (Code)'
+          example: ''
         adjustmentBaseAmount:
           type: number
           description: Adjustment Base Amount associated with the transaction.
@@ -6355,47 +6371,47 @@ components:
         firstRedemptionDate:
           type: string
           description: First Redemption Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         firstReloadDate:
           type: string
           description: First Reload Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastAdjustmentDate:
           type: string
           description: Last Adjustment Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastCardActivityDate:
           type: string
           description: Last Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastFinancialTxnDate:
           type: string
           description: Last Financial activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastNegativeTxnDate:
           type: string
           description: Last Negative Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastNonFinancialTxnDate:
           type: string
           description: Last Non-Financial activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastPositiveTxnDate:
           type: string
           description: Last Positive Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastRedemptionDate:
           type: string
           description: Last Redemption Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastReloadDate:
           type: string
           description: Last Reload Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         lastServiceFeeDate:
           type: string
           description: Last Service Fee Activity associated with the card.
-          example: 01/31/2020
+          example: 01/31/2020 12:00:00
         merchantFundedBaseAmount:
           type: number
           description: Merchant Funded Base Amount associated with the transaction
@@ -6433,10 +6449,6 @@ components:
           description: Redemption Base Amount associated with the transaction.
           format: double
           example: 999.99
-        redemptionElapsedDays:
-          type: string
-          description: Number of days between activation and last financial activity with the card.
-          example: '12'
         reloadBaseAmount:
           type: number
           description: Reload Base Amount associated with the transaction.
@@ -6468,7 +6480,7 @@ components:
         asOfDate:
           type: string
           description: yyyymmdd string denoting the as-of date for the query
-          example: '20210217'
+          example: '20220310'
         limit:
           maximum: 1000000
           minimum: 1
@@ -6476,6 +6488,10 @@ components:
           description: The maximum number of records that will be returned
           format: int32
           default: 10
+        activationMinDate:
+          type: string
+        activationMaxDate:
+          type: string
         fields:
           type: array
           description: Specify specific fields to be pulled back instead of the entire set (default behavior)
@@ -6489,7 +6505,10 @@ components:
               - ActivationDate2
               - ActivationLocation
               - ActivationLocationDescription
+              - ActivationLocationKey
               - ActivationMerchantDescription
+              - ActivationMerchantNo
+              - ActivationMerchantNoKey
               - AdjustmentBaseAmount
               - AlternateCardNo
               - BalanceMax
@@ -6523,7 +6542,6 @@ components:
               - PromotionIDKey
               - PromotionName
               - RedemptionBaseAmount
-              - RedemptionElapsedDays
               - ReloadBaseAmount
               - ReversalBaseAmount
               - ServiceFeeBaseAmount
@@ -10755,6 +10773,8 @@ components:
               - Cashback
               - Forced
               - PaymentInitialization
+              - Check
+              - DirectDebitMandate
         currency:
           type: array
           description: Transactions associated with a particular
@@ -11219,6 +11239,8 @@ components:
             - Cashback
             - Forced
             - PaymentInitialization
+            - Check
+            - DirectDebitMandate
         authTypeKey:
           type: string
           description: Identifies the type of the authorization. (Code)
@@ -11779,6 +11801,8 @@ components:
             - Cashback
             - Forced
             - PaymentInitialization
+            - Check
+            - DirectDebitMandate
         txnTypeKey:
           type: string
           description: Identifies the type of the authorization. (Code)
@@ -14017,6 +14041,8 @@ components:
               - Cashback
               - Forced
               - PaymentInitialization
+              - Check
+              - DirectDebitMandate
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -14356,6 +14382,7 @@ components:
             - NoZip
             - NoAddressZipUK
             - AddressZipDiscAddress
+            - ErrorResponseMrchCat
         AVSResponseKey:
           type: string
           description: Identifies the result, obtained from the cardholder name, during address verification. (Code)
@@ -14394,6 +14421,7 @@ components:
             - IssuerNonParticipation
             - Invalid
             - NoResponse
+            - MagneticStripeError
         CVVResultKey:
           type: string
           description: Identifies the card verification value (CVV2) response from the authorizer. (Code)
@@ -16521,6 +16549,8 @@ components:
             - Cashback
             - Forced
             - PaymentInitialization
+            - Check
+            - DirectDebitMandate
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
