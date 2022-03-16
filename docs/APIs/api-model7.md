@@ -19,10 +19,10 @@ Funding summary pulled for the dates specified for the 2 stores. There are many 
 
 <!--
 type: tab
-titles: Request
+titles: Request, Response
 -->
 
-```
+```json
 curl -X 'POST' \
   'http://localhost:5005/v1/funding/summary' \
   -H 'accept: application/json' \
@@ -36,12 +36,12 @@ curl -X 'POST' \
 
 <!--
 type: tab
-titles: Response
 -->
 
 ##### Successful response (200)
 
 ```json
+[
   {
     "currency": "USD",
     "processedNetSales": 3101.22,
@@ -54,9 +54,9 @@ titles: Response
     "processedDeposit": 2979.581,
     "processedAmountPaid": 2979.581
   }
+]
 
 ```
-
 
 #### ![twoicon](../../assets/images/twoicon(2).jpg) Sales Trend
 
@@ -69,10 +69,10 @@ Sales (via Authorizations) trend pulled for the specified dates for the 2 stores
 
 <!--
 type: tab
-titles: Request
+titles: Request, Response
 -->
 
-```
+```json
 curl -X 'POST' \
   'http://localhost:5005/v1/authorization/summary' \
   -H 'accept: application/json' \
@@ -88,13 +88,12 @@ curl -X 'POST' \
 
 <!--
 type: tab
-titles: Response
 -->
 
 ##### Successful response (200)
 
 ```json
-{
+[
   {
     "currency": "USD",
     "value": "20210802",
@@ -193,7 +192,7 @@ titles: Response
     "amountTotal": 496.61,
     "approvedCount": 98
   }
- }
+]
 ```
 
 #### ![threeicon](../../assets/images/threeicon(3).jpg) Associations
@@ -207,10 +206,10 @@ Authorization summary pulled for the dates specified for the 2 stores by the Cre
 
 <!--
 type: tab
-titles: Request
+titles: Request, Response
 -->
 
-```
+```json
 curl -X 'POST' \
   'http://localhost:5005/v1/authorization/summary' \
   -H 'accept: application/json' \
@@ -235,12 +234,12 @@ curl -X 'POST' \
 
 <!--
 type: tab
-titles: Response
 -->
 
 ##### Successful response (200)
 
 ```json
+[
   {
     "currency": "USD",
     "value": "American Express",
@@ -269,6 +268,7 @@ titles: Response
     "amountTotal": 83.06,
     "approvedCount": 11
   }
+]
 ```
 
 #### ![fouricon](../../assets/images/fouricon(4).jpg) Chargebacks
@@ -282,7 +282,7 @@ Chargeback summary pulled for the specified dates for the 2 stores based on the 
 
 <!--
 type: tab
-titles: Request
+titles: Request, Response
 -->
 
 ```json
@@ -300,7 +300,6 @@ curl -X 'POST' \
 
 <!--
 type: tab
-titles: Response
 -->
 
 ##### Successful response (200)
@@ -347,7 +346,7 @@ titles: Response
 
 <!--
 type: tab
-titles: Request
+titles: Request, Response
 -->
 
 ```json
@@ -390,7 +389,6 @@ curl -X 'POST' \
 
 <!--
 type: tab
-titles: Response
 -->
 
 ##### Successful response (200)
