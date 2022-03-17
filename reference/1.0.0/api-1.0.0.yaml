@@ -6505,12 +6505,12 @@ components:
           type: array
           description: Specify specific fields to be pulled back instead of the entire set (default behavior)
           example:
-            - Consortium
-            - Promotion
+            - CashbackBaseAmount
+            - BalanceMin
           items:
             type: string
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            example: '["Consortium","Promotion"]'
+            example: '["CashbackBaseAmount","BalanceMin"]'
             enum:
               - AccountNo
               - ActivationBaseAmount
