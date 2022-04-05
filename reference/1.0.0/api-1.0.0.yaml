@@ -18,6 +18,8 @@ tags:
     description: Disbursements details and summaries
   - name: Prepaid
     description: Prepaid Transaction & Account details and summaries.
+  - name: StatementRetrieval
+    description: User StatementSummary and Documents
   - name: CommerceHub
     description: CommerceHub search and summary details
   - name: Reference
@@ -379,6 +381,155 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Save User
       x-group-name: User Management
+  /v1/statement/pdf:
+    post:
+      tags:
+        - StatementRetrieval
+      summary: Statement PDF
+      description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
+      operationId: contentSearch
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatementPDFAPIrequest'
+            examples:
+              Corporate Level statements:
+                description: Corporate Level statements
+                value:
+                  midLevel: Corporate
+                  mid: '372395416889'
+                  stmtKey: '143060791315615245651774149103'
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Statement PDF
+      x-group-name: StatementRetrieval
+  /v1/statement/keys:
+    post:
+      tags:
+        - StatementRetrieval
+      summary: Statement Keys
+      description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
+      operationId: keysSearch
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatementKeyAPIrequest'
+            examples:
+              Corporate Level statements:
+                description: Corporate Level statements
+                value:
+                  midLevel: Corporate
+                  mid: '372395416889'
+                  fromDate: '20140101'
+                  toDate: '20220201'
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatementData'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Statement Keys
+      x-group-name: StatementRetrieval
   /v1/settlement/summary:
     post:
       tags:
@@ -2451,6 +2602,113 @@ components:
             - nl_NL
             - pt_BR
       description: User preferences (locale, language, amount format, date format and time zone) details
+    StatementPDFAPIrequest:
+      required:
+        - fromDate
+        - mid
+        - midLevel
+        - stmtKey
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        midLevel:
+          type: string
+          description: The statements requested for are Location level (Store level) or Corporate level. Those 2 being the only valid values in this field.
+          example: Location
+          enum:
+            - Unknown
+            - SuperUser
+            - RelationshipManager
+            - Marker
+            - SubMarker
+            - Business
+            - Bank
+            - CustomBank
+            - Agent
+            - CustomAgent
+            - AssociationGroup
+            - Association
+            - CustomCorporate
+            - Lead
+            - CustomChain
+            - CustomDestination
+            - Corporate
+            - Merchant
+            - Location
+            - Group
+        mid:
+          type: string
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
+          example: '111111111111'
+        stmtKey:
+          type: string
+          description: Key that is used to generate PDF
+          example: '15069605333841524101755130338398'
+    StatementKeyAPIrequest:
+      required:
+        - fromDate
+        - mid
+        - midLevel
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        midLevel:
+          type: string
+          description: The statements requested for are Location level (Store level) or Corporate level. Those 2 being the only valid values in this field.
+          example: Location
+          enum:
+            - Unknown
+            - SuperUser
+            - RelationshipManager
+            - Marker
+            - SubMarker
+            - Business
+            - Bank
+            - CustomBank
+            - Agent
+            - CustomAgent
+            - AssociationGroup
+            - Association
+            - CustomCorporate
+            - Lead
+            - CustomChain
+            - CustomDestination
+            - Corporate
+            - Merchant
+            - Location
+            - Group
+        mid:
+          type: string
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
+          example: '111111111111'
+    StatementData:
+      type: object
+      properties:
+        statementDate:
+          type: string
+        statementKey:
+          type: string
+        statementLength:
+          type: integer
+          format: int32
+        statementType:
+          type: string
     SettlementFilters:
       type: object
       properties:
@@ -2575,6 +2833,7 @@ components:
               - PaymentInitialization
               - Check
               - DirectDebitMandate
+              - TerminalRegistration
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -2946,6 +3205,7 @@ components:
             - SingleMailRetail
             - ReAuthTxn
             - IVR
+            - NotEComm
         ECIIndicatorKey:
           type: string
           description: Indicates the Electronic Commerce Indicator used for the transaction. (Code)
@@ -4214,6 +4474,7 @@ components:
             - PaymentInitialization
             - Check
             - DirectDebitMandate
+            - TerminalRegistration
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
@@ -4819,6 +5080,7 @@ components:
             - SingleMailRetail
             - ReAuthTxn
             - IVR
+            - NotEComm
         ecIndicatorKey:
           type: string
           description: Electronic Commerce Indicator (ECI) is a value returned by Visa, MasterCard, JCB, and American Express etc. indicating the outcome of authentication attempted on transactions. (Code)
@@ -10202,6 +10464,7 @@ components:
             - Prepaid
             - Debit
             - VENMO
+            - ECHECK
         paymentChannelKey:
           type: string
           description: Funding source type. (Code)
@@ -10788,6 +11051,7 @@ components:
               - PaymentInitialization
               - Check
               - DirectDebitMandate
+              - TerminalRegistration
         currency:
           type: array
           description: Transactions associated with a particular
@@ -11180,6 +11444,7 @@ components:
             - SingleMailRetail
             - ReAuthTxn
             - IVR
+            - NotEComm
         ECIndicatorKey:
           type: string
           description: The Electronic Commerce Indicator used for the transaction. (Code)
@@ -11254,6 +11519,7 @@ components:
             - PaymentInitialization
             - Check
             - DirectDebitMandate
+            - TerminalRegistration
         authTypeKey:
           type: string
           description: Identifies the type of the authorization. (Code)
@@ -11816,6 +12082,7 @@ components:
             - PaymentInitialization
             - Check
             - DirectDebitMandate
+            - TerminalRegistration
         txnTypeKey:
           type: string
           description: Identifies the type of the authorization. (Code)
@@ -12161,6 +12428,7 @@ components:
             - SingleMailRetail
             - ReAuthTxn
             - IVR
+            - NotEComm
         ECIndicatorKey:
           type: string
           description: Electronic Commerce Indicator (ECI) is a value returned by Visa, MasterCard, JCB, and American Express etc. indicating the outcome of authentication attempted on transactions. (Code)
@@ -14056,6 +14324,7 @@ components:
               - PaymentInitialization
               - Check
               - DirectDebitMandate
+              - TerminalRegistration
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -14666,6 +14935,7 @@ components:
             - SingleMailRetail
             - ReAuthTxn
             - IVR
+            - NotEComm
         ECIIndicatorKey:
           type: string
           description: Indicates the Electronic Commerce Indicator used for the transaction. (Code)
@@ -14956,6 +15226,7 @@ components:
             - InvalidServiceType
             - InvalidPassword
             - ReversalAccepted
+            - ReversalNotAccepted
         assocRespCodeKey:
           type: string
           description: Identifies the initial association response code for the transaction. (Code)
@@ -15453,6 +15724,7 @@ components:
             - InvalidServiceType
             - InvalidPassword
             - ReversalAccepted
+            - ReversalNotAccepted
         declineReasonKey:
           type: string
           description: Identifies the decline reason for the transaction. (Code)
@@ -16564,6 +16836,7 @@ components:
             - PaymentInitialization
             - Check
             - DirectDebitMandate
+            - TerminalRegistration
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
