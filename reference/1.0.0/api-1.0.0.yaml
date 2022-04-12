@@ -6591,6 +6591,7 @@ components:
           type: integer
           description: The maximum number of records that will be returned
           format: int32
+          example: 3
           default: 10
         activationFromDate:
           type: string
