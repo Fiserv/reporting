@@ -404,6 +404,7 @@ paths:
                 value:
                   midLevel: Corporate
                   mid: '372395416889'
+                  source: North
                   stmtKey: '143060791315615245651774149103'
         required: true
       responses:
@@ -478,6 +479,7 @@ paths:
                 value:
                   midLevel: Corporate
                   mid: '372395416889'
+                  source: North
                   fromDate: '20140101'
                   toDate: '20220201'
         required: true
@@ -2444,6 +2446,7 @@ components:
         - fromDate
         - mid
         - midLevel
+        - source
         - stmtKey
         - toDate
       type: object
@@ -2485,6 +2488,26 @@ components:
           type: string
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           example: '111111111111'
+        source:
+          type: string
+          description: Corresponding Platform
+          example: North
+          enum:
+            - Buypass
+            - North
+            - Compass
+            - Unknown
+            - Omaha
+            - South
+            - Memphis
+            - Bams
+            - TeleCheck
+            - ValueLink
+            - OmniPay
+            - UK
+            - Chase
+            - Salem
+            - Tampa
         stmtKey:
           type: string
           description: Key that is used to generate PDF
@@ -2494,6 +2517,7 @@ components:
         - fromDate
         - mid
         - midLevel
+        - source
         - toDate
       type: object
       properties:
@@ -2534,6 +2558,26 @@ components:
           type: string
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           example: '111111111111'
+        source:
+          type: string
+          description: Corresponding Platform
+          example: North
+          enum:
+            - Buypass
+            - North
+            - Compass
+            - Unknown
+            - Omaha
+            - South
+            - Memphis
+            - Bams
+            - TeleCheck
+            - ValueLink
+            - OmniPay
+            - UK
+            - Chase
+            - Salem
+            - Tampa
     StatementData:
       type: object
       properties:
