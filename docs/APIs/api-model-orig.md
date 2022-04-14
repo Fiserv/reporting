@@ -19,7 +19,7 @@ Funding summary pulled for the dates specified for the 2 stores. There are many 
 
 <!--
 type: tab
-titles: Request, Response
+title: Request
 -->
 
 ```json
@@ -36,6 +36,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
+title: Response
 -->
 
 ##### Successful response (200)
@@ -57,7 +58,6 @@ type: tab
 ]
 
 ```
-<!-- type: tab-end -->
 
 #### ![twoicon](../../assets/images/twoicon(2).jpg) Sales Trend
 
@@ -70,7 +70,7 @@ Sales (via Authorizations) trend pulled for the specified dates for the 2 stores
 
 <!--
 type: tab
-titles: Request, Response
+title: Request
 -->
 
 ```json
@@ -89,6 +89,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
+title: Response
 -->
 
 ##### Successful response (200)
@@ -195,7 +196,6 @@ type: tab
   }
 ]
 ```
-<!-- type: tab-end -->
 
 #### ![threeicon](../../assets/images/threeicon(3).jpg) Associations
 
@@ -208,7 +208,7 @@ Authorization summary pulled for the dates specified for the 2 stores by the Cre
 
 <!--
 type: tab
-titles: Request, Response
+title: Request
 -->
 
 ```json
@@ -236,6 +236,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
+title: Response
 -->
 
 ##### Successful response (200)
@@ -272,7 +273,6 @@ type: tab
   }
 ]
 ```
-<!-- type: tab-end -->
 
 #### ![fouricon](../../assets/images/fouricon(4).jpg) Chargebacks
 
@@ -285,7 +285,7 @@ Chargeback summary pulled for the specified dates for the 2 stores based on the 
 
 <!--
 type: tab
-titles: Request, Response
+title: Request
 -->
 
 ```json
@@ -303,6 +303,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
+title: Response
 -->
 
 ##### Successful response (200)
@@ -339,7 +340,6 @@ type: tab
   }
 ]
 ```
-<!-- type: tab-end -->
 
 #### ![fiveicon](../../assets/images/fiveicon(5).jpg) Sales Details
 
@@ -350,7 +350,7 @@ type: tab
 
 <!--
 type: tab
-titles: Request, Response
+title: Request
 -->
 
 ```json
@@ -393,6 +393,7 @@ curl -X 'POST' \
 
 <!--
 type: tab
+title: Response
 -->
 
 ##### Successful response (200)
@@ -448,4 +449,3 @@ type: tab
 ]
 
 ```
-<!-- type: tab-end -->
