@@ -416,6 +416,7 @@ paths:
                 type: array
                 items:
                   type: string
+                  format: binary
         '400':
           description: The request cannot be validated
           content:
