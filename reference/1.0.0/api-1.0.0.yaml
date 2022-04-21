@@ -399,11 +399,11 @@ paths:
             schema:
               $ref: '#/components/schemas/StatementPDFAPIrequest'
             examples:
-              Corporate Level statements:
-                description: Corporate Level statements
+              Location Level statements for different Mid:
+                description: Location Level statements for different Mid
                 value:
-                  midLevel: Corporate
-                  mid: '372395416889'
+                  midLevel: Location
+                  mid: '222222222222'
                   source: North
                   stmtKey: '143060791315615245651774149103'
         required: true
@@ -416,7 +416,6 @@ paths:
                 type: array
                 items:
                   type: string
-                  format: binary
         '400':
           description: The request cannot be validated
           content:
@@ -475,11 +474,11 @@ paths:
             schema:
               $ref: '#/components/schemas/StatementKeyAPIrequest'
             examples:
-              Corporate Level statements:
-                description: Corporate Level statements
+              ' Statement Keys Example for different Mid':
+                description: ' Statement Keys Example for different Mid'
                 value:
-                  midLevel: Corporate
-                  mid: '372395416889'
+                  midLevel: Location
+                  mid: '222222222222'
                   source: North
                   fromDate: '20140101'
                   toDate: '20220201'
@@ -2081,6 +2080,67 @@ paths:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: User Info
+      x-group-name: User Management
+  /v1/users:
+    get:
+      tags:
+        - User Management
+      summary: Search All Users
+      description: Performs user search and supports filter(optional) by name/email address/username and account status (Active, Locked, Idle Locked, Disabled and Deleted)
+      operationId: allUsersSearch
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: countPerPage
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Results'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Search All Users
       x-group-name: User Management
   /v1/authenticatedUserInfo:
     get:
@@ -10348,6 +10408,7 @@ components:
             - Debit
             - VENMO
             - ECHECK
+            - PAYPAL
         paymentChannelKey:
           type: string
           description: Funding source type. (Code)
