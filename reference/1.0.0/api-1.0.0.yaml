@@ -2081,67 +2081,6 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: User Info
       x-group-name: User Management
-  /v1/users:
-    get:
-      tags:
-        - User Management
-      summary: Search All Users
-      description: Performs user search and supports filter(optional) by name/email address/username and account status (Active, Locked, Idle Locked, Disabled and Deleted)
-      operationId: allUsersSearch
-      parameters:
-        - name: apiKey
-          in: header
-          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
-          required: true
-          schema:
-            type: string
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: countPerPage
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Results'
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Search All Users
-      x-group-name: User Management
   /v1/authenticatedUserInfo:
     get:
       tags:
@@ -2514,37 +2453,19 @@ components:
       properties:
         fromDate:
           type: string
-          description: yyyymmdd string denoting the start date for the query
+          description: Statements returned will be based on their generation frequency (daily/weekly/monthly) regardless of the date range entered.
           example: '20210801'
         toDate:
           type: string
-          description: yyyymmdd string denoting the end date for the query
+          description: Statements returned will be based on their generation frequency (daily/weekly/monthly) regardless of the date range entered.
           example: '20210807'
         midLevel:
           type: string
           description: The statements requested for are Location level (Store level) or Corporate level. Those 2 being the only valid values in this field.
           example: Location
           enum:
-            - Unknown
-            - SuperUser
-            - RelationshipManager
-            - Marker
-            - SubMarker
-            - Business
-            - Bank
-            - CustomBank
-            - Agent
-            - CustomAgent
-            - AssociationGroup
-            - Association
-            - CustomCorporate
-            - Lead
-            - CustomChain
-            - CustomDestination
             - Corporate
-            - Merchant
             - Location
-            - Group
         mid:
           type: string
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
@@ -2554,21 +2475,11 @@ components:
           description: Corresponding Platform
           example: North
           enum:
-            - Buypass
             - North
-            - Compass
-            - Unknown
-            - Omaha
             - South
             - Memphis
-            - Bams
-            - TeleCheck
-            - ValueLink
-            - OmniPay
+            - Omaha
             - UK
-            - Chase
-            - Salem
-            - Tampa
         stmtKey:
           type: string
           description: Key that is used to generate PDF
@@ -2584,37 +2495,19 @@ components:
       properties:
         fromDate:
           type: string
-          description: yyyymmdd string denoting the start date for the query
+          description: Statements returned will be based on their generation frequency (daily/weekly/monthly) regardless of the date range entered.
           example: '20210801'
         toDate:
           type: string
-          description: yyyymmdd string denoting the end date for the query
+          description: Statements returned will be based on their generation frequency (daily/weekly/monthly) regardless of the date range entered.
           example: '20210807'
         midLevel:
           type: string
           description: The statements requested for are Location level (Store level) or Corporate level. Those 2 being the only valid values in this field.
           example: Location
           enum:
-            - Unknown
-            - SuperUser
-            - RelationshipManager
-            - Marker
-            - SubMarker
-            - Business
-            - Bank
-            - CustomBank
-            - Agent
-            - CustomAgent
-            - AssociationGroup
-            - Association
-            - CustomCorporate
-            - Lead
-            - CustomChain
-            - CustomDestination
             - Corporate
-            - Merchant
             - Location
-            - Group
         mid:
           type: string
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
@@ -2624,21 +2517,11 @@ components:
           description: Corresponding Platform
           example: North
           enum:
-            - Buypass
             - North
-            - Compass
-            - Unknown
-            - Omaha
             - South
             - Memphis
-            - Bams
-            - TeleCheck
-            - ValueLink
-            - OmniPay
+            - Omaha
             - UK
-            - Chase
-            - Salem
-            - Tampa
     StatementData:
       type: object
       properties:
@@ -15728,13 +15611,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
