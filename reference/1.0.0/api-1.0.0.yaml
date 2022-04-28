@@ -399,11 +399,11 @@ paths:
             schema:
               $ref: '#/components/schemas/StatementPDFAPIrequest'
             examples:
-              Corporate Level statements:
-                description: Corporate Level statements
+              Location Level statements for different Mid:
+                description: Location Level statements for different Mid
                 value:
-                  midLevel: Corporate
-                  mid: '372395416889'
+                  midLevel: Location
+                  mid: '222222222222'
                   source: North
                   stmtKey: '143060791315615245651774149103'
         required: true
@@ -474,11 +474,11 @@ paths:
             schema:
               $ref: '#/components/schemas/StatementKeyAPIrequest'
             examples:
-              Corporate Level statements:
-                description: Corporate Level statements
+              ' Statement Keys Example for different Mid':
+                description: ' Statement Keys Example for different Mid'
                 value:
-                  midLevel: Corporate
-                  mid: '372395416889'
+                  midLevel: Location
+                  mid: '222222222222'
                   source: North
                   fromDate: '20140101'
                   toDate: '20220201'
@@ -2453,37 +2453,19 @@ components:
       properties:
         fromDate:
           type: string
-          description: yyyymmdd string denoting the start date for the query
+          description: Statements returned will be based on their generation frequency (daily/weekly/monthly) regardless of the date range entered.
           example: '20210801'
         toDate:
           type: string
-          description: yyyymmdd string denoting the end date for the query
+          description: Statements returned will be based on their generation frequency (daily/weekly/monthly) regardless of the date range entered.
           example: '20210807'
         midLevel:
           type: string
           description: The statements requested for are Location level (Store level) or Corporate level. Those 2 being the only valid values in this field.
           example: Location
           enum:
-            - Unknown
-            - SuperUser
-            - RelationshipManager
-            - Marker
-            - SubMarker
-            - Business
-            - Bank
-            - CustomBank
-            - Agent
-            - CustomAgent
-            - AssociationGroup
-            - Association
-            - CustomCorporate
-            - Lead
-            - CustomChain
-            - CustomDestination
             - Corporate
-            - Merchant
             - Location
-            - Group
         mid:
           type: string
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
@@ -2493,21 +2475,11 @@ components:
           description: Corresponding Platform
           example: North
           enum:
-            - Buypass
             - North
-            - Compass
-            - Unknown
-            - Omaha
             - South
             - Memphis
-            - Bams
-            - TeleCheck
-            - ValueLink
-            - OmniPay
+            - Omaha
             - UK
-            - Chase
-            - Salem
-            - Tampa
         stmtKey:
           type: string
           description: Key that is used to generate PDF
@@ -2523,37 +2495,19 @@ components:
       properties:
         fromDate:
           type: string
-          description: yyyymmdd string denoting the start date for the query
+          description: Statements returned will be based on their generation frequency (daily/weekly/monthly) regardless of the date range entered.
           example: '20210801'
         toDate:
           type: string
-          description: yyyymmdd string denoting the end date for the query
+          description: Statements returned will be based on their generation frequency (daily/weekly/monthly) regardless of the date range entered.
           example: '20210807'
         midLevel:
           type: string
           description: The statements requested for are Location level (Store level) or Corporate level. Those 2 being the only valid values in this field.
           example: Location
           enum:
-            - Unknown
-            - SuperUser
-            - RelationshipManager
-            - Marker
-            - SubMarker
-            - Business
-            - Bank
-            - CustomBank
-            - Agent
-            - CustomAgent
-            - AssociationGroup
-            - Association
-            - CustomCorporate
-            - Lead
-            - CustomChain
-            - CustomDestination
             - Corporate
-            - Merchant
             - Location
-            - Group
         mid:
           type: string
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
@@ -2563,21 +2517,11 @@ components:
           description: Corresponding Platform
           example: North
           enum:
-            - Buypass
             - North
-            - Compass
-            - Unknown
-            - Omaha
             - South
             - Memphis
-            - Bams
-            - TeleCheck
-            - ValueLink
-            - OmniPay
+            - Omaha
             - UK
-            - Chase
-            - Salem
-            - Tampa
     StatementData:
       type: object
       properties:
@@ -10347,6 +10291,7 @@ components:
             - Debit
             - VENMO
             - ECHECK
+            - PAYPAL
         paymentChannelKey:
           type: string
           description: Funding source type. (Code)
@@ -15666,13 +15611,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
