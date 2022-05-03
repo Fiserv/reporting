@@ -9540,6 +9540,30 @@ components:
             - NwCaseRulingStarSms
             - NwRtvlFulfilStarSms
             - NwExcptRespStarSms
+            - AcctVerSvFee
+            - AddrVerSvFee
+            - AxUsAcqTrxnFee
+            - DigInvFee
+            - McInstallmentProgramFeePurchInsa
+            - McInstallmentProgramFeePurchInsb
+            - McInstallmentProgramFeePurchInsc
+            - McInstallmentProgramFeeRefundInsa
+            - McInstallmentProgramFeeRefundInsb
+            - McInstallmentProgramFeeRefundInsc
+            - McDeclineReasonCodeSvcFee
+            - StReclassFee
+            - StTokenExchangeFee
+            - ViAddressVerSvcFee
+            - AccountVerificationFee
+            - AddressVerificationFee
+            - DigitalInvestmentFee
+            - McAuthDigitalEnablementFee
+            - McAuthDigitalEnablementMax
+            - McAuthDigitalEnablementMin
+            - McDeclineRsnCdFeeIntMax
+            - McDeclineRsnCdFeeIntMin
+            - McDeclineRsnCdSvFeeInt
+            - ViLacSecureCfNonTokenFee
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -15185,6 +15209,7 @@ components:
             - CardAccountLookup
             - CardAccountUpdater
             - DeferredRetry
+            - MixedStrategy
         rtActionKey:
           type: string
           description: 'Card Account Updater: Identifies the action that was taken on the account. (Code)'
@@ -15611,13 +15636,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
