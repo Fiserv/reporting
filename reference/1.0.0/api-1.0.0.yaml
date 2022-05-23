@@ -2100,13 +2100,13 @@ paths:
           description: Number of records per page
           required: false
           schema:
-            type: Integer
+            type: integer
         - name: page
           in: header
           description: Page Number
           required: false
           schema:
-            type: Integer
+            type: integer
       responses:
         '200':
           description: Success
