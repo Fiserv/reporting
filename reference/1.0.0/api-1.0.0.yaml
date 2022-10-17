@@ -20,6 +20,8 @@ tags:
     description: Prepaid Transaction & Account details and summaries.
   - name: StatementRetrieval
     description: User StatementSummary and Documents
+  - name: CommerceHub
+    description: CommerceHub search and summary details
   - name: Reference
     description: Reference Information & details
   - name: User Management
@@ -358,7 +360,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SpringDefaultError'
+                $ref: '#/components/schemas/UMValidationErrorException'
         '401':
           description: Unauthorized
           content:
@@ -1601,6 +1603,167 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
       x-group-name: Disbursements
+  /v1/commercehub/summary:
+    post:
+      tags:
+        - CommerceHub
+      summary: Summary
+      description: Returns an aggregated view of authorization transactions (pre-settle) utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
+      operationId: getSummary
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommerceHubSummaryRequest'
+            examples:
+              CommerceHub summary by Transaction Month:
+                description: CommerceHub summary by Transaction Month
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  summaryBy: TxnMonth
+                  filters:
+                    currency:
+                      - USD
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommerceHubReportingObj'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Summary
+      x-group-name: CommerceHub
+  /v1/commercehub/search:
+    post:
+      tags:
+        - CommerceHub
+      summary: Search
+      description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
+      operationId: search_4
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommerceHubSearchRequest'
+            examples:
+              CommerceHub Reporting Search:
+                description: CommerceHub Reporting Search
+                value:
+                  fromDate: '20210801'
+                  toDate: '20210807'
+                  limit: 3
+                  fields:
+                    - ApprovalCode
+                    - AccountNumber
+                    - Amount
+                    - Currency
+                    - PaymentMethod
+                    - Network
+                  filters:
+                    approvalCodes:
+                      - Approved
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommerceHubReportingObj'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Search
+      x-group-name: CommerceHub
   /v1/chargeback/summary:
     post:
       tags:
@@ -1705,7 +1868,7 @@ paths:
         - Chargebacks
       summary: Search
       description: Provides a list of chargebacks and their attributes based on optional filter criteria.
-      operationId: search_4
+      operationId: search_5
       parameters:
         - name: apiKey
           in: header
@@ -1798,7 +1961,7 @@ paths:
         - Authorizations
       summary: Summary
       description: Returns an aggregated view of authorization transactions (pre-settle) utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
-      operationId: getSummary
+      operationId: getSummary_1
       parameters:
         - name: apiKey
           in: header
@@ -1895,7 +2058,7 @@ paths:
         - Authorizations
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_5
+      operationId: search_6
       parameters:
         - name: apiKey
           in: header
@@ -2031,7 +2194,7 @@ paths:
     get:
       tags:
         - User Management
-      summary: User Info
+      summary: Get User
       description: Fetches respective user information which includes preferences, applications and restricted access
       operationId: getUser
       parameters:
@@ -2080,6 +2243,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: User Info
+      x-group-name: User Management
+  /v1/users/assignableDefaults:
+    get:
+      tags:
+        - User Management
+      summary: Assignable Defaults
+      description: Metadata API that pulls in available options/defaults for respective attributes(Account Status, Locales, Applications and its Entitlements etc.) for an admin/consumer account.
+      operationId: getAssignableUserA
+      parameters:
+        - name: apiKey
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAssignableDefaults'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Assignable Defaults
       x-group-name: User Management
   /v1/users:
     get:
@@ -2141,53 +2351,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Get All Users
-      x-group-name: User Management
-  /v1/authenticatedUserInfo:
-    get:
-      tags:
-        - User Management
-      summary: Authenticated User Info
-      description: Fetches authenticated user information which includes preferences, applications and restricted access
-      operationId: getAuthUserApplications
-      parameters:
-        - name: apiKey
-          in: header
-          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FetchUserResponse'
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Authenticated User Info
       x-group-name: User Management
 components:
   schemas:
@@ -2339,6 +2502,106 @@ components:
           type: string
           description: Name of the User
           example: cl.test123
+    UMValidationErrorException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  className:
+                    type: string
+                  nativeMethod:
+                    type: boolean
+            message:
+              type: string
+            localizedMessage:
+              type: string
+            suppressed:
+              type: array
+              items:
+                type: object
+                properties:
+                  stackTrace:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        methodName:
+                          type: string
+                        fileName:
+                          type: string
+                        lineNumber:
+                          type: integer
+                          format: int32
+                        className:
+                          type: string
+                        nativeMethod:
+                          type: boolean
+                  message:
+                    type: string
+                  localizedMessage:
+                    type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        path:
+          type: string
+        requestID:
+          type: string
+        localizedMessage:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
     NamedReferenceDto:
       type: object
       properties:
@@ -2351,7 +2614,6 @@ components:
           type: string
           description: Channel Name
           example: First Data Services
-      description: User channel
     SaveUserApplication:
       type: object
       properties:
@@ -2425,7 +2687,7 @@ components:
           type: string
           description: User Last Name
           example: Smith
-        email:
+        emailAddress:
           type: string
           description: User business email
         phoneNumber:
@@ -2620,6 +2882,11 @@ components:
               - NotSpecified
               - CredentialOnFile
               - ContactlessMagneticStripe
+              - MagneticStripeReadError
+              - SmartChipRead
+              - ContactlessSmartChipRead
+              - MagneticStripeRead
+              - ContactlessMagneticStripeRead
         networks:
           type: array
           description: Any transactions matching with any one of the specified Networks
@@ -2673,6 +2940,15 @@ components:
               - Certegy
               - MCI
               - PaypalVenmo
+              - Conduent
+              - FISG
+              - INMR
+              - PWMB
+              - SOLU
+              - WCHP
+              - AliPay
+              - EFunds
+              - ACS
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -2720,6 +2996,13 @@ components:
               - Check
               - DirectDebitMandate
               - TerminalRegistration
+              - FundingCredit
+              - MoneyTransferCredit
+              - ECommerceDebit
+              - BillPayDebit
+              - MoneyTransferDebit
+              - FundingDebit
+              - OTP
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -2904,16 +3187,22 @@ components:
             enum:
               - ECIIndicator
               - ECIIndicatorKey
+              - RejectReasonCode
+              - RejectReasonCodeKey
               - AccountNumber
               - AcquirerFeeAmount
+              - AcquirerFeeCapInd
               - AcquirerFeePerTranAmount
               - AcquirerFeePerTranRate
               - AcquirerRefNo
               - AdminFeeAmount
+              - AdminFeeCapInd
               - AdminFeePerTranAmount
               - AdminFeePerTranRate
               - AfdCompletionCode
+              - AgreementId
               - AirLineTicketNumber
+              - AreaOfEvent
               - AuthCode
               - AuthCurrency
               - AuthCurrencyKey
@@ -2922,14 +3211,23 @@ components:
               - AuthorizationDate
               - AuthorizationResponseCode
               - AuthorizationType
+              - AuthorizationTypeKey
               - AvsFlag
               - BankReferenceNumber
+              - BaseRate
               - BatchDate
               - BatchDescription
               - BatchNo
               - BatchSequenceID
               - BatchSlipNumber
               - BatchUID
+              - BbAmount
+              - BbClearingCode
+              - BbCount
+              - BbQualifiedCode
+              - BbReasonCode
+              - BbReasonDesc
+              - BbReasonDescKey
               - BillBackReason
               - BinID
               - CaptureMethod
@@ -2937,15 +3235,30 @@ components:
               - CardPresenceIndicator
               - CardScheme
               - CardSchemeDescription
+              - CardServiceType
               - CardUsage
               - CardholderIDMethod
               - CardholderNumber
               - CashBackAmount
               - CatLevel
+              - CatureMethodHB
+              - CatureMethodHBKey
               - CbaFeeAmount
+              - CbaFeeCapInd
               - CbaFeePerTranAmount
               - CbaFeePerTranRate
+              - ChargeAmount1
+              - ChargeAmount2
+              - ChargeAmount3
+              - ChargeAmount4
+              - ChargeAmount5
+              - ChargeType1
+              - ChargeType2
+              - ChargeType3
+              - ChargeType4
+              - ChargeType5
               - ChipConditionCode
+              - ChrgTierLevel
               - ClientNumber
               - ConvinienceFee
               - Currency
@@ -2954,39 +3267,79 @@ components:
               - Cvc2Result
               - Cvv2Result
               - DbaName
+              - Dda
+              - DdaLast4
+              - DdaLength
               - DebitTerminalDate
               - DebitTerminalTime
+              - DefCharge
               - DiscountAmount
+              - DowngradeRejectDesc
+              - DowngradeRejectDescKey
+              - DowngradeRejectReasonCD
               - DriverID
+              - EffectiveDate
               - EntryModeSource
               - EntryModeSourceKey
+              - ExperienceProvider
+              - ExpiryDate
+              - ExpnTrmnId
               - ExternalMID
+              - FeeBase
+              - FeeCategory1
+              - FeeCategory2
+              - FeeCategory3
+              - FeeCategory4
+              - FeeCategory5
+              - FileTypeIn
+              - FileTypeInKey
               - First6
               - FlatRate
               - ForeignCurrAmount
               - ForeignCurrRate
+              - Fpi
               - FundedDate
+              - GlobalTranId
               - ICFeePerTranRate
+              - IcCardConditonCode
               - IcFeeAmount
+              - IcFeeCapInd
               - IcFeePerTranAmount
               - IfFeeAmount
+              - InfrastructureFeeCapInd
               - InfrastructureFeePerTranAmount
               - InfrastructureFeePerTranRate
+              - InstalmentRegistrationId
               - IntegrityClass
               - InvalidTxnInd
               - InvoiceNo
               - IsaFeeAmount
+              - IsaFeeCapInd
               - IsaFeePerTranAmount
               - IsaFeePerTranRate
               - Last4
+              - LodgingBarChargeAmt
+              - LodgingGiftshopChargeAmt
+              - LodgingLaundryChargeAmt
+              - LodgingOtherServicesChargeAmt
+              - LodgingOtherServicesCode
+              - LodgingPhoneCallCharge
+              - LodgingPhoneNumber
+              - LodgingRestaurentRoomServCharge
               - MarkerID
               - MarketSpecificIndicator
+              - Maximum
+              - McBnkNetRefNbr
               - McCardholderAuthentication
               - McPrdtId
               - McSecurityProtocol
+              - McpConfigTyp
+              - McpConfigTypKey
               - MerchantCategory
               - MerchantCategoryKey
               - MerchantReferenceNumber
+              - MerchantService
+              - Minimum
               - MobileIndicator
               - MobileWallet
               - MobileWalletKey
@@ -2994,6 +3347,7 @@ components:
               - Network
               - NetworkKey
               - NetworkSecurityFeeAmount
+              - NetworkSecurityFeeCapInd
               - NetworkSecurityFeePerTranAmount
               - NetworkSecurityFeePerTranRate
               - NewAuthFee
@@ -3001,15 +3355,28 @@ components:
               - OrderNumber
               - OrigPlanCodeDesc
               - OriginalPlanCode
+              - OwdChargeAmt
+              - PanSequenceNumber
               - PaymentMethod
               - PaymentMethodKey
               - PcTaxAmount
               - PcTerminalCapability
+              - Percent
+              - PinlessFlag
+              - PinlessIndicator
+              - PinlessIndicatorKey
               - PlanCode
               - PlanCodeDesc
               - PlatformID
               - PosEntryMode
               - PostedIndicator
+              - PostingChargeDesc1
+              - PostingChargeDesc2
+              - PostingChargeDesc3
+              - PostingChargeDesc4
+              - PostingChargeDesc5
+              - PostingMethod
+              - PrimaryStopReason
               - ProcessedNetAmount
               - ProcessedRefundAmount
               - ProcessedRejectAmount
@@ -3019,17 +3386,34 @@ components:
               - ProductCode
               - ProductCodeKey
               - PurchaseIdentifier
+              - ReadTerminalCapacity
               - ReceiptNumber
               - ReclassCd
               - ReclassCdKey
               - RecordDate
+              - RecordID
+              - RefSeqID
               - RefundCount
               - RejectCount
+              - RejectIndicator
               - RejectReason
-              - RejectReasonCD
+              - RentalCountry
+              - RentalMaxFreeMileKm
+              - RentalMileKmInd
+              - RentalRatePerMileKm
+              - RetailerFeeAmount
+              - RetailerFeeCapInd
+              - RetailerFeePerTranAmount
+              - RetailerFeePerTranRate
               - SalesCount
               - SalesTaxAmount
               - ServiceCode
+              - ServiceID1
+              - ServiceID2
+              - ServiceID3
+              - ServiceID4
+              - ServiceID5
+              - ServiceId
               - SettleSpendQualifiedIndicator
               - SiteID
               - SiteIDKey
@@ -3042,16 +3426,26 @@ components:
               - SubmittedTransactionAmount
               - SurChargeAmount
               - SurChargeInd
+              - SurchargeCount
               - SwitchFeeAmount
+              - SwitchFeeCapInd
               - SwitchFeePerTranAmount
               - SwitchFeePerTranRate
               - TerminalID
+              - TerminalTransactionDt
               - TipAmount
               - TokenRequesterId
               - TokenType
               - TotalAuthAmount
               - TranId
+              - TranType1
+              - TranType2
+              - TranType3
+              - TranType4
+              - TranType5
               - TranUID
+              - TransactionCharges
+              - TransactionCountry
               - TransactionDate
               - TransactionMode
               - TransactionModeKey
@@ -3060,13 +3454,18 @@ components:
               - TransactionStatusKey
               - TransactionTime
               - TrckrNbr
+              - TrmnBtchClosDt
+              - TrmnBtchClosTm
+              - TrmnBtchNr
               - Type
               - TypeKey
               - UserData
               - VehicleNumber
               - VisaPrdtId
+              - VisaPurchaseIdentifierFormat
               - VisaServiceDevelop
               - VisaTranId
+              - WeeklyRentalRate
         filters:
           $ref: '#/components/schemas/SettlementFilters'
       description: Request object for Settlement search
@@ -3075,7 +3474,7 @@ components:
       properties:
         ECIIndicator:
           type: string
-          description: Indicates the Electronic Commerce Indicator used for the transaction.
+          description: Indicates the electronic commerce indicator used for the transaction.
           example: Secure E-Comm
           enum:
             - Unknown
@@ -3094,57 +3493,547 @@ components:
             - NotEComm
         ECIIndicatorKey:
           type: string
-          description: Indicates the Electronic Commerce Indicator used for the transaction. (Code)
+          description: Indicates the electronic commerce indicator used for the transaction. (Code)
           example: '4'
+        RejectReasonCode:
+          type: string
+          description: Transaction reject reason.
+          example: Account Locked
+          enum:
+            - Unknown
+            - AccountAlreadyLinked
+            - AccountClosed
+            - AccountLocked
+            - AccountNotInInactiveState
+            - AccountOnHold
+            - AcqBinNotFound
+            - AddendemNeTran
+            - AddendumTranCdWrg
+            - AdditionalAmexRecordNotAvailableOrIncorrect
+            - AddressVerifRequestedMissingInputAddressVerifRecord
+            - AddressVerificationError
+            - AddressVerificationRequest
+            - AdjToBankMerchantIdentifed
+            - AdjToBankNotMerchantRelated
+            - AirlineItineraryInvalid
+            - AirlineItineraryInvalid1stLegData
+            - AirlineItineraryInvalid2nd3rdOr4thLegData
+            - AirlineItineraryInvalidCityOfOrigin
+            - AirlineItineraryInvalidDepartureDate
+            - AirlineItineraryInvalidPassengerNameInformation
+            - AirlineItineraryInvalidStopOverCode
+            - AirlineItineraryInvalidTicketNumber
+            - AlreadyActive
+            - AlreadyReversed
+            - AmexChargeDateGt180
+            - AmtGtAmtLimitAmountGtAllowableLimit
+            - AmtExceedsLimitDrop
+            - AuthCodeRequired
+            - AuthDateInvalid
+            - AuthDeclinedDelinquentAcctOverCredLimitEtc
+            - AuthDeclinedLostOrStolenCard
+            - AuthReferral
+            - BadArrivalDate
+            - BadAuthorizationCode
+            - BadBase34CallProblemConverting23DigRefToBase34
+            - BadChecksum
+            - BadDepartureDate
+            - BadMagStripe
+            - BadPrdPlnComboInvalidProductAndPlanCodeCombo
+            - BadQual1stDg1stDigOf23DigRefNoNotNumeric
+            - BadQual2ndDg2ndDigOf23DigRefNoNotNumeric
+            - BadQualRcTransactionCouldNotQualify
+            - BadReplayDate
+            - BadMissingDescInvValuesNotAZ09SpaceOr
+            - BadMissingMercMercNotOnMasterBadMerchantStatus
+            - BalanceNotAvailableDenied
+            - BatchCreditLimitExceededDrop
+            - BatchNotReconciled
+            - BatchRecordMissingOrInformationInvalid
+            - BinInvaldForChPgm
+            - BnbPrivateLabelBadCreditPlan
+            - BnkRetNotMasterlnk
+            - CATrnSlMrchSaleMerchantAndTranCode7
+            - CanadianXrefNotFoundDrop
+            - CanceledNotProcessedDrop
+            - CancelledPayment
+            - CarRentalInvldAdjAmt
+            - CarRentalInvldCity
+            - CarRentalInvldDate
+            - CarRentalInvldExpDate
+            - CarRentalInvldInvoiceNumber
+            - CarRentalInvldRentersName
+            - CarRentalInvldState
+            - CarRentalMissingAddmRec
+            - CardExpirationDateInvalid
+            - CardNotEntitled
+            - CardNotInBinTab
+            - CardTypeNotProcessedByNabanc
+            - CardholderAccountNumberInvalid
+            - CardholderNumbIsIllegible
+            - CardholderNumbIsIncorrectInv
+            - CardholderNumbIsPartlyMissing
+            - CardholderNumberIsMissing
+            - CashAdvanceMixedInMerchWork
+            - CashBackOver100
+            - CashOverExceedsTranAmt
+            - ChPgmInvaldForBin
+            - ChargeDateTooOld
+            - Chargebacked
+            - ChgTypeNot12Or3
+            - ChipAidOrDfNameBytesAreNot09OrAF
+            - ChipApplicationTransCounterBytesAreNot09OrAF
+            - ChipApplicationVersionBytesAreNot09OrAF
+            - ChipCountryCodeIsNotValidIsoCountryCode
+            - ChipCryptogramInformationDataBytesAreNot09OrAF
+            - ChipCurrencyCodeIsNotValidIsoCountryCode
+            - ChipCvmResultsBytesAreNot09OrAF
+            - ChipInterchangeProfileBytesAreNot09OrAF
+            - ChipIssuerApplicationDataBytesAreNot09OrAF
+            - ChipTerminalCapabilityBytesAreNot09OrAF
+            - ChipTerminalTransactionDateNotValid
+            - ChipTerminalTypeBytesAreNot09OrAF
+            - ChipTerminalVerificationResultsBytesAreNot09OrAF
+            - ChipTranDateNotEqualToSalesTranDate
+            - ChipTransactionAmountInvalidOrZero
+            - ChipTransactionCryptogramBytesAreNot09OrAF
+            - ChipTransactionStatusBytesAreNot09OrAF
+            - ChipTransactionTypeNotNumeric
+            - ChipUnpredictableNumberBytesAreNot09OrAF
+            - ChipUsageControlBytesAreNot09OrAF
+            - ClientNotFound
+            - Completed
+            - ConditionalDepositRejectedAsAResultOfAddressVerif
+            - ConfirmedFraud
+            - ContactlessAmtGtMax
+            - ContactlessCurLtGt826
+            - ContactlessNotAllowed
+            - ContactlessSoloVisaSig
+            - ContactlessWithAddenda
+            - ContractClosed
+            - CrForMcc6010
+            - CrdAmtGt4999999AmountGt4999999
+            - CrdamtNotNum0TranAmtNotNumericOrZeroOrNegAmt
+            - CshbkAmtNotnumXd01CashBackAmtNotNumeric
+            - CurrencyConversionError
+            - CurrencyRequiredForInternationalMerchant
+            - DccMismatch
+            - DepositTcktDoesNotMatchDep
+            - DestinationMissing
+            - DetailHeldForDelayRetry
+            - DetailHeldForOptionalReferral
+            - DetailRecordBypassedBadMerchantOrDescriptor
+            - DetailWasReAuth
+            - DetlTransOutOfBalanceWithFleetOrPurchCardItems
+            - DeviceNotFound
+            - DiscountAddedShldBeSubtractd
+            - DiscountAmtNotSpacesAndNotNumeric
+            - DupeEdit
+            - DuplicateDetailRecord
+            - DuplicatedNonBankCardTransactionForMemoPostMerchant
+            - EiYFdl1Tc6CreditExclusionIssue
+            - Entered
+            - Error
+            - ErrorInAddSubTapeNotRecvd
+            - ErrorInAdditionOnTape
+            - ErrorInSubtractionOnTape
+            - ExIndDTrncd6MmExclusionIndDTranCode6
+            - ExceededAmountReload
+            - ExpCurrDteErrCurrentDateGtExpireDate
+            - ExpSaleDteErrSaleDateGtExpireDate
+            - ExpiredCard
+            - FeeRuleIrdEmpty
+            - FeesNotFound
+            - FgnAmtNotNumFRecAndForeignAmtNotNumeric
+            - FleetOrPurchaseCardItemOutOfBalance
+            - ForeignDetailInvalidIncorrectCurrencyCode
+            - ForeignDetailInvalidNonNumericDollarAmount
+            - FraudBankLoss
+            - FraudCountExceeded
+            - FraudFoundTranCodeIs6CardOnFraudList
+            - FraudMerchantLoss
+            - FreightTaxAmtNotCalculatedTaxAmt01
+            - FutureTranDate
+            - GenericDenial
+            - GlFailed
+            - HotelBadArrivalDate
+            - HotelBadDepartureDate
+            - HotelChgTypeNot123
+            - HotelInvldRoomRate
+            - HotelPgmCodeNot16
+            - IabLocalPaperNotAllowed
+            - IabTranDateGt11Month
+            - IabTransGt999999999
+            - InactiveAccountNotActivatedByAnApprovedLocation
+            - IncorrectAccountNumber
+            - IncorrectAddendum
+            - IncorrectDualityDrop
+            - IncorrectLocation
+            - IncorrectTransactionVersionOrFormat
+            - InsufficientFunds
+            - InterNotAllowed
+            - InternetAccessDisabled
+            - InternetTransactionCheckFails
+            - Inv04SaleDateTranDateOver210DaysOld
+            - Inv04TranDateSwitchAndInvalidTranDate
+            - Inv05SaleDateBadReturnCodeFromDateUtilModule
+            - InvAcqProcId
+            - InvAddendumRecord
+            - InvCallFromCity
+            - InvCallFromPhoneNo
+            - InvCallFromState
+            - InvCallToPhoneNo
+            - InvCardSaleDtInvalidTransactionDate
+            - InvCashoverAmt
+            - InvCrdhldrErrBadCardholderAccountNumberNotNumeric
+            - InvDtOnTrtimeDddNot1366TimeNot0099
+            - InvDurationOfCall
+            - InvExpireDateExpDateHasInvMonthYearNot0099
+            - InvFgnAmtExtnForeignAmtNotNumericOrZero
+            - InvFgnCurrCdeFRecCurrCodeNotFoundOnForCurrTbl
+            - InvIssNoNotScsSwSoCardXld1IssueNoByte2NotNum
+            - InvProcessCode
+            - InvTmOnTrtimeXld1HhmmssHrMinSecNotValid
+            - InvTransCodeTransCodeIsInvalidNot59
+            - InvXld1termocapXld1TermOcapNot04OrSpace
+            - InvXld1termtypeXld1TermTypeNot09OrSpace
+            - InvAcctOwnerName
+            - InvAcqCashFl
+            - InvAcqFloorLimit
+            - InvAuthMethod
+            - InvCashbackAmt
+            - InvHcFileSize
+            - InvMerFloorLimit
+            - InvMerchCashFl
+            - InvTxnTypeContactless
+            - InvalBankSortCode
+            - InvalidAccountNo
+            - InvalidAcctNumber
+            - InvalidAcctStatus
+            - InvalidAddendumdata
+            - InvalidAdjstmntAmt
+            - InvalidAmexSeNo
+            - InvalidAmountAmountFieldError
+            - InvalidAvs
+            - InvalidBin
+            - InvalidCallToCity
+            - InvalidCanadianAcqDrop
+            - InvalidCardAccountNumberSm10TransactionsOnly
+            - InvalidCardExpiry
+            - InvalidCardNo
+            - InvalidCardPrefix
+            - InvalidCardStatus
+            - InvalidCashTran
+            - InvalidCbdipRegion
+            - InvalidChargeDate
+            - InvalidCity
+            - InvalidClerkFieldMissingWhenRequired
+            - InvalidClientCertificate
+            - InvalidContrStatus
+            - InvalidContract
+            - InvalidCurrency
+            - InvalidCvc2
+            - InvalidDate
+            - InvalidDccFormat
+            - InvalidDiscProcCode
+            - InvalidEan
+            - InvalidExpirationDate
+            - InvalidExpireDate
+            - InvalidFoodAmount
+            - InvalidGenrefNoInvalidCheckDigitOn23DigitRefNo
+            - InvalidInputParameter
+            - InvalidInvoiceNo
+            - InvalidMcc
+            - InvalidMerchDetail
+            - InvalidMerchantNotInTheDb
+            - InvalidMerchantKey
+            - InvalidNewPassword
+            - InvalidOrMissingProductCodeOnFleetOrPurchaseCard
+            - InvalidOrMissingQuantitySaleAmtOnFleetOrPurchCard
+            - InvalidOrMissingTaxAmountOnFleetOrPurchaseCard
+            - InvalidPassword
+            - InvalidPaymentType
+            - InvalidPosCode
+            - InvalidProductId
+            - InvalidRateClass
+            - InvalidRcc
+            - InvalidRecordIdentification
+            - InvalidRentersName
+            - InvalidRetailTax
+            - InvalidRoomRate
+            - InvalidRtFlag
+            - InvalidSignatureDetailAccepted
+            - InvalidSignatureDetailRejected
+            - InvalidState
+            - InvalidStatusChange
+            - InvalidTimeZone
+            - InvalidTokenNo
+            - InvalidTranId
+            - InvalidTransDate
+            - InvalidTransTime
+            - InvalidTransactionAmount
+            - InvalidTransactionCodeCardOrTerminalNotPermittedToPerformThisTransaction
+            - InvalidTransactionFormat
+            - InvalidTransactionSource
+            - InvldAddendumRecordType
+            - InvldCardnumEInvldChgDate
+            - InwFeesNotFound
+            - IssueNoNotValidIssueNo210OrHighValues
+            - Item1InvQuantity
+            - Item1ZeroQuantity
+            - Item2QtyInvalid
+            - Item3QtyInvalid
+            - ItemCodeInvalid
+            - ItemCodeInvalidNotSumm0000LidValidList
+            - ItemDescInvalidNotSpaces
+            - ItemDiscountAmtInvalid
+            - ItemDiscountIdInvalidNotSpacesNY
+            - ItemLineTotalInvalid
+            - ItemListedOnYourTapeNotRcv
+            - ItemQuantityInvalid
+            - ItemRecvdNotListedOnYourTp
+            - ItemUnitAmountInvalid
+            - ItemUnitOfMeasureInvalidSummSpacesLidLtGtSpaces
+            - Item10OrInvAmt
+            - Item20OrInvAmt
+            - Item30OrInvAmt
+            - Kutac015RcCurrencyConversionProblem
+            - LacVisaLargeAmtWOAuthCode
+            - LargeValue
+            - LatePresentment
+            - Loaded
+            - LostOrStolenCard
+            - LuhnCheckFailed
+            - Matched
+            - MaxBalanceExceeded
+            - McDescntryIraMastercardAndDestCountryIsIran
+            - McMccNe6010McTranSaleMerTranCodeAnd7
+            - MccGt0B077MccIsNotRecognized
+            - MerchNoMissingIllegNotOnFile
+            - MerchIsBlockedAsDataCapture
+            - MerchNameNumbIllegible
+            - MerchNameNumbMissing
+            - MerchSummaryListedNotRecevD
+            - MerchSummaryRecevDNotListed
+            - MerchVatNoLtSpacesOrFailedMod97Check
+            - MerchantDescriptorMissingOrInformationInvalid
+            - MerchantNotConfiguredAsInternational
+            - MerchantRecordMissingOrInformationInvalid
+            - MersumCashAdvSaleMerchantAndTranCode7
+            - MersumSaleTypeCashAdvanceMerchantTranCode5
+            - MexLocalPaperNotAllowed
+            - MiscellaneousReason
+            - MismatchingTokentype
+            - MissingAddendumRec
+            - MissingCompanyName
+            - MissingServiceTel
+            - MobileDdaTransactionOtherThan
+            - MsdContactlessTxn
+            - NewPasswordRequired
+            - NfOnBankAgentChainAgentNoNotOnAgentBankFile
+            - NoAccountLink
+            - NoAccountRecord
+            - NoBinOverride
+            - NoEntitleFoundEntitlementNotFoundForProduct
+            - NoFraud
+            - NoPaymentTrans
+            - NoPhoneService
+            - NoPostingInst
+            - NoPostingInstPh1
+            - NoPresentment
+            - NoPreviousTransaction
+            - NoResponseFromValuelink
+            - NoServiceContract
+            - NoTransactionsAvailable
+            - NonUsaCardForUsaCardMrch
+            - NorthFileOnSouthDrop
+            - NotClientCertSecCodeNotListedAsCrtOnPlmu
+            - NotLostOrStolenTheReplacementTransactionCouldNotBeCompleted
+            - OrderDateGtTranDate
+            - OrderDateInvalid
+            - OrderDateNotSpacesOrZeroes
+            - OrderRefNoInvalidOrderRefNoLtSpaces
+            - OriginalNotFound
+            - OtherMerchantToFundIsNotFoundOrBadStatus
+            - OtherPrintsDscrptionKeyedIn
+            - OutFeesNotFound
+            - OutboundNumZeroDrop
+            - PasswordReentryExceeded
+            - PaymentTransBack
+            - PrivateLabelCashAdvanceTransa
+            - ProductCodeRestricted
+            - ProgramCodeNot16
+            - PromoForInternetVirtualAndPhysicalCardsDoNotMatch
+            - PromoLocationRestricted
+            - PtsDepNoBatchPlmuSecCodeIssueMissingBatchRef
+            - Purged
+            - QualPlancdeInvQualifierPlanCodeLt000
+            - QualRtnStatE7QualifierReturnCodeE7BadUSAmt
+            - RecordOutOfSequence
+            - RefNoEqualZerosDetailReferencNoIsZero
+            - RefNoNotNumericDetailReferenceNoNotNumeric
+            - ReferenceNotFound
+            - ReferenceNumberInvalid
+            - RejectEdsBatchBatchSecCodeAndBatchTerminalNo
+            - RejectEdsMerchPlmuEdsmIndNNotXrefOnXref
+            - RejectMerchant120TableClearingBankIndIssue
+            - RejectedPayment
+            - Released
+            - RequestNotPermittedByThisAccount
+            - RequestNotPermittedByThisLocation
+            - RestaurantAddedAmtNeTranAmt
+            - RestaurantInvldFoodAmount
+            - SaleDteNotNumTransactionDateNotNumeric
+            - SaleCashTxnInvalidForOcMrch
+            - SequenceOnEachItemNotOrNotSequential
+            - ServiceNotAssigned
+            - ServiceNotDefined
+            - SetupError
+            - SingleCreditLimitSetTo1
+            - SlsTrnCaMrchCashAdvanceMerchantTranCode5
+            - SmsFlagNotMaestro
+            - SubmissionAccepted
+            - SubmissionRejected
+            - SummaryCodeInvalidNotSummOrLid
+            - SummaryListedAsCreditsSBSls
+            - SummaryListedAsSalesSBCr
+            - Suppressed
+            - SuspectedFraud
+            - SvcLvlInvalidEntServLvlNotFBKPM
+            - SvctpPlancdErrBadProdPlanComboForTypeOfMerch
+            - SwitchamtNotnumSwitchCardAndSaleAmtNotNumeric
+            - SystemErrorProblemWithTheHostProcessingSystem
+            - TECardInvldFgnCurrency
+            - Tc57AmtGt49999TranCode5Or7AndAmountGt4999999
+            - Tc6AmtGt19999TranCode6AndAmountGt1999999
+            - TelecomInvldCallFromCity
+            - TelecomInvldCallFromPhone
+            - TelecomInvldCallFromState
+            - TelecomInvldCallToCity
+            - TelecomInvldCallToPhone
+            - TelecomInvldDurationOfCall
+            - TelecomInvldRateClass
+            - TerminalTransactionNumber
+            - TissueCopyRcvdSeeLetter
+            - TLReceivedNotListed
+            - TooManyTransactionsRequested
+            - TotAmtNotNumeric
+            - TotalNoAddressVerifRequestOutOfBalanceOrNotNumeric
+            - TotalNoPLAuthRequestOutOfBalanceOrNotNumeric
+            - TotalNoSalesAuthRequestOutOfBalanceOrNotNumeric
+            - TotalAmountFailedCalculation
+            - TotalCashAdvanceAmountOutOfBalanceOrNotNumeric
+            - TotalCashAdvanceAuthAmountOutOfBalanceOrNotNumeric
+            - TotalCreditAmountOutOfBalanceOrNotNumeric
+            - TotalSalesAmountOutOfBalanceOrNotNumeric
+            - TotalSalesAuthAmountOutOfBalanceOrNotNumeric
+            - TranAmtNotPurchasePiecesTotaledTol
+            - TransactionAmountInvalid
+            - TransactionCodeInvalidOrNotEntitledForCardProd
+            - TransactionCountMismatched
+            - TransactionDateInvalid
+            - TransactionHistoryNotAvailable
+            - TransactionNotAcceptableOnMaestroIntlTxn
+            - TransmitOutOfBalNoTapeList
+            - TransmittalErrorOnTapeList
+            - TrncdeNot567TranCodeNot567
+            - UnknownAccountCouldNotBeLocatedInTheAccountTable
+            - Unposted
+            - UsaCardForNonUsaCardMrch
+            - UspsPvlOnNonUsps
+            - ValidInBrazilIndia
+            - VatAmtFailCalc
+            - VatAmtNotNumericAndNotSpaces
+            - VatAmtNumericAndLt01WithVatInd0
+            - VisaInvalidOnBinL
+            - VisaMccNe6010ViTranSaleMerTranCodeAnd7
+            - VoidOfActivation
+            - VoyWexInvalidProductCode
+            - VoyWexProductAmtNotNumeric
+            - VoyWexProductAmtWasZero
+            - VoyWexProductQtyNotNumeric
+            - VoyWexProductQtyWasZero
+            - VoyagerBadCaptureMethod
+            - VoyagerGrossAmtFailedCalc
+            - VoyagerGrossAmtNotNumeric
+            - VoyagerNetAmtFaildCalculatn
+            - VoyagerNetAmtNotNumeric
+            - WarningMissingAirlineItineraryInformation
+            - WexBadTranTypTranCodeCombo
+            - WexProdctUnitPriceNotNumerc
+            - WexProductUnitPriceWasZero
+            - WrongCardnoLength
+            - WrongTermCatg
+            - ZeroValue
+        RejectReasonCodeKey:
+          type: string
+          description: Transaction reject reason. (Code)
+          example: '3'
         accountNumber:
           type: string
           description: Card number used for authorization transaction.
           example: 666666XXXXXX4444
         acquirerFeeAmount:
           type: number
-          description: Acquirer Fee amount
+          description: Acquirer fee amount.
           format: double
           example: 0.99999
+        acquirerFeeCapInd:
+          type: string
+          description: Acquirer fee cap indicator.
+          example: U
         acquirerFeePerTranAmount:
           type: number
-          description: Acquirer Fee amount Per Transaction
+          description: Acquirer fee amount per transaction.
           format: double
           example: 0.99999
         acquirerFeePerTranRate:
           type: number
-          description: Acquirer Fee rate Per Transaction
+          description: Acquirer fee rate per transaction.
           format: double
           example: 0.99999
         acquirerRefNo:
           type: string
-          description: 'Acquirer reference #: An ARN in credit card transactions is the Acquirer Ref. Number, a unique no that tags a credit card txn when it goes from the merchants bank (Acquiring Bank) through the card network to the cardholders bank (The Issuer).'
+          description: 'Acquirer reference #: An ARN in credit card transactions is the Acquirer reference number, a unique no that tags a credit card txn when it goes from the merchant''s bank (acquiring bank) through the card network to the cardholders bank (the issuer).'
           example: '99999999999999999999999'
         adminFeeAmount:
           type: number
-          description: Admin Fee amount
+          description: Admin fee amount
           format: double
           example: 0.99999
+        adminFeeCapInd:
+          type: string
+          description: Admin fee cap indicator.
+          example: U
         adminFeePerTranAmount:
           type: number
-          description: Admin Fee amount Per Transaction
+          description: Admin fee amount per transaction.
           format: double
           example: 0.99999
         adminFeePerTranRate:
           type: number
-          description: Admin Fee rate Per Transaction
+          description: Admin fee rate per transaction.
           format: double
           example: 0.99999
         afdCompletionCode:
           type: string
-          description: Automated Fuel Dispenser code. Will only apply to Petroleum clients
+          description: Automated fuel dispenser code. Will only apply to petroleum clients.
           example: 'Y'
+        agreementId:
+          type: string
+          description: Agreement ID would be passed in the authorization response from Visa to indicate an agreement is in place between the issuer and merchant. That agreement-id allows for the merchant to receive an agreed upon interchange rate when accepting that issuers cards
+          example: A001
         airLineTicketNumber:
           type: string
-          description: AirLine Ticket Number.
+          description: Airline ticket number.
           example: '999999999999999'
+        areaOfEvent:
+          type: string
+          description: Area of event.
+          example: AAA
         authCode:
           type: string
-          description: Authorization code from Association(s). Generally 6/7 alphanumeric code that gets printed on the receipt.
+          description: Authorization code from association(s). Generally, 6/7 alphanumeric code that gets printed on the receipt.
           example: 99AA99
         authCurrency:
           type: string
@@ -3338,61 +4227,222 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         authCurrencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
           example: '1'
         authSource:
           type: string
-          description: How the transaction was sent  for authorization
+          description: How the transaction was sent for authorization.
           example: '1'
         authorizationAmount:
           type: number
-          description: Amount  verified as available on a card for a transaction to occur
+          description: Amount verified as available on a card for a transaction to occur.
           format: double
           example: 999.99
         authorizationDate:
           type: string
-          description: Date the verification occurred on a card for a transaction
-          example: '20201231'
+          description: Date the verification occurred on a card for a transaction.
+          example: 12/31/2020
         authorizationResponseCode:
           type: string
-          description: Code that indicates the response on an attempted transaction
+          description: Code that indicates the response on an attempted transaction.
           example: P
         authorizationType:
           type: string
-          description: Authorization Transaction Type
-          example: '9999'
+          description: Authorization transaction type.
+          example: Purchase
+          enum:
+            - Unknown
+            - Retail
+            - CashAdv
+            - Wire
+            - CreditPreAuth
+            - Reversal
+            - Cancel3
+            - Cancel7
+            - Mail
+            - ContactlessAuth
+            - ContactlessCB
+            - ContactlessReversal
+            - ContactlessVoid
+            - PinlessReturn
+            - PinlessReversal
+            - PinlessVoid
+            - PinlessPurchase
+            - PinlessDebitReversal
+            - PinlessDebitVoid
+            - AdjCredit
+            - AdjReversal
+            - AdjDebit
+            - AdjDebitReversa
+            - NegativeAuth
+            - NegativeAuthReversal
+            - NegativeVoid
+            - ReloadMiCash
+            - ReversalMiCash
+            - UnmanagedStore
+            - UnmanagedStoreReversal
+            - UnmanagedResub
+            - UnmanagedReversal
+            - MerchantDebitVoid
+            - MerchantReturnVoid
+            - MerchantEBTVoid
+            - UnmanagedStoreCashback
+            - UnmanagedCashback
+            - DebitPurchase
+            - DebitOrder
+            - DebitCashback
+            - DebitRefund
+            - DebitPreAuth
+            - Void
+            - DebitInquiry
+            - DebitComplete
+            - ECASale
+            - ECAAccept
+            - ECAChange
+            - ECAVoid
+            - ECAVerify
+            - POSReturn
+            - POSReturnRev
+            - POSReturnVoid
+            - POS
+            - POSReversal
+            - POSVoid
+            - Batchopenclose
+            - Batch
+            - CreditAdjustment
+            - CrossApproved
+            - CrossBoarderDispursement
+            - Bill
+            - EBTBenefit
+            - EBTCashcashback
+            - EBTCashInquiry
+            - EBTCashOnly
+            - EBTFoodPurchase
+            - EBTFoodRefund
+            - EBTFoodClear
+            - EBTFoodInquiry
+            - EBTFoodPAN
+            - ISAApprove
+            - InterApproval
+            - ISARegional
+            - ISA
+            - InterReturn
+            - ISARe
+            - Token
+            - PrePaid
+            - PreAuthComplete
+            - Businesss
+            - Purchase
+            - Withdraw
+            - DebitAdjustment
+            - CheckAcceptance
+            - PurchaseCashBack
+            - AccountFunding
+            - Quasi
+            - AddressVerificationBilling
+            - RecurringBill
+            - InstallmentPay
+            - Subscription
+            - CashDisbursemet
+            - Scrip
+            - PurchaseRefund
+            - Deposit
+            - CreditAdjustmet
+            - CheckGuarantee
+            - Check
+            - OriginalCredit
+            - PrepaidActivation
+            - AvailableInquiry
+            - BalanceInquiry
+            - AccountMessage
+            - EligibilityInq
+            - AccountsCash
+            - BillPaymentUS
+            - NetworkPayment
+            - TeleVoice
+            - TeleCheckCroc
+            - PINChangeUnblock
+            - DeletedTransactions
+            - PINPrepaidActivation
+            - CrossBoarderCollection
+            - PinUnblock
+            - PinChange
+            - PreAuth
+            - FinalAuth
+            - Cret
+        authorizationTypeKey:
+          type: string
+          description: Authorization transaction type. (Code)
+          example: '81'
         avsFlag:
           type: string
-          description: Code indicating the level of Address Verification
+          description: Code indicating the level of address verification
           example: '20'
         bankReferenceNumber:
           type: string
+          description: Unique number in merchant's bank deposit for funding.
           example: M99AA99AA
-        batchDate:
-          type: string
-          description: Date group of transactions was settled
-          example: 12/31/2020
+        baseRate:
+          type: number
+          description: Base Rate.
+          format: double
+          example: 0.9999
         batchDescription:
           type: string
+          description: Batch description.
           example: R21
         batchNo:
           type: string
-          description: Batch number (Batch that pulled this settlement transaction to initiate thee funding) for the transaction.
+          description: Batch number (batch that pulled this settlement transaction to initiate thee funding) for the transaction.
           example: AA999AA999
         batchSequenceID:
           type: string
+          description: Batch sequence ID.
           example: '9999999999'
         batchSlipNumber:
           type: string
+          description: Batch slip number.
           example: '99999999999'
         batchUID:
           type: string
-          description: Batch Unique Id
+          description: Batch unique ID.
           example: AAAA9999999999999999999999999999999
+        bbAmount:
+          type: number
+          description: Non-Qualification Amount.
+          format: double
+          example: 0.99
+        bbClearingCode:
+          type: string
+          description: Clearing I/C Code.
+          example: '999'
+        bbCount:
+          type: integer
+          description: Non-Qualification Count.
+          format: int32
+          example: 99
+        bbQualifiedCode:
+          type: string
+          description: Qualified I/C Code.
+          example: '999'
+        bbReasonCode:
+          type: string
+          description: Non Qualification Code.
+          example: '999'
+        bbReasonDesc:
+          type: string
+          description: Non-Qualification Reason.
+          example: Unknown
+        bbReasonDescKey:
+          type: string
+          description: Non-Qualification Reason. (Code)
+          example: ''
         billBackReason:
           type: string
+          description: Billback reason.
           example: R
         binID:
           type: string
@@ -3400,13 +4450,15 @@ components:
           example: '666666'
         captureMethod:
           type: string
+          description: Capture method.
           example: '999'
         cardExpirationDate:
           type: string
-          description: 2 digit month & 2 digit year when a card becomes invalid
+          description: 2 digit month & 2 digit year when a card becomes invalid.
           example: '1224'
         cardPresenceIndicator:
           type: string
+          description: Card presence indicator.
           example: 'N'
         cardScheme:
           type: string
@@ -3414,18 +4466,23 @@ components:
           example: '999'
         cardSchemeDescription:
           type: string
-          description: Card scheme Name.
+          description: Card scheme name.
           example: Visa
+        cardServiceType:
+          type: string
+          description: Card service type.
+          example: AAA
         cardUsage:
           type: string
+          description: Card usage.
           example: D
         cardholderIDMethod:
           type: string
-          description: Indicates how the Cardholder was identified by the Merchant. This field is only required for VISA transactions.
+          description: Indicates how the cardholder was identified by the merchant. This field is only required for Visa transactions.
           example: 99AA99
         cardholderNumber:
           type: string
-          description: Cardholder ID
+          description: Cardholder ID.
           example: '9'
         cashBackAmount:
           type: number
@@ -3434,39 +4491,100 @@ components:
           example: 999.99
         catLevel:
           type: string
-          description: Indicator if it is a Card Holder Activated terminal
+          description: Indicator if it is a card holder activated terminal.
           example: 'Y'
+        catureMethodHB:
+          type: integer
+          description: Batch source.
+          format: int32
+        catureMethodHBKey:
+          type: string
+          description: Batch source. (Code)
+          example: ''
         cbaFeeAmount:
           type: number
-          description: Cross Boarder Acquirer Fee amount
+          description: Cross border acquirer fee amount.
           format: double
           example: 0.99999
+        cbaFeeCapInd:
+          type: string
+          description: Cross border acquirer fee cap indicator.
+          example: U
         cbaFeePerTranAmount:
           type: number
-          description: Cross Boarder Acquirer Fee amount Per Transaction
+          description: Cross border acquirer fee amount per transaction.
           format: double
           example: 0.99999
         cbaFeePerTranRate:
           type: number
-          description: Cross Boarder Acquirer Fee rate Per Transaction
+          description: Cross border acquirer fee rate per transaction.
           format: double
           example: 0.99999
+        chargeAmount1:
+          type: number
+          description: Fee amount - 1.
+          format: double
+          example: 999.99
+        chargeAmount2:
+          type: number
+          description: Fee amount - 2.
+          format: double
+          example: 999.99
+        chargeAmount3:
+          type: number
+          description: Fee amount - 3.
+          format: double
+          example: 999.99
+        chargeAmount4:
+          type: number
+          description: Fee amount - 4.
+          format: double
+          example: 999.99
+        chargeAmount5:
+          type: number
+          description: Fee amount - 5.
+          format: double
+          example: 999.99
+        chargeType1:
+          type: string
+          description: The type of charge being generated e.g., per tran fee, assessment fee, commission, etc.
+          example: Z
+        chargeType2:
+          type: string
+          description: The type of charge being generated - 2.
+          example: Z
+        chargeType3:
+          type: string
+          description: The type of charge being generated - 3.
+          example: Z
+        chargeType4:
+          type: string
+          description: The type of charge being generated - 4.
+          example: Z
+        chargeType5:
+          type: string
+          description: The type of charge being generated - 5.
+          example: Z
         chipConditionCode:
           type: string
-          description: Code provides information about magnetic stripe-read transactions of VSDC cards at VSDC ATMs
+          description: Code provides information about magnetic stripe-read transactions of VSDC cards at VSDC ATMs.
           example: '9'
+        chrgTierLevel:
+          type: string
+          description: Charge tier level.
+          example: AAA
         clientNumber:
           type: string
           description: The internal client number associated with the original transaction.
           example: '99999999'
         convinienceFee:
           type: number
-          description: Convinience Fee Amount
+          description: Convenience fee amount.
           format: double
           example: 0.99
         currency:
           type: string
-          description: Processing Currency code used for the transaction.
+          description: Processing currency code used for the transaction.
           example: USD
           enum:
             - Unknown
@@ -3656,40 +4774,98 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         currencyKey:
           type: string
-          description: Processing Currency code used for the transaction. (Code)
+          description: Processing currency code used for the transaction. (Code)
           example: '1'
         customTracking:
           type: string
-          description: The internal client number associated with the original transaction.
+          description: The customer tracking number associated with the original transaction.
           example: '9999999999'
         cvc2Result:
           type: string
-          description: Indicator if Card Verification Code is present for Visa transaction.
+          description: Indicator if card verification code is present for Visa transaction.
           example: 'Y'
         cvv2Result:
           type: string
-          description: Indicator if Card Verification Value is present for MasterCard transaction.
+          description: Indicator if card verification Value is present for MasterCard transaction.
           example: '999'
         dbaName:
           type: string
+          description: Store name.
           example: STORE NAME
-        debitTerminalDate:
+        dda:
           type: string
-          description: Date the terminal processed the debit transaction.
-          example: '20201231'
+          description: DDA associated with the merchant.
+          example: 9A@9a#9A$9a[
+        ddaLast4:
+          type: string
+          description: Last four digits of DDA number.
+          example: '4444'
+        ddaLength:
+          type: integer
+          description: DDA length.
+          format: int32
+          example: 99
         debitTerminalTime:
           type: string
-          description: Hour, Minute and Second the terminal processed the debit transaction.
+          description: Hour, minute and second the terminal processed the debit transaction.
           example: '235959'
+        defCharge:
+          type: string
+          description: Default charges.
+          example: 'Y'
         discountAmount:
           type: number
+          description: Discount amount.
           format: double
           example: -0.9999
+        downgradeRejectDesc:
+          type: string
+          description: Downgrade Reason Code Description.
+          example: Key Entered
+          enum:
+            - Unknown
+            - AciNotValid
+            - AddressVerificationService
+            - BreakevenPoint
+            - CorporateCard
+            - CashAdvance
+            - FleetDataFailure
+            - International
+            - InvalidCard
+            - KeyEntered
+            - LimitedAcceptanceCredit
+            - LimitedAcceptanceDebit
+            - MerchantCategoryCodeFailure
+            - MagStripeFailure
+            - NotCPSQualified
+            - PurchaseDate
+            - ProductResultsFailure
+            - QPS
+            - Refund
+            - Remboursement
+            - SICCode
+            - Signature
+            - Supermarket
+            - Supermarche
+            - Standard
+            - Timeliness
+            - ToleranceFailure
+            - TaxIDNotOnFile
+            - Unauthed
+        downgradeRejectDescKey:
+          type: string
+          description: Downgrade Reason Code Description. (Code)
+          example: '9'
+        downgradeRejectReasonCD:
+          type: string
+          description: Downgrade Reason Code.
+          example: '999'
         driverID:
           type: string
-          description: Driver License Number
+          description: Driver license number.
           example: '999999'
         entryModeSource:
           type: string
@@ -3704,68 +4880,138 @@ components:
           type: string
           description: The last byte from POS_ENTRY_MODE which tells us the PIN capability. (Code)
           example: '0'
+        experienceProvider:
+          type: string
+          description: Experience Provider.
+          example: WMPY
+        expiryDate:
+          type: string
+          description: Expiry date.
+          example: 12/31/2020
+        expnTrmnId:
+          type: string
+          description: Expanded Terminal ID.
+          example: '07878964'
         externalMID:
           type: string
+          description: External MID.
           example: '9999999999'
+        feeBase:
+          type: integer
+          description: Fee base.
+          format: int32
+          example: 99
+        feeCategory1:
+          type: string
+          description: The pricing mechanism to be used e.g., interchange plus, pricing plus fees. If the text has either interchange or intchng, it means the pricing is based on the assessed scheme interchange.
+          example: Test
+        feeCategory2:
+          type: string
+          description: The pricing mechanism to be used - 2.
+          example: Test
+        feeCategory3:
+          type: string
+          description: The pricing mechanism to be used - 3.
+          example: Test
+        feeCategory4:
+          type: string
+          description: The pricing mechanism to be used - 4.
+          example: Test
+        feeCategory5:
+          type: string
+          description: The pricing mechanism to be used - 5.
+          example: Test
+        fileTypeIn:
+          type: string
+          description: To understand the file type through which the transaction came to ClientLine.
+          example: REGULAR
+          enum:
+            - REGULAR
+            - LATECUT
+        fileTypeInKey:
+          type: string
+          description: To understand the file type through which the transaction came to ClientLine. (Code)
+          example: '0'
         first6:
           type: string
           description: First six digits of card number.
           example: '666666'
         flatRate:
           type: number
+          description: Flat rate.
           format: double
           example: 0.9999
         foreignCurrAmount:
           type: number
-          description: Foreign Currency Amount
+          description: Foreign currency amount.
           format: double
           example: 999.99
         foreignCurrRate:
           type: number
-          description: Foreign Currency Rate
+          description: Foreign currency rate.
           format: double
           example: 0.999999999
-        fundedDate:
+        fpi:
           type: string
-          description: Date when the funding to/from the merchant aassociatedwith this transaction
-          example: 12/31/2020
+          description: Card network Fee Program Indicator.
+          example: AAA
+        globalTranId:
+          type: string
+          description: Global Transaction ID.
+          example: '1234567890'
         iCFeePerTranRate:
           type: number
-          description: Interchange Charge  Fee rate Per Transaction
+          description: Interchange charge fee rate per transaction.
           format: double
           example: 0.99999
+        icCardConditonCode:
+          type: string
+          description: Identifies the card condition previously read.
+          example: '0'
         icFeeAmount:
           type: number
-          description: Interchange Charge  Fee amount
+          description: Interchange charge fee amount.
           format: double
           example: 0.99999
+        icFeeCapInd:
+          type: string
+          description: IC fee cap indicator.
+          example: U
         icFeePerTranAmount:
           type: number
-          description: Interchange Charge  Fee amount Per Transaction
+          description: Interchange charge fee amount per transaction.
           format: double
           example: 0.99999
         ifFeeAmount:
           type: number
-          description: Infrastructure Fee amount
+          description: Infrastructure fee amount.
           format: double
           example: 0.99999
+        infrastructureFeeCapInd:
+          type: string
+          description: Infrastructure fee cap indicator.
+          example: U
         infrastructureFeePerTranAmount:
           type: number
-          description: Infrastructure Fee amount Per Transaction
+          description: Infrastructure fee amount per transaction.
           format: double
           example: 0.99999
         infrastructureFeePerTranRate:
           type: number
-          description: Infrastructure Fee rate Per Transaction
+          description: Infrastructure fee rate per transaction.
           format: double
           example: 0.99999
+        instalmentRegistrationId:
+          type: string
+          description: Instalment Registration ID.
+          example: '1234567890'
         integrityClass:
           type: string
-          description: Transaction Integrity Class
+          description: Transaction integrity class.
           example: X9
         invalidTxnInd:
           type: integer
-          description: Transactions with invalid invalid Tran id or invalid validate code. Applicable for Visa and Mastercard transactions
+          description: Transactions with invalid tran id or invalid validate code. Applicable for Visa and MasterCard transactions.
           format: int32
           example: 9
         invoiceNo:
@@ -3777,38 +5023,104 @@ components:
           description: ISA Fee amount
           format: double
           example: 0.99999
+        isaFeeCapInd:
+          type: string
+          description: ISA fee cap indicator.
+          example: U
         isaFeePerTranAmount:
           type: number
-          description: ISA Fee amount Per Transaction
+          description: ISA fee amount per transaction.
           format: double
           example: 0.99999
         isaFeePerTranRate:
           type: number
-          description: ISA Fee rate Per Transaction
+          description: ISA fee rate per transaction.
           format: double
           example: 0.99999
         last4:
           type: string
           description: Last four digits of card number.
           example: '4444'
+        lodgingBarChargeAmt:
+          type: number
+          description: Lodging bar charge amount.
+          format: double
+          example: 99.99
+        lodgingGiftshopChargeAmt:
+          type: number
+          description: Lodging gift shop charge amount.
+          format: double
+          example: 99.99
+        lodgingLaundryChargeAmt:
+          type: number
+          description: Lodging laundry charge amount.
+          format: double
+          example: 99.99
+        lodgingOtherServicesChargeAmt:
+          type: number
+          description: Lodging other services charge amount.
+          format: double
+          example: 99.99
+        lodgingOtherServicesCode:
+          type: string
+          description: Lodging other services code.
+          example: '999'
+        lodgingPhoneCallCharge:
+          type: number
+          description: Lodging phone call charge.
+          format: double
+          example: 99.99
+        lodgingPhoneNumber:
+          type: string
+          description: Lodging phone number.
+          example: 999-999-9999
+        lodgingRestaurentRoomServCharge:
+          type: number
+          description: Lodging restaurant/room service charge.
+          format: double
+          example: 99.99
         markerID:
           type: string
+          description: Marker ID.
           example: '00000057'
         marketSpecificIndicator:
           type: string
           description: Indicates the industry for which market-specific authorization data was included in the transaction.
           example: H
+        maximum:
+          type: integer
+          description: Maximum charge.
+          format: int32
+          example: 9999
+        mcBnkNetRefNbr:
+          type: string
+          description: Master Card (association) generated reference number.
+          example: MCFLLR46W
         mcCardholderAuthentication:
           type: string
-          description: Authentication indicates the type of Cardholder authentication used in the authorization process in support of UCAF.
+          description: Indicates the type of cardholder authentication used in the authorization process in support of UCAF.
           example: '1'
         mcPrdtId:
           type: string
-          description: A value returned by Mastercard, to designate the type of card product used to process the transaction.
+          description: A value returned by MasterCard, to designate the type of card product used to process the transaction.
           example: XXX
         mcSecurityProtocol:
           type: string
           description: Indicates the presence and type of security protocol present in the authorization process in support of UCAF.
+          example: '1'
+        mcpConfigTyp:
+          type: string
+          description: Multi-Currency Configuration Type
+          example: Default Rate
+          enum:
+            - Unknown
+            - DefaultRate
+            - ExceptionRate
+            - CardBrandRate
+            - LegacyRate
+        mcpConfigTypKey:
+          type: string
+          description: Multi-Currency Configuration Type (Code)
           example: '1'
         merchantCategory:
           type: integer
@@ -3822,20 +5134,47 @@ components:
           type: string
           description: Discretionary field sent by merchant.
           example: '9999999999'
+        merchantService:
+          type: string
+          description: The acquiring service against which the charge will apply.
+          example: Default
+        minimum:
+          type: integer
+          description: Minimum charge.
+          format: int32
+          example: 9999
         mobileIndicator:
           type: string
+          description: Mobile indicator.
           example: M
         mobileWallet:
-          type: integer
-          description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay etc.).
-          format: int32
+          type: string
+          description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.).
+          example: Non Mobile Wallet
+          enum:
+            - Unknown
+            - Apple
+            - Google
+            - Samsung
+            - Walmart
+            - Sams
+            - PayPal
+            - Visa
+            - Amazon
+            - Masterpass
+            - India
+            - Microsoft
+            - Facebook
+            - Netflix
+            - Fitbit
+            - Garmin
         mobileWalletKey:
           type: string
-          description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay etc.). (Code)
-          example: ''
+          description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
+          example: '0'
         netSalesCount:
           type: integer
-          description: Net Sales Count.
+          description: Net sales count.
           format: int32
           example: 99
         network:
@@ -3886,44 +5225,68 @@ components:
             - Certegy
             - MCI
             - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
         networkKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
           example: '6'
         networkSecurityFeeAmount:
           type: number
-          description: Network Security Fee amount
+          description: Network security fee amount.
           format: double
           example: 0.99999
+        networkSecurityFeeCapInd:
+          type: string
+          description: Network security fee cap indicator.
+          example: U
         networkSecurityFeePerTranAmount:
           type: number
-          description: Network Security Fee amount Per Transaction
+          description: Network security fee amount per transaction.
           format: double
           example: 0.99999
         networkSecurityFeePerTranRate:
           type: number
-          description: Network Security Fee rate Per Transaction
+          description: Network security fee rate per transaction.
           format: double
           example: 0.99999
         newAuthFee:
           type: number
+          description: New authorization fee.
           format: double
           example: -0.9999
         odometerReading:
           type: string
-          description: Odometer Reading
+          description: Odometer reading.
           example: '9999'
         orderNumber:
           type: string
-          description: Order Number
+          description: Order number.
           example: '999999999'
         origPlanCodeDesc:
           type: string
-          description: Interchange rate/ Plan Code description.
+          description: Original interchange rate / plan code description.
           example: '999 : PLAN CODE DESC'
         originalPlanCode:
           type: string
+          description: Original plan code.
           example: '999'
+        owdChargeAmt:
+          type: number
+          description: One way drop charge (Diners).
+          format: double
+          example: 99.99
+        panSequenceNumber:
+          type: string
+          description: Identifies the card sequence number.
+          example: AAA
         paymentMethod:
           type: string
           description: Identifies the method of payment used on the transaction.
@@ -3941,55 +5304,107 @@ components:
             - NotSpecified
             - CredentialOnFile
             - ContactlessMagneticStripe
+            - MagneticStripeReadError
+            - SmartChipRead
+            - ContactlessSmartChipRead
+            - MagneticStripeRead
+            - ContactlessMagneticStripeRead
         paymentMethodKey:
           type: string
           description: Identifies the method of payment used on the transaction. (Code)
           example: '4'
         pcTaxAmount:
           type: number
+          description: PC tax amount.
           format: double
           example: 9.99
         pcTerminalCapability:
           type: string
-          description: Code indicating if the card was Present or Not Present.
+          description: Code indicating if the card was present or not present.
           example: A99
+        percent:
+          type: number
+          description: The interchange fee percentage rate rounded to 4 decimal places
+          format: double
+          example: 99.99
+        pinlessFlag:
+          type: string
+          description: Pinless POS Debit Flag.
+          example: 'N'
+        pinlessIndicator:
+          type: string
+          description: Pinless POS Debit Indicator.
+          example: ''
+        pinlessIndicatorKey:
+          type: string
+          description: Pinless POS Debit Indicator. (Code)
+          example: ''
         planCode:
           type: string
-          description: Interchange rate/ Plan Code.
+          description: Interchange rate / plan code.
           example: '999'
         planCodeDesc:
           type: string
-          description: Interchange rate/ Plan Code description.
+          description: Interchange rate / plan code description.
           example: '999 : PLAN CODE DESC'
         platformID:
           type: string
+          description: Platform name
           example: '1'
         posEntryMode:
           type: string
-          description: POS Entry Mode.
+          description: POS entry mode.
           example: A/999
         postedIndicator:
           type: string
-          description: Posted Indicator.
+          description: Posted indicator.
           example: X
+        postingChargeDesc1:
+          type: string
+          description: Used for special pricing mechanisms For e.g., interchange pass through.
+          example: Test
+        postingChargeDesc2:
+          type: string
+          description: Used for special pricing mechanisms - 2 .
+          example: Test
+        postingChargeDesc3:
+          type: string
+          description: Used for special pricing mechanisms - 3.
+          example: Test
+        postingChargeDesc4:
+          type: string
+          description: Used for special pricing mechanisms - 4.
+          example: Test
+        postingChargeDesc5:
+          type: string
+          description: Used for special pricing mechanisms - 5.
+          example: Test
+        postingMethod:
+          type: string
+          description: Indicates whether the charge will be gross or net of the transaction itself.
+          example: GROSS
+        primaryStopReason:
+          type: string
+          description: Primary stop reason.
+          example: '1'
         processedNetAmount:
           type: number
-          description: Processed Net Amount.
+          description: Processed net amount.
           format: double
           example: 999.99
         processedRefundAmount:
           type: number
-          description: Processed Refund Amount.
+          description: Processed refund amount.
           format: double
           example: 999.99
         processedRejectAmount:
           type: number
-          description: Processed Reject Amount.
+          description: Processed reject amount.
           format: double
           example: 999.99
         processedTransactionAmount:
           type: number
-          description: Settlement amount associated with the transaction
+          description: Settlement amount associated with the transaction.
           format: double
           example: 999.99
         processor:
@@ -4012,13 +5427,14 @@ components:
             - Chase
             - Salem
             - Tampa
+            - PaySecure
         processorKey:
           type: string
           description: Identifies the settlement platform. (Code)
           example: '1'
         productCode:
           type: string
-          description: Name of the cardbrand associated with the transaction.
+          description: Name of the card brand associated with the transaction.
           example: DEBIT CARD
           enum:
             - Unknown
@@ -4120,68 +5536,140 @@ components:
             - MobileDDA
             - UPIDebit
             - UPICredit
+            - OptisPrivateLabel
+            - Adjustment
+            - PosCheck
+            - GiftCard
+            - MCDebitCanada
         productCodeKey:
           type: string
-          description: Name of the cardbrand associated with the transaction. (Code)
+          description: Name of the card brand associated with the transaction. (Code)
           example: '10'
         purchaseIdentifier:
           type: string
-          description: The Purchase Identifier information
+          description: The purchase identifier information.
           example: '9999999999'
+        readTerminalCapacity:
+          type: string
+          description: Identifies the terminal reading capacity.
+          example: '0'
         receiptNumber:
           type: string
-          description: Receipt Number.
+          description: Receipt number.
           example: '999999'
         reclassCd:
           type: string
-          description: Reclass code used to identify the Reclassification record.
+          description: Re-class indicator used to identify the reclassification record.
           example: Regular
           enum:
             - Regular
             - Reclass
         reclassCdKey:
           type: string
-          description: Reclass code used to identify the Reclassification record. (Code)
+          description: Re-class indicator used to identify the reclassification record. (Code)
           example: '0'
-        recordDate:
+        recordID:
           type: string
-          description: Date when data was loaded into system.
-          example: 12/31/2020
+          description: Record ID.
+          example: AAA
+        refSeqID:
+          type: string
+          description: Reference seq ID.
+          example: '99999999999999'
         refundCount:
           type: integer
-          description: Refund Count.
+          description: Refund count.
           format: int32
           example: 99
         rejectCount:
           type: integer
-          description: Reject Count.
+          description: Reject count.
           format: int32
           example: 99
+        rejectIndicator:
+          type: string
+          description: 1 digit code indicating if the transaction was rejected (Y) or accepted (N).
+          example: 'Y'
         rejectReason:
           type: string
-          description: Tranaction Reject Reason
+          description: Transaction reject reason.
           example: '999'
-        rejectReasonCD:
+        rentalCountry:
           type: string
-          description: Tranaction Reject Reason
+          description: The country where the rented car was picked up from.
+          example: USA
+        rentalMaxFreeMileKm:
+          type: string
+          description: The free miles or km allowed to a customer for the duration of the car rental.
+          example: '2000'
+        rentalMileKmInd:
+          type: string
+          description: Rental mile km indicator.
           example: '999'
+        rentalRatePerMileKm:
+          type: string
+          description: Rate charged per mile/km for the car rental.
+          example: '99.99'
+        retailerFeeAmount:
+          type: number
+          description: Retailer fee amount.
+          format: double
+          example: 0.99999
+        retailerFeeCapInd:
+          type: string
+          description: Retailer fee cap indicator.
+          example: U
+        retailerFeePerTranAmount:
+          type: number
+          description: Retailer fee per tran amount.
+          format: double
+          example: 0.99999
+        retailerFeePerTranRate:
+          type: number
+          description: Retailer fee per tran rate.
+          format: double
+          example: 0.99999
         salesCount:
           type: integer
-          description: Sales Count.
+          description: Sales count.
           format: int32
           example: 99
         salesTaxAmount:
           type: number
-          description: Sales Tax Amount on a petroleum transaction
+          description: Sales tax amount on a petroleum transaction.
           format: double
           example: 999.99
         serviceCode:
           type: string
-          description: Transaction Service Code
+          description: Transaction service code.
           example: '999'
+        serviceID1:
+          type: string
+          description: The service id code related to the presentment transaction - 1.
+          example: AAA
+        serviceID2:
+          type: string
+          description: The service id code related to the presentment transaction - 2.
+          example: AAA
+        serviceID3:
+          type: string
+          description: The service id code related to the presentment transaction - 3.
+          example: AAA
+        serviceID4:
+          type: string
+          description: The service id code related to the presentment transaction - 4.
+          example: AAA
+        serviceID5:
+          type: string
+          description: The service id code related to the presentment transaction - 5.
+          example: AAA
+        serviceId:
+          type: string
+          description: Service code ID.
+          example: AA1
         settleSpendQualifiedIndicator:
           type: string
-          description: The BASE II Clearing Interchange Formats, TC 01 to TC 48.)
+          description: The BASE II clearing interchange formats, TC 01 to TC 48.)
           example: 'N'
         siteID:
           type: string
@@ -4193,57 +5681,67 @@ components:
           example: ''
         storeNumber:
           type: string
-          description: Discretionary number setup on the Merchant Master.
+          description: Discretionary number setup on the merchant master.
           example: '9999'
         subMerchantID:
           type: string
-          description: Sub Merchant ID
+          description: Sub merchant ID.
           example: '9999999999'
         subMerchantName:
           type: string
-          description: Sub Merchant Name
+          description: Sub merchant name.
           example: STORE NAME
         submittedNetAmount:
           type: number
-          description: Submitted Net Amount.
+          description: Submitted net amount.
           format: double
           example: 999.99
         submittedRefundAmount:
           type: number
-          description: Submitted Refund Amount.
+          description: Submitted refund amount.
           format: double
           example: 999.99
         submittedRejectAmount:
           type: number
-          description: Submitted Reject Amount.
+          description: Submitted reject amount.
           format: double
           example: 999.99
         submittedTransactionAmount:
           type: number
+          description: Submitted sales amount.
           format: double
           example: 999.99
         surChargeAmount:
           type: number
-          description: Surcharge Amount
+          description: Surcharge amount.
           format: double
           example: 9.99
         surChargeInd:
           type: string
-          description: Surcharge Indicator
+          description: Surcharge indicator.
           example: D
+        surchargeCount:
+          type: integer
+          description: Surcharge count.
+          format: int32
+          example: 99
         switchFeeAmount:
           type: number
-          description: Switch Fee amount
+          description: Switch fee amount.
           format: double
           example: 0.99999
+        switchFeeCapInd:
+          type: string
+          description: Switch fee cap indicator.
+          example: U
         switchFeePerTranAmount:
           type: number
-          description: Switch Fee amount Per Transaction
+          description: Switch fee amount per transaction.
           format: double
           example: 0.99999
         switchFeePerTranRate:
           type: number
-          description: Switch Fee rate Per Transaction
+          description: Switch fee rate per transaction.
           format: double
           example: 0.99999
         terminalID:
@@ -4252,6 +5750,7 @@ components:
           example: '99'
         tipAmount:
           type: number
+          description: Tip amount.
           format: double
           example: 9.99
         tokenRequesterId:
@@ -4260,28 +5759,53 @@ components:
           example: '99999999999'
         tokenType:
           type: string
-          description: Token Type Code
+          description: Token type code.
           example: X999
         totalAuthAmount:
           type: number
-          description: Total Amount authorized for a transaction
+          description: Total amount authorized for a transaction.
           format: double
           example: 999.99
         tranId:
           type: string
-          description: Tran Id
+          description: Tran ID.
           example: AAA999AAA999
+        tranType1:
+          type: string
+          description: Transaction type for the related charge posted to account, For e.g., per tran fee, cross border fee, on a net pricing model it can be merchant purchase deposit or merchant debit.
+          example: Purchase
+        tranType2:
+          type: string
+          description: Transaction type for the related charge posted to account - 2.
+          example: Purchase
+        tranType3:
+          type: string
+          description: Transaction type for the related charge posted to account - 3.
+          example: Purchase
+        tranType4:
+          type: string
+          description: Transaction type for the related charge posted to account - 4.
+          example: Purchase
+        tranType5:
+          type: string
+          description: Transaction type for the related charge posted to account - 5.
+          example: Purchase
         tranUID:
           type: string
-          description: Transaction Unique Id
+          description: Transaction unique ID.
           example: AAAA9999999999999999999999999999999
-        transactionDate:
+        transactionCharges:
+          type: number
+          description: Transaction charges.
+          format: double
+          example: 999.99
+        transactionCountry:
           type: string
-          description: Date of the authorization transaction.
-          example: 12/31/2020
+          description: Transaction country.
+          example: '280'
         transactionMode:
           type: string
-          description: Transaction Mode associated with the transaction. Also known as Capture Method.
+          description: Transaction mode associated with the transaction. Also known as capture method.
           example: Electronic
           enum:
             - Unknown
@@ -4290,15 +5814,15 @@ components:
             - Swiped
         transactionModeKey:
           type: string
-          description: Transaction Mode associated with the transaction. Also known as Capture Method. (Code)
+          description: Transaction mode associated with the transaction. Also known as capture method. (Code)
           example: '2'
         transactionSource:
           type: string
-          description: How the transaction was sent to us for processing
+          description: How the transaction was sent to us for processing.
           example: '9'
         transactionStatus:
           type: string
-          description: Transaction Processing Status associated with the Settle transaction.
+          description: Transaction processing status associated with the settle transaction.
           example: Processed
           enum:
             - Unknown
@@ -4309,7 +5833,7 @@ components:
             - Cancelled
         transactionStatusKey:
           type: string
-          description: Transaction Processing Status associated with the Settle transaction. (Code)
+          description: Transaction processing status associated with the settle transaction. (Code)
           example: '1'
         transactionTime:
           type: string
@@ -4319,9 +5843,17 @@ components:
           type: string
           description: Uniquely identifies a transaction.
           example: '9999999999'
+        trmnBtchClosTm:
+          type: string
+          description: Hour, minute and second the terminal batch is closed.
+          example: '235959'
+        trmnBtchNr:
+          type: string
+          description: Terminal Batch Number.
+          example: '0000001029'
         type:
           type: string
-          description: Transaction type code e.g. sale, refund etc.
+          description: Transaction type code e.g., sale, refund etc.
           example: Purchase
           enum:
             - Unknown
@@ -4361,30 +5893,46 @@ components:
             - Check
             - DirectDebitMandate
             - TerminalRegistration
+            - FundingCredit
+            - MoneyTransferCredit
+            - ECommerceDebit
+            - BillPayDebit
+            - MoneyTransferDebit
+            - FundingDebit
+            - OTP
         typeKey:
           type: string
-          description: Transaction type code e.g. sale, refund etc. (Code)
+          description: Transaction type code e.g., sale, refund etc. (Code)
           example: '2'
         userData:
           type: string
-          description: Discretionary data sent on transaction by the merchant
+          description: Discretionary data sent on transaction by the merchant.
           example: AA99BB99CC99
         vehicleNumber:
           type: string
-          description: Vehicle Number
+          description: Vehicle number.
           example: '9999999999'
         visaPrdtId:
           type: string
           description: A value returned by Visa, to designate the type of card product used to process the transaction.
           example: XX
+        visaPurchaseIdentifierFormat:
+          type: string
+          description: Specifies the format/type of additional identifying information for purchases.
+          example: '1'
         visaServiceDevelop:
           type: string
           description: Indicates type of commerce.
           example: A99
         visaTranId:
           type: string
-          description: Visa (association)  generated ID.
+          description: Visa (association) generated ID.
           example: '999999999999999'
+        weeklyRentalRate:
+          type: number
+          description: Weekly rental rate (Diners).
+          format: double
+          example: 99.99
     RetrievalSummaryResponse:
       type: object
       properties:
@@ -4633,6 +6181,19 @@ components:
             - CoveredBySellerProtectionFraud
             - ProblemWithRemittance
             - Other
+            - ChdRequestForCopyWithSignature
+            - TandEDocumentRequest
+            - ChdRequestDueToDispute
+            - LegalOrFraudAnalysisRequest
+            - SalesDraftsContracts
+            - ReturnPolicies
+            - ShippingInfo
+            - ProofOfDelivery
+            - Warranties
+            - CancellationPolicy
+            - PaymentsPaymentReceipt
+            - PaymentsCopyOfCashedCheck
+            - MedicalCopyOfOfficeVisitNotes
         ReasonKey:
           type: string
           description: Descriptive reason associated with a specific Retrieval. (Code)
@@ -4700,6 +6261,15 @@ components:
             - Certegy
             - MCI
             - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
         authNetworkKey:
           type: string
           description: Authorization network of the credit card utilized for the transaction. (Code)
@@ -4724,6 +6294,7 @@ components:
             - Chase
             - Salem
             - Tampa
+            - PaySecure
         backendProcessorKey:
           type: string
           description: Internal settlement platform. (Code)
@@ -4932,6 +6503,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -5258,6 +6830,7 @@ components:
             - Chase
             - Salem
             - Tampa
+            - PaySecure
       description: Various filter options for sites queries
     SitesSearchRequest:
       type: object
@@ -5416,6 +6989,7 @@ components:
             - Chase
             - Salem
             - Tampa
+            - PaySecure
         platformKey:
           type: string
           description: Identifies the processor for the merchant. (Code)
@@ -7936,6 +9510,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -8037,7 +9612,6 @@ components:
             - DiscountsServiceCharges
             - InterchangeAssessment
             - Adjustment
-            - NA
         majorCategoryKey:
           type: string
           description: Identifies the major category for the merchant. (Code)
@@ -9602,6 +11176,374 @@ components:
             - McDeclineRsnCdFeeIntMin
             - McDeclineRsnCdSvFeeInt
             - ViLacSecureCfNonTokenFee
+            - NWAcpt020AuthLACDMS
+            - NWAcpt2125AuthLACDMS
+            - NWAcpt2630AuthLACDMS
+            - NWNoAcptAuthLACDMS
+            - NWAcpt020FrdCNPLACDMS
+            - NWAcpt2125FrdCNPLACDMS
+            - NWAcpt2630FrdCNPLACDMS
+            - NWNoAcptFrdCNPLACDMS
+            - NWAcpt020FrdExcessDMS
+            - NWAcpt2125FrdExcessDMS
+            - NWAcpt2630FrdExcessDMS
+            - NWNoAcptFrdExcessDMS
+            - NWAcpt020FrdCNPLACSMS
+            - NWAcpt2125FrdCNPLACSMS
+            - NWAcpt2630FrdCNPLACSMS
+            - NWNoAcptFrdCNPLACSMS
+            - NWAcpt020FrdExcessSMS
+            - NWAcpt2125FrdExcessSMS
+            - NWAcpt2630FrdExcessSMS
+            - NWNoAcptFrdExcessSMS
+            - MCUSIntFeeNotDefn
+            - CashbackFee
+            - SecurityManagedServiceDR
+            - SecurityManagedServiceCR
+            - SecurityManagedSvsVATDR
+            - SecurityManagedSvsVATCR
+            - VatRefundCommision
+            - LPExtWHTDR
+            - LPMerchReserve
+            - LPMerchRollReserve
+            - SMConsAVSAuthFee
+            - PFVisaISAFeeAPJPSingle
+            - VCRResponsefee3
+            - PFVisaISAFeeAPJPMulti
+            - CommerceHubSolEcosystemFee
+            - CommerceHubMonthlyFee
+            - CommerceHubSetupFee
+            - CommercehubStdPerTranCtCr
+            - CommercehubStdPerTranAtCr
+            - CommercehubStdPerTranCtDb
+            - CommercehubStdPerTranAtDb
+            - CommercehubPrmPerTranCtCr
+            - CommercehubPrmPerTranAtCr
+            - CommercehubPrmPerTranCtDb
+            - CommercehubPrmPerTranAtDb
+            - InterchangeChargesCredit
+            - InterchangeChargesDebit
+            - CardFees
+            - MerchantFeeControl
+            - NetworkTokenProvisionFee
+            - NetworkTokenperTransFee
+            - NetworkTokenImplementFee
+            - IsoClearingTranFee
+            - IsoReclassFee
+            - IsoNetworkIntegrityFee
+            - IsoAuthSwitchFee
+            - IsoBaseIiCrVoucherInc
+            - IsoBaseIiSystemFileInc
+            - IsoTbdIncome
+            - IsoVsTrnIntegrityIncome
+            - IsoMcNabuAuthIncome
+            - IsoMcNabuCreditsReturnsIncome
+            - IsoMcNabuIntlAdjustmentIncome
+            - IsoDigitalEnablementIncome
+            - IsoMcAsmtTranAmtOver$1kInc
+            - IsoMcPiIncome
+            - IsoGlobalTravelB2bIncome
+            - IsoVisaNetwkAcquirerIncome
+            - IsoVisaMdexVipAccessIncome
+            - IsoVsZeroFloorLimitIncome
+            - IsoVsMisuseAuthSystemIncome
+            - IsoVsIntlAcquirerIncome
+            - IsoDsDataTransmitIncome
+            - IsoDsDataUsageIncome
+            - IsoDsIntlProcIncome
+            - IsoDsIntlServiceIncome
+            - IsoMcNabuIncome
+            - McGatewayAccessIncome
+            - IsoCorpSwitchIncome
+            - IsoDbtNetworkSecurityIncome
+            - IsoMcAcquirerProgIncome
+            - IsoVsIntlSvcIncome
+            - IsoMcCrossBorderIncome
+            - IsoSalesTaxAugmtIncome
+            - IsoAuthFeeIncome
+            - IsoMcAafIncome
+            - IsoMcAdjNonAdjFeeIncome
+            - IsoMiscFeeIncome
+            - IsoProcFeeIncome
+            - IsoICFeeIncome
+            - IsoAsmtFeeIncome
+            - IsoBaseIiFeeIncome
+            - ClearingConnectivityIsoInc
+            - IsoNtwkFeeIncome
+            - IsoCbFeeIncome
+            - IsoMcAddrVerifSvcIncome
+            - IsoGwayFeeIncome
+            - InterchangeNetworkExpense
+            - AssessmentExpense
+            - BaseIiExpense
+            - ReserveHold
+            - AchCollectionHold
+            - AchCbCollectionHold
+            - McCvc2TransactionExpense
+            - VsFanfExpense
+            - VsZeroDollarExpense
+            - AuthorizationMiscExpense
+            - McInstlPgmPurchaseExpense
+            - VsSecureCfNonTknExpense
+            - CredentialContinuityExpense
+            - DebitCommChargesExpense
+            - InterlinkAccessFeeExpense
+            - InterlinkProcessorExpense
+            - NyceDataFileExpense
+            - CountOfPaymentsToMerchant
+            - VsAddressVerifSvcExpense
+            - McReclassExpense
+            - ProgramIntegrityExpense
+            - VsSystemIntegrityExpense
+            - AuthConnectivityExpense
+            - DebtAuthExpense
+            - ClearingConnectivityExpense
+            - McCrossBorderExpense
+            - DigitalEnablementExpense
+            - McFixedAccessExpense
+            - VsIntlServiceExpense
+            - McAcquirerProgExpense
+            - DbtNetworkSecurityExpense
+            - McIpmExpense
+            - McGatewayAccessExpense
+            - McNabuExpense
+            - VisaNetwkAcquirerExpense
+            - VisaMdexVipAccessExpense
+            - VsZeroFloorLimitExpense
+            - VsMisuseAuthSystemExpense
+            - BaseIiDataProcRtnExpense
+            - DsAuthNetworkExpense
+            - TransArmorAuthExpense
+            - McLicenseExpense
+            - VisaMdexDbtGatewayExpense
+            - DsIntlProcessExpense
+            - DsIntlServiceExpense
+            - VisaIntlAcquirerExpense
+            - VsTrnIntegrityExpense
+            - McNabuAuthExpense
+            - McNabuCreditsReturnsExpense
+            - McNabuIntlAdjustmentExpense
+            - DsDataUsageExpense
+            - DsDataTransmitExpense
+            - McAddressVerifSvcExpense
+            - VsMdexNonVsAccessExpense
+            - McPiExpense
+            - GlobalTravelB2bExpense
+            - DigitalInvestmentExpense
+            - McInstlPgmRefundExpense
+            - DsAddressVerifSvcExpense
+            - DsAccountVerifSvcExpense
+            - McMerLocationExpense
+            - StagedDigitalWalletExpense
+            - ExceptionExpense
+            - McFreightPrgmExpense
+            - McProcessingExcellenceExpense
+            - CbpsParticipationExpense
+            - TbdExpenseInMasQueryOnly
+            - WithholdingAmount
+            - McNabuAuthorizations
+            - McNabuCreditsReturns
+            - McNabuIntlAdjustment
+            - VsTransIntegrityFee
+            - VisaMdexDbtGatewayFee
+            - VsMdexNonVsAccessFee
+            - NyceDataFileFee
+            - BaseIiSystemFileFee
+            - BaseIiCrVoucherFee
+            - InterlinkInterregionFee
+            - DsNetworkFee
+            - DsAuthNetworkFee
+            - TransArmorAuthFee
+            - McCvc2TransactionFee
+            - SmartRteRevShare
+            - GlobalTravelB2bFee
+            - McInstlPgmPurchaseFee
+            - DsAddressVerifSvcFee
+            - DsAccountVerifSvcFee
+            - McIdentityCheckFee
+            - StagedDigitalWalletFee
+            - ExceptionFee
+            - McProcessingExcellence
+            - TransArmorP2peFee
+            - McReclassFee
+            - ProgramIntegrityFee
+            - VsSystemIntegrityFee
+            - AuthConnectivityFee
+            - McAuthConnectivityFee
+            - UcomFee
+            - VsZeroDollarFee
+            - CbpsParticipationFee
+            - VsAddressVerifSvcFee
+            - McInstlPgmRefundFee
+            - VsSecureCfNonTknFee
+            - CredentialContinuityFee
+            - VisaStopPaymentServiceFee
+            - DebitAuthFee
+            - IsoMcCvc2TransactionFee
+            - IsoDsAuthNetworkFee
+            - IsoBaseIiSystemFileFee
+            - IsoBaseIiCrVoucherFee
+            - IsoMcFreightPrgmFee
+            - IsoMcLicenseFee
+            - IsoDsIntlProcFee
+            - IsoDsIntlServiceFee
+            - IsoVsIntlAcquirerFee
+            - IsoVsTrnIntegrityFee
+            - IsoMcNabuAuthFee
+            - IsoMcNabuCreditsReturnsFee
+            - IsoMcNabuIntlAdjustmentFee
+            - IsoDsDataUsageFee
+            - IsoDsDataTransmitFee
+            - IsoGlobalTravelB2bFee
+            - IsoMcAsmtTranAmtOver$1k
+            - IsoMcPiFee
+            - IsoMcIdentityCheckFee
+            - IsoMcAddressVerifSvcFee
+            - IsoInterlinkInterregFee
+            - IsoMcReclassFee
+            - IsoTransArmorP2peFee
+            - IsoTransArmorAuthFee
+            - IsoDigitalEnablementFee
+            - IsoVsMdexDbtGatewayFee
+            - IsoVsMdexNonVsAccessFee
+            - IsoNyceDataFileFee
+            - IsoSystemIntegrityFee
+            - CredentialContinuityIsoFee
+            - IsoDsAddressVerifSvcFee
+            - IsoDsAccountVerifSvcFee
+            - IsoProgramIntegrityFee
+            - IsoExceptionFee
+            - IsoFraudDetectFee
+            - IsoMcProcessingExcellence
+            - McAuthConnectivityIsoFee
+            - VsAddressVerifSvcIsoFee
+            - VsZeroDollarIsoFee
+            - CbpsParticipationIsoFee
+            - DigitalEnablementIsoFee
+            - VisaStopPaymentServiceIsoFee
+            - DebitAuthIsoFee
+            - TransactionClearingProcessedItems
+            - TcReclassifiedItems
+            - TcReclassifiedItemsAdjustedToMasqueryOnly
+            - TransactionClearingNonProcessedItems
+            - TransactionVolumeCounts
+            - ChargebacksResolvedToMerchant
+            - ManualChargebacks
+            - MiscEquipment
+            - MiscSupply
+            - BillableActivities
+            - AdjustmentItems
+            - ManualRejects
+            - UnprocessedTxnDupInvSus
+            - WithholdingVolume
+            - InvoiceWriteOff
+            - ReservedForMrs
+            - ProcessingFee
+            - BaseIiFee
+            - MidQualSurchargeFee
+            - DebitNetworkSwitchFee
+            - DebitInterchangeFee
+            - DebitGatewayFee
+            - NonQualificationFee
+            - DebitAcquirerSwitchFee
+            - AuthorizationFee
+            - McAcquirerAccessFee
+            - MiscellaneousAuthFee
+            - MinimumFee
+            - Rebate
+            - McAdjNonadjItems
+            - PosCheckFee
+            - DebitCommCharges
+            - InterlinkAccessFee
+            - InterlinkProcessor
+            - AuthMatchAccessFee
+            - VsDialAuthAccessFee
+            - VitalGatewayFee
+            - IncomingChargebackFee
+            - DebitCardAdjustment
+            - SalesTaxAugmentFee
+            - WirelessFee
+            - MastercardGatewayFee
+            - FraudDetectFee
+            - ServiceFee
+            - ClearingConnectivityFee
+            - McCrossBorderFee
+            - CmtDiscount
+            - KeyTranslationFee
+            - VsIntlServiceFee
+            - McAcquirerProgFee
+            - DebitNetworkSecurityFee
+            - CorporateSwitchFee
+            - McGatewayAccessFee
+            - McNabuFee
+            - VisaNetwkAcquirerFee
+            - VisaMdexVipAccessFee
+            - VsZeroFloorLimitFee
+            - VsMisuseAuthSystemFee
+            - AdjustmentTransactionFee
+            - LateTransactionFee
+            - DeniedSponsorshipFee
+            - DeniedSwitchFee
+            - BalanceCarriedForward
+            - DsIntlProcessFee
+            - DsIntlServiceFee
+            - VisaIntlAcquirerFee
+            - Freight
+            - DsDataUsageFee
+            - DsDataTransmitFee
+            - McAddressVerifSvcFee
+            - McAsmtTranAmtOver1k
+            - McPiFee
+            - InterchangeReimbursement
+            - IsoVisaNetwkAcquirerFee
+            - IsoVisaMdexVipAccessFee
+            - IsoVsZeroFloorLimitFee
+            - IsoVsMisuseAuthSystemFee
+            - IsoMcNabuFee
+            - AuthConnectivityIsoFee
+            - IsoMcPreAuthorizationFee
+            - IsoDbtNetworkSecurityFee
+            - IsoMcAcquirerProgFee
+            - IsoVsIntlServiceFee
+            - IsoMonthlyFloatFee
+            - IsoAllAuthsFee
+            - IsoMiscellaneousFee
+            - IsoAuthFee
+            - ClearingConnectivityIsoFee
+            - IsoMcCrossBorderFee
+            - IsoMerchantSettlement
+            - DueFromAssociation
+            - DueToAssociation
+            - IsoSalesTaxAugmtFee
+            - IsoDebitCommCharges
+            - IsoProcessingFee
+            - IsoInterchangeFee
+            - IsoAssessmentFee
+            - IsoBaseIiFee
+            - IsoMcAdjNonAdjFee
+            - IsoMcaafFee
+            - IsoWireAchFee
+            - IsoInterlinkAccessFee
+            - IsoInterlinkProcessor
+            - CreditInvoiceAdjustment
+            - CreditAmountUnapplied
+            - ManualBillingAdjustment
+            - MerchantAdjustments
+            - DepositReserve
+            - AchCollection
+            - AchCbCollection
+            - MerchantRemittance
+            - CreditAmtUnapplied
+            - NegativeRemittance
+            - WriteOffTxn
+            - MerchantBillingAdjustment
+            - ManualClosingInvoiceAccount
+            - MerchantChequeReturned
+            - UnapplMerChequeRet
+            - ViNonDomesticSettleCharge
+            - ViIntegrityFeeDetailReport
+            - ViBase2ReturnFee
+            - StarTokenExchangeDebitFee
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -9644,6 +11586,7 @@ components:
             - Chase
             - Salem
             - Tampa
+            - PaySecure
         processorKey:
           type: string
           description: Identifies the funding platform. (Code)
@@ -9752,6 +11695,11 @@ components:
             - MobileDDA
             - UPIDebit
             - UPICredit
+            - OptisPrivateLabel
+            - Adjustment
+            - PosCheck
+            - GiftCard
+            - MCDebitCanada
         productCodeKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -10034,6 +11982,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         timeZone:
           type: string
           description: TimeZone of the transaction.
@@ -10288,6 +12237,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         currencyKey:
           type: string
           description: Currency of the transaction. (Code)
@@ -10804,6 +12754,1548 @@ components:
         filters:
           $ref: '#/components/schemas/DisbursementsFilters'
       description: Request object for Disbursement search
+    CommerceHubReportingFilters:
+      type: object
+      properties:
+        approvalCodes:
+          type: array
+          description: Any transactions matching with any one of the specified Approval Codes
+          example:
+            - Approved
+          items:
+            type: string
+            description: Any transactions matching with any one of the specified Approval Codes
+            example: '["Approved"]'
+            enum:
+              - Unknown
+              - Approved
+              - Declined
+        paymentMethods:
+          type: array
+          description: Any transactions matching with any one of the specified Payment Methods
+          example:
+            - EMV
+          items:
+            type: string
+            description: Any transactions matching with any one of the specified Payment Methods
+            example: '["EMV"]'
+            enum:
+              - Unknown
+              - Manual
+              - MagneticStripe
+              - OCR
+              - EMV
+              - ContactlessChip
+              - MobileECommerce
+              - Fallback
+              - BarCode
+              - NotSpecified
+              - CredentialOnFile
+              - ContactlessMagneticStripe
+              - MagneticStripeReadError
+              - SmartChipRead
+              - ContactlessSmartChipRead
+              - MagneticStripeRead
+              - ContactlessMagneticStripeRead
+        networks:
+          type: array
+          description: Any transactions matching with any one of the specified Networks
+          example:
+            - Master
+          items:
+            type: string
+            description: Any transactions matching with any one of the specified Networks
+            example: '["Master"]'
+            enum:
+              - Unknown
+              - Amex
+              - Visa
+              - Master
+              - Discover
+              - Pulse
+              - Accel
+              - Interlink
+              - Jeanie
+              - Maestro
+              - NYCE
+              - CU24
+              - Shazam
+              - EBT
+              - AFFN
+              - Telecheck
+              - Diners
+              - PayPal
+              - ValueLink
+              - Private
+              - Debit
+              - Voyager
+              - ATH
+              - JCB
+              - StarNE
+              - StarSE
+              - StarW
+              - StarAccess
+              - FleetCor
+              - SVS
+              - WEX
+              - Incomm
+              - Interac
+              - NA
+              - Moneris
+              - VaultedCard
+              - PAVD
+              - MCSend
+              - UnionPay
+              - FraudFlex
+              - Certegy
+              - MCI
+              - PaypalVenmo
+              - Conduent
+              - FISG
+              - INMR
+              - PWMB
+              - SOLU
+              - WCHP
+              - AliPay
+              - EFunds
+              - ACS
+        types:
+          type: array
+          description: Any transactions matching with any one of the specified Transaction Types
+          example:
+            - Purchase
+          items:
+            type: string
+            description: Any transactions matching with any one of the specified Transaction Types
+            example: '["Purchase"]'
+            enum:
+              - Unknown
+              - Totals
+              - Purchase
+              - PreAuthRequest
+              - PreAuthComplete
+              - Reversal
+              - Return
+              - Cancellation
+              - MailAuth
+              - Activate
+              - Recharge
+              - Verification
+              - TeleCheck
+              - StartFueling
+              - DoNotUse
+              - Fee
+              - Withdrawal
+              - Deposit
+              - Transfer
+              - Balance
+              - FraudScore
+              - GenToken
+              - Adjustment
+              - ReportAsLost
+              - CloseAccount
+              - FreezeAccount
+              - UnfreezeAccount
+              - History
+              - TimeoutReversal
+              - SetupAutoReload
+              - ReturnReversal
+              - Cashback
+              - Forced
+              - PaymentInitialization
+              - Check
+              - DirectDebitMandate
+              - TerminalRegistration
+              - FundingCredit
+              - MoneyTransferCredit
+              - ECommerceDebit
+              - BillPayDebit
+              - MoneyTransferDebit
+              - FundingDebit
+              - OTP
+        currency:
+          type: array
+          description: Transactions associated with a particular
+          example:
+            - USD
+          items:
+            type: string
+            description: Transactions associated with a particular
+            example: '["USD"]'
+            enum:
+              - Unknown
+              - USD
+              - AFN
+              - DZD
+              - ARS
+              - AMD
+              - AWG
+              - AUD
+              - AZN
+              - BSD
+              - BHD
+              - THB
+              - PAB
+              - BBD
+              - BYR
+              - BZD
+              - BMD
+              - VEF
+              - BOB
+              - BRL
+              - BND
+              - BGN
+              - BIF
+              - CAD
+              - CVE
+              - KYD
+              - XOF
+              - XAF
+              - XPF
+              - CLP
+              - COP
+              - KMF
+              - BAM
+              - NIO
+              - CRC
+              - HRK
+              - CUP
+              - CZK
+              - GMD
+              - DKK
+              - MKD
+              - DJF
+              - STD
+              - DOP
+              - VND
+              - XCD
+              - EGP
+              - SVC
+              - ETB
+              - EUR
+              - FKP
+              - FJD
+              - HUF
+              - CDF
+              - GHS
+              - GIP
+              - HTG
+              - PYG
+              - GNF
+              - GWP
+              - GYD
+              - HKD
+              - UAH
+              - ISK
+              - INR
+              - IRR
+              - IQD
+              - JMD
+              - JOD
+              - KES
+              - PGK
+              - LAK
+              - KWD
+              - MWK
+              - ZMK
+              - AOA
+              - MMK
+              - GEL
+              - LVL
+              - LBP
+              - ALL
+              - HNL
+              - SLL
+              - LRD
+              - LYD
+              - SZL
+              - LTL
+              - LSL
+              - MGA
+              - MYR
+              - MUR
+              - MZN
+              - MXN
+              - MXV
+              - MDL
+              - MAD
+              - BOV
+              - NGN
+              - ERN
+              - NAD
+              - NPR
+              - ANG
+              - ILS
+              - RON
+              - TWD
+              - TRY
+              - NZD
+              - BTN
+              - KPW
+              - NOK
+              - PEN
+              - MRO
+              - TOP
+              - PKR
+              - MOP
+              - UYU
+              - PHP
+              - GBP
+              - BWP
+              - QAR
+              - GTQ
+              - ZAR
+              - OMR
+              - KHR
+              - MVR
+              - IDR
+              - RUB
+              - RWF
+              - SHP
+              - SAR
+              - XDR
+              - RSD
+              - SCR
+              - SGD
+              - SBD
+              - KGS
+              - SOS
+              - TJS
+              - LKR
+              - SDG
+              - SRD
+              - SEK
+              - CHF
+              - SYP
+              - BDT
+              - WST
+              - TZS
+              - KZT
+              - TTD
+              - MNT
+              - TND
+              - AED
+              - UGX
+              - COU
+              - CLF
+              - UYI
+              - USN
+              - USS
+              - UZS
+              - VUV
+              - CHE
+              - CHW
+              - KRW
+              - YER
+              - JPY
+              - CNY
+              - PLN
+              - XBA
+              - XTS
+              - XBB
+              - XBD
+              - XBC
+              - XAU
+              - XPD
+              - XPT
+              - XAG
+              - XXX
+              - XFU
+              - TMT
+              - ZWL
+              - CUC
+              - SSP
+              - XUA
+              - XSU
+              - BYN
+              - VES
+              - ZMW
+              - SLE
+        authCode:
+          type: string
+          description: Auth Code, Full match
+          example: I7B1Q1
+        first6:
+          maxLength: 6
+          minLength: 6
+          type: string
+          description: 'First 6 of the card #, Full match'
+          example: '528757'
+        last4:
+          maxLength: 4
+          minLength: 4
+          type: string
+          description: 'Last 4 of the card #, Full match'
+          example: '0000'
+      description: Various filter options for authorizations queries
+    CommerceHubSummaryRequest:
+      required:
+        - fromDate
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        summaryBy:
+          type: string
+          description: Summary grouped by this field
+          example: Network
+          enum:
+            - TxnDay
+            - TxnWeek
+            - TxnMonth
+            - TxnQuarter
+            - TxnYear
+            - Network
+            - TxnType
+            - PaymentMethod
+            - TxnState
+            - SourceType
+            - Apikey
+        filters:
+          $ref: '#/components/schemas/CommerceHubReportingFilters'
+      description: Request object for authorization summary report creation
+    CommerceHubReportingObj:
+      type: object
+      properties:
+        BYOM:
+          type: integer
+          description: Identifies whether the commercehub mid is a 'Bring Your Own MID'.
+          format: int32
+        BYOMKey:
+          type: string
+          description: Identifies whether the commercehub mid is a 'Bring Your Own MID'. (Code)
+          example: '0'
+        ECIndicator:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.eciIndicator. Description: The Electronic Commerce Indicator used for the transaction.'
+          example: Secure E-Comm
+          enum:
+            - Unknown
+            - SingleMail
+            - Recurring
+            - Installment
+            - SecureEComm
+            - NonAuthEComm
+            - EncryptedEComm
+            - NonSecureEComm
+            - DeferredTxn
+            - OptionalRegionalUse
+            - SingleMailRetail
+            - ReAuthTxn
+            - IVR
+            - NotEComm
+        ECIndicatorKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.eciIndicator. Description: The Electronic Commerce Indicator used for the transaction. (Code)'
+          example: '4'
+        accountNumber:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.Card.cardData. Description: Card number or encrypted data.'
+          example: 123456XXXXXXXX5555
+        amount:
+          type: number
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.total. Description: The approved amount of the transaction.'
+          format: double
+          example: 9.99
+        apiTraceID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.apiTraceId. Description: Request identifier in API that can be used to request logs from the support team.'
+          example: 5fcd13e2ec114c58b5216c542a4ce4d7
+        apikey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.apikey. Description: Request identifier in API that can be used to request logs from the support team.'
+          example: McdjzLKKksIVxliNpiJlHPZ7QnnFBiXX
+        approvalCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.ApprovalStatus. Description: Final status of the transaction.'
+          example: Approved
+          enum:
+            - Unknown
+            - Approved
+            - Declined
+        approvalCodeKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.ApprovalStatus. Description: Final status of the transaction. (Code)'
+          example: '1'
+        authCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.approvalCode. Description: Authorization code from Association(s). Generally 6/7 alphanumeric code that gets printed on the receipt.'
+          example: GD6HDE7
+        authType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.authorizationTypeIndicator. Description: Type of authorization requested (e.g. Initial, Reauth, etc.).'
+          example: Purchase
+          enum:
+            - Unknown
+            - Totals
+            - Purchase
+            - PreAuthRequest
+            - PreAuthComplete
+            - Reversal
+            - Return
+            - Cancellation
+            - MailAuth
+            - Activate
+            - Recharge
+            - Verification
+            - TeleCheck
+            - StartFueling
+            - DoNotUse
+            - Fee
+            - Withdrawal
+            - Deposit
+            - Transfer
+            - Balance
+            - FraudScore
+            - GenToken
+            - Adjustment
+            - ReportAsLost
+            - CloseAccount
+            - FreezeAccount
+            - UnfreezeAccount
+            - History
+            - TimeoutReversal
+            - SetupAutoReload
+            - ReturnReversal
+            - Cashback
+            - Forced
+            - PaymentInitialization
+            - Check
+            - DirectDebitMandate
+            - TerminalRegistration
+            - FundingCredit
+            - MoneyTransferCredit
+            - ECommerceDebit
+            - BillPayDebit
+            - MoneyTransferDebit
+            - FundingDebit
+            - OTP
+        authTypeKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.authorizationTypeIndicator. Description: Type of authorization requested (e.g. Initial, Reauth, etc.). (Code)'
+          example: '2'
+        billingAddress:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.street. Description: Street address.'
+          example: 1 Sample Way
+        billingCity:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.city. Description: City or locality.'
+          example: Anytown
+        billingCountry:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.country. Description: ISO-3166-1 alpha-2, alpha-3, numeric or full country name.'
+          example: USA
+        billingFirstName:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.BillingAddress.firstName. Description: Billing first name.'
+          example: John
+        billingHouse:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.houseNumberOrName. Description: Secondary address information e.g. house number or name.'
+          example: '1'
+        billingLastName:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.BillingAddress.lastName. Description: Billing last name.'
+          example: Doe
+        billingStPrvnc:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.stateOrProvince. Description: State or province name.'
+          example: TX
+        billingZip:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.postalCode. Description: The zip code or postal code.'
+          example: 99999-9999
+        cardExpiryDate:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.Card.expirationMonth + Source.Card.expirationYear. Description: Indicates expiration date on card.'
+          example: 12/24
+        clientRequestID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.clientRequestId. Description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control.'
+          example: 5fcd13e2ec114c58b5216c542a4ce4d7
+        currency:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.currency. Description: Currency code used for the transaction ISO 3 currency format.'
+          example: USD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+            - SLE
+        currencyKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.currency. Description: Currency code used for the transaction ISO 3 currency format. (Code)'
+          example: '1'
+        custIPAddress:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Customer.ipAddress. Description: The ipAddress of the sender, from where the transaction was originated.'
+          example: ''
+        customerName:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.Card.nameOnCard. Description: Cardholder name.'
+          example: JXXXXXXXE
+        directedRoutingNetwork:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.DirectedRouting.network. Description: Identifies the debit card processing network.'
+          example: Visa
+          enum:
+            - Unknown
+            - Amex
+            - Visa
+            - Master
+            - Discover
+            - Pulse
+            - Accel
+            - Interlink
+            - Jeanie
+            - Maestro
+            - NYCE
+            - CU24
+            - Shazam
+            - EBT
+            - AFFN
+            - Telecheck
+            - Diners
+            - PayPal
+            - ValueLink
+            - Private
+            - Debit
+            - Voyager
+            - ATH
+            - JCB
+            - StarNE
+            - StarSE
+            - StarW
+            - StarAccess
+            - FleetCor
+            - SVS
+            - WEX
+            - Incomm
+            - Interac
+            - NA
+            - Moneris
+            - VaultedCard
+            - PAVD
+            - MCSend
+            - UnionPay
+            - FraudFlex
+            - Certegy
+            - MCI
+            - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
+        directedRoutingNetworkKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.DirectedRouting.network. Description: Identifies the debit card processing network. (Code)'
+          example: '2'
+        encryptBlock:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionBlock. Description: Encryption Block.'
+          example: 99999999-9999999999
+        encryptDeviceType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.deviceType. Description: Information about the device type that is used for encryption.'
+          example: ''
+        encryptDeviceTypeKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.deviceType. Description: Information about the device type that is used for encryption. (Code)'
+          example: ''
+        encryptTarget:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionTarget. Description: Information about the target for encryption.'
+          example: ''
+        encryptTargetKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionTarget. Description: Information about the target for encryption. (Code)'
+          example: ''
+        encryptType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionType. Description: Information about the type of encryption.'
+          example: ''
+        encryptTypeKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionType. Description: Information about the type of encryption. (Code)'
+          example: ''
+        errorCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Error.code. Description: Error response code from the host, gateway or network.'
+          example: '999'
+        errorMessage:
+          type: string
+          description: 'Commerce Hub Data Model Name: Error.message. Description: Information specific to a property or attribute.'
+          example: ''
+        invoiceNumber:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantInvoiceNumber. Description: Merchant invoice number (aka reference number).'
+          example: '11111111'
+        merchantCity:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.city. Description: The city of the merchant where the transaction happened.'
+          example: Anytown
+        merchantCountry:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.country. Description: The country of the merchant where the transaction happened.'
+          example: USA
+        merchantID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.merchantId. A unique ID used to identify the Merchant. Description: The merchant must use the value assigned by the acquirer or the gateway when submitting a transaction. Utilized for clients that support dynamic descriptor, or support multiple stores in the same app.'
+          example: ''
+        merchantMCC:
+          type: integer
+          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.mcc. Description: Identifies the standard merchant category code assigned to the transaction.'
+          format: int32
+        merchantMCCKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.mcc. Description: Identifies the standard merchant category code assigned to the transaction. (Code)'
+          example: ''
+        merchantName:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.merchantName. Description: The name assigned to the processing merchant.'
+          example: ABC Store
+        merchantPostalCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.postalCode. Description: The postal/zip code assigned to the processing merchant.'
+          example: 99999-9999
+        merchantState:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.stateOrProvince. Description: The state of the merchant where the transaction happened.'
+          example: TX
+        merchantStreet:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.street. Description: The street assigned to the processing merchant.'
+          example: 1 Sample Way
+        mobileInteraction:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.mobileInteraction. Description: Mobile method of interaction.'
+          example: Phone Number
+          enum:
+            - Unknown
+            - PHONE_NUMBER
+            - QR_CODE
+        mobileInteractionKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.mobileInteraction. Description: Mobile method of interaction. (Code)'
+          example: '1'
+        mobileWallet:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay, etc.).'
+          example: Apple Pay
+          enum:
+            - Unknown
+            - Apple
+            - Google
+            - Samsung
+            - Walmart
+            - Sams
+            - PayPal
+            - Visa
+            - Amazon
+            - Masterpass
+            - India
+            - Microsoft
+            - Facebook
+            - Netflix
+            - Fitbit
+            - Garmin
+        mobileWalletKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay, etc.). (Code)'
+          example: '1'
+        mrchInvcNum:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantInvoiceNumber. Description: Merchant invoice number (aka reference number).'
+          example: '11111111'
+        mrchOrdrID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantOrderId. Description: Merchant order ID (aka customer reference number or purchase order number).'
+          example: '11111111'
+        mrchTokenType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.tokenType. Description: Specific Token Type is assigned to each merchant.'
+          example: '0000'
+        mrchTranID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantTransactionId. Description: Merchant transaction ID (aka transaction reference ID).'
+          example: ''
+        nativeTxnType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Transaction type as indicated by source.'
+          example: CHARGE
+        network:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.NetworkDetails.Network.network. Description: Name of the authorizing network associated with the transaction.'
+          example: Visa
+          enum:
+            - Unknown
+            - Amex
+            - Visa
+            - Master
+            - Discover
+            - Pulse
+            - Accel
+            - Interlink
+            - Jeanie
+            - Maestro
+            - NYCE
+            - CU24
+            - Shazam
+            - EBT
+            - AFFN
+            - Telecheck
+            - Diners
+            - PayPal
+            - ValueLink
+            - Private
+            - Debit
+            - Voyager
+            - ATH
+            - JCB
+            - StarNE
+            - StarSE
+            - StarW
+            - StarAccess
+            - FleetCor
+            - SVS
+            - WEX
+            - Incomm
+            - Interac
+            - NA
+            - Moneris
+            - VaultedCard
+            - PAVD
+            - MCSend
+            - UnionPay
+            - FraudFlex
+            - Certegy
+            - MCI
+            - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
+        networkAVSCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.BankAssociationDetails.AvsSecurityCodeResponse.Association.avsCode. Description: Bank AVS response code.'
+          example: X
+        networkCVVCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.BankAssociationDetails.AvsSecurityCodeResponse.Association.securityCodeResponse. Description: Bank security code response.'
+          example: V
+        networkKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.NetworkDetails.Network.network. Description: Name of the authorizing network associated with the transaction. (Code)'
+          example: '2'
+        orderID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.orderId. Description: Order identifier returned in the parameter orderId from a Charge transaction.'
+          example: '11111111'
+        origin:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionOrigin. Description: Transaction origin based on original request.'
+          example: E-Comm
+          enum:
+            - Unknown
+            - ECOM
+            - MOTO
+            - POS
+        originKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionOrigin. Description: Transaction origin based on original request. (Code)'
+          example: '1'
+        paymentMethod:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posEntryMode. Description: An identifier used to indicate how the account number was entered on the transaction.'
+          example: Mobile & ECommerce
+          enum:
+            - Unknown
+            - Manual
+            - MagneticStripe
+            - OCR
+            - EMV
+            - ContactlessChip
+            - MobileECommerce
+            - Fallback
+            - BarCode
+            - NotSpecified
+            - CredentialOnFile
+            - ContactlessMagneticStripe
+            - MagneticStripeReadError
+            - SmartChipRead
+            - ContactlessSmartChipRead
+            - MagneticStripeRead
+            - ContactlessMagneticStripeRead
+        paymentMethodKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posEntryMode. Description: An identifier used to indicate how the account number was entered on the transaction. (Code)'
+          example: '6'
+        posConditionCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posConditionCode. Description: An identifier used to indicate the transaction condition at the Point-of-Sale (POS).'
+          example: Cardholder Not Present - E-commerce
+          enum:
+            - Unknown
+            - CARD_PRESENT
+            - CARD_PRESENT_UNSPECIFIED
+            - CARD_PRESENT_UNATTENDED
+            - CARD_PRESENT_FRAUD
+            - CARD_PRESENT_MAG_NOT_READ
+            - CARD_PRESENT_IDENTIFIED
+            - CARD_NOT_PRESENT_RECURRING
+            - CARD_NOT_PRESENT_INSTALLMENT
+            - CARD_NOT_PRESENT_DEFERRED
+            - CARD_NOT_PRESENT_F2F
+            - CARD_NOT_PRESENT_MOTO
+            - CARD_NOT_PRESENT_ECOM
+        posConditionCodeKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posConditionCode. Description: An identifier used to indicate the transaction condition at the Point-of-Sale (POS). (Code)'
+          example: '12'
+        primTranID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.primaryTransactionId. Description: The unique identifier from the original transaction passed for a reauthorization and incremental authorization.'
+          example: '634677466478466474'
+        processingCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.processingCode. Description: A required code that is used in conjunction with the message type to define the type of transaction that is by the terminal to the host.'
+          example: '000000'
+        processor:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.processor. Description: Card processor.'
+          example: fiserv
+        processorMerchantId:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.processorMerchantId. Description: The processor''s merchant ID or number used to identify the unique site and merchant in petro industry.'
+          example: '01234567899999'
+        processorTerminalId:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.processorTerminalId. Description: The processor''s  device or point of entry where the transaction originated assigned by the acquirer or the gateway.'
+          example: '0001'
+        recurringTypeInd:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.recurringTypeIndicator. Description: Describes the recurrence type for the transaction.'
+          example: One Time
+          enum:
+            - OneTime
+            - Recurring
+            - Installment
+            - CardOnFile
+            - Deferred
+        recurringTypeIndKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.recurringTypeIndicator. Description: Describes the recurrence type for the transaction. (Code)'
+          example: '0'
+        requestAmount:
+          type: number
+          description: 'Commerce Hub Data Model Name: Request.Amount.total. Description: The requested amount of the transaction.'
+          format: double
+          example: 9.99
+        respCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.responseCode. Description: Normalized transaction response code from the gateway (Commerce Hub Response).'
+          example: '000000'
+        respMsg:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.responseMessage. Description: Normalized transaction message from the gateway (Commerce Hub Response).'
+          example: APPROVAL
+        safAttemptNumber:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.attempt. Description: The attempt number for the Store & Forward functionality.'
+          example: '1'
+        safAttemptStatus:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.attemptStatus. Description: The attempt status for the Store & Forward functionality.'
+          example: ''
+        safAttemptStatusKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.attemptStatus. Description: The attempt status for the Store & Forward functionality. (Code)'
+          example: ''
+        safDownstreamResponse:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.downstreamResponse. Description: The downstream system response for the attempt performed for the Store & Forward functionality.'
+          example: ''
+        safDownstreamResponseKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.downstreamResponse. Description: The downstream system response for the attempt performed for the Store & Forward functionality. (Code)'
+          example: ''
+        safDownstreamSystem:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.downstreamCode. Description: The downstream system where the attempt is performed for the Store & Forward functionality.'
+          example: ''
+        safDownstreamSystemKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.downstreamCode. Description: The downstream system where the attempt is performed for the Store & Forward functionality. (Code)'
+          example: ''
+        safMaxAttempts:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.attempt. Description: The maximum attempts allowed for the Store & Forward functionality.'
+          example: '1'
+        safSourceSystem:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.entryPoint. Description: The source system where the attempt is performed for the Store & Forward functionality.'
+          example: ''
+        safSourceSystemKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.entryPoint. Description: The source system where the attempt is performed for the Store & Forward functionality. (Code)'
+          example: ''
+        safTxnStatus:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.status. Description: The Store & Forward transaction status.'
+          example: ''
+        safTxnStatusKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: SAF.status. Description: The Store & Forward transaction status. (Code)'
+          example: ''
+        sourceType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Payment source for a transaction request.'
+          example: Apple Pay
+          enum:
+            - Unknown
+            - PaymentCard
+            - ApplePay
+            - GooglePay
+            - DecryptedWallet
+            - PaymentToken
+            - Payment3DS
+        sourceTypeKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Payment source for a transaction request. (Code)'
+          example: '2'
+        storeID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.storeId. Description: The unique ID or number used to identify the unique location, store, or site.'
+          example: '01234567899999'
+        terminalID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.terminalId. Description: Identifies the specific device or point of entry where the transaction originated assigned by the acquirer or the gateway.'
+          example: '0001'
+        tokenNumber1:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[0].tokenData. Description: Token created from the tokedn source.'
+          example: 123456XXXXXXXX5555
+        tokenNumber2:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[1].tokenData. Description: Token created from the tokedn source.'
+          example: 123456XXXXXXXX5555
+        tokenNumber3:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[2].tokenData. Description: Token created from the tokedn source.'
+          example: 123456XXXXXXXX5555
+        tokenNumber4:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[3].tokenData. Description: Token created from the tokedn source.'
+          example: 123456XXXXXXXX5555
+        tokenNumber5:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[4].tokenData. Description: Token created from the tokedn source.'
+          example: 123456XXXXXXXX5555
+        tokenNumber6:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[5].tokenData. Description: Token created from the tokedn source.'
+          example: 123456XXXXXXXX5555
+        tokenProvider1:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[0].tokenSource. Description: Source for the Token Service Provider.'
+          example: ''
+        tokenProvider1Key:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[0].tokenSource. Description: Source for the Token Service Provider. (Code)'
+          example: ''
+        tokenProvider2:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[1].tokenSource. Description: Source for the Token Service Provider.'
+          example: ''
+        tokenProvider2Key:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[1].tokenSource. Description: Source for the Token Service Provider. (Code)'
+          example: ''
+        tokenProvider3:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[2].tokenSource. Description: Source for the Token Service Provider.'
+          example: ''
+        tokenProvider3Key:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[2].tokenSource. Description: Source for the Token Service Provider. (Code)'
+          example: ''
+        tokenProvider4:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[3].tokenSource. Description: Source for the Token Service Provider.'
+          example: ''
+        tokenProvider4Key:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[3].tokenSource. Description: Source for the Token Service Provider. (Code)'
+          example: ''
+        tokenProvider5:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[4].tokenSource. Description: Source for the Token Service Provider.'
+          example: ''
+        tokenProvider5Key:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[4].tokenSource. Description: Source for the Token Service Provider. (Code)'
+          example: ''
+        tokenProvider6:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[5].tokenSource. Description: Source for the Token Service Provider.'
+          example: ''
+        tokenProvider6Key:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[5].tokenSource. Description: Source for the Token Service Provider. (Code)'
+          example: ''
+        track2Data:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.Card.nameOnCard. Description: Cardholder name.'
+          example: 99999999-9999999999
+        transactionDate:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.transactionTimestamp (yyyy-MM-dd). Description: Date the transaction occurred in YYYY-MM-DD format.'
+          example: '20201224'
+        transactionID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.TransactionId. Description: Unique identifier for each transaction on the gateway. This value will be populated for the secondary transaction from the path.'
+          example: ''
+        transactionTime:
+          type: integer
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.transactionTimestamp (Thh:mm:ss). Description: Time (EPOCH) the transaction occurred in Thh:mm:ss format.'
+          format: int64
+          example: 78747874878748
+        txnState:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionState. Description: Final state of the transaction.'
+          example: Authorized
+          enum:
+            - Unknown
+            - AUTHORIZED
+            - CAPTURED
+            - CHECKED
+            - DECLINED
+            - VOIDED
+            - GATEWAY_ERROR
+            - VERIFIED
+        txnStateKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionState. Description: Final state of the transaction. (Code)'
+          example: '1'
+        txnType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization.'
+          example: Purchase
+          enum:
+            - Unknown
+            - Totals
+            - Purchase
+            - PreAuthRequest
+            - PreAuthComplete
+            - Reversal
+            - Return
+            - Cancellation
+            - MailAuth
+            - Activate
+            - Recharge
+            - Verification
+            - TeleCheck
+            - StartFueling
+            - DoNotUse
+            - Fee
+            - Withdrawal
+            - Deposit
+            - Transfer
+            - Balance
+            - FraudScore
+            - GenToken
+            - Adjustment
+            - ReportAsLost
+            - CloseAccount
+            - FreezeAccount
+            - UnfreezeAccount
+            - History
+            - TimeoutReversal
+            - SetupAutoReload
+            - ReturnReversal
+            - Cashback
+            - Forced
+            - PaymentInitialization
+            - Check
+            - DirectDebitMandate
+            - TerminalRegistration
+            - FundingCredit
+            - MoneyTransferCredit
+            - ECommerceDebit
+            - BillPayDebit
+            - MoneyTransferDebit
+            - FundingDebit
+            - OTP
+        txnTypeKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization. (Code)'
+          example: '2'
+    CommerceHubSearchRequest:
+      required:
+        - fromDate
+        - limit
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        limit:
+          maximum: 1000000
+          minimum: 1
+          type: integer
+          description: The maximum number of records that will be returned
+          format: int32
+          example: 3
+          default: 10
+        fields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - Network
+            - ApprovalCode
+            - Amount
+            - AuthCode
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["Network","ApprovalCode","Amount","AuthCode"]'
+            enum:
+              - BYOM
+              - BYOMKey
+              - ECIndicator
+              - ECIndicatorKey
+              - AccountNumber
+              - Amount
+              - ApiTraceID
+              - Apikey
+              - ApprovalCode
+              - ApprovalCodeKey
+              - AuthCode
+              - AuthType
+              - AuthTypeKey
+              - BillingAddress
+              - BillingCity
+              - BillingCountry
+              - BillingFirstName
+              - BillingHouse
+              - BillingLastName
+              - BillingStPrvnc
+              - BillingZip
+              - CardExpiryDate
+              - ClientRequestID
+              - Currency
+              - CurrencyKey
+              - CustIPAddress
+              - CustomerName
+              - DirectedRoutingNetwork
+              - DirectedRoutingNetworkKey
+              - EncryptBlock
+              - EncryptDeviceType
+              - EncryptDeviceTypeKey
+              - EncryptTarget
+              - EncryptTargetKey
+              - EncryptType
+              - EncryptTypeKey
+              - ErrorCode
+              - ErrorMessage
+              - InvoiceNumber
+              - MerchantCity
+              - MerchantCountry
+              - MerchantID
+              - MerchantMCC
+              - MerchantMCCKey
+              - MerchantName
+              - MerchantPostalCode
+              - MerchantState
+              - MerchantStreet
+              - MobileInteraction
+              - MobileInteractionKey
+              - MobileWallet
+              - MobileWalletKey
+              - MrchInvcNum
+              - MrchOrdrID
+              - MrchTokenType
+              - MrchTranID
+              - NativeTxnType
+              - Network
+              - NetworkAVSCode
+              - NetworkCVVCode
+              - NetworkKey
+              - OrderID
+              - Origin
+              - OriginKey
+              - PaymentMethod
+              - PaymentMethodKey
+              - PosConditionCode
+              - PosConditionCodeKey
+              - PrimTranID
+              - ProcessingCode
+              - Processor
+              - ProcessorMerchantId
+              - ProcessorTerminalId
+              - RecurringTypeInd
+              - RecurringTypeIndKey
+              - RequestAmount
+              - RespCode
+              - RespMsg
+              - Response
+              - SafAttemptNumber
+              - SafAttemptStatus
+              - SafAttemptStatusKey
+              - SafAttemptTimestamp
+              - SafDownstreamResponse
+              - SafDownstreamResponseKey
+              - SafDownstreamSystem
+              - SafDownstreamSystemKey
+              - SafExpiryTimestamp
+              - SafMaxAttempts
+              - SafResponseTimestamp
+              - SafSourceSystem
+              - SafSourceSystemKey
+              - SafTxnStatus
+              - SafTxnStatusKey
+              - SourceType
+              - SourceTypeKey
+              - StoreID
+              - TerminalID
+              - TokenNumber1
+              - TokenNumber2
+              - TokenNumber3
+              - TokenNumber4
+              - TokenNumber5
+              - TokenNumber6
+              - TokenProvider1
+              - TokenProvider1Key
+              - TokenProvider2
+              - TokenProvider2Key
+              - TokenProvider3
+              - TokenProvider3Key
+              - TokenProvider4
+              - TokenProvider4Key
+              - TokenProvider5
+              - TokenProvider5Key
+              - TokenProvider6
+              - TokenProvider6Key
+              - Track2Data
+              - TransactionDate
+              - TransactionDateTime
+              - TransactionID
+              - TransactionTime
+              - TxnState
+              - TxnStateKey
+              - TxnType
+              - TxnTypeKey
+        filters:
+          $ref: '#/components/schemas/CommerceHubReportingFilters'
+      description: Request details for authorization search
     ChargebackFilters:
       type: object
       properties:
@@ -11434,6 +14926,61 @@ components:
             - VehicleTerminated
             - Dollars
             - FradulentUnsignedCharges
+            - IllegibleIncompleteOrIncorrectInformationOnTheCreditApplication
+            - IllegibleIncompleteOrIncorrectInformationOnTheChargeSlip
+            - ChargeSlipOrApplicationWasNotExecutedByTheConsumerNoAuthorizedSig
+            - NoAuthorizationObtainedOrAuthorizationNotValid
+            - ChargeSlipIsADuplicateOfAnItemPreviouslyPaid
+            - ThePriceShownOnTheChargeSlipDiffersFromTheAmountShownOnChCopy
+            - ChargeSlipApplicationFraudClaimOfIllegalityCancellationRecission
+            - DisputeReceivedAndTransactionWasAnOfflineTransaction
+            - NoSignatureOnChargeSlipAndSaleAmountIsAboveFloorLimit
+            - IdentityOfAccountholderNotVerifiedPriorToTransactionOrAccountOpening
+            - SignatureOnChargeSlipWasNotComparedToCardSignature
+            - ChargeSlipSubmittedBeforeGoodsWereShippedAndAllServicesPerformed
+            - CreditSaleIsCancelledOrTheGoodsOrServicesCancelledOrReturned
+            - CreditApplicationSubmittedWithoutVerifyingApplicantIdUsingPictureId
+            - AnyTypeOfDisputeThatAccountholderHasWithMerchantThatIsUnresolved
+            - UnauthorizedCharges
+            - UnauthorizedPumpCharges
+            - DeclinedNoAuthorizationDueToInvalidChargeAmountSubmitted
+            - DeclinedNoAuthorizationCardWasExpired
+            - DeclinedNoAuthorizationAuthorizationWasExpired
+            - CreditNotProcessedAfterGoodsOrServicesWereReturnedOrRefused
+            - CreditNotProcessedForCancelledOrder
+            - NonReceiptOfGoodsAndServices
+            - CreditNotProcessedBecauseAProofOfPaymentByAnotherMethodWasProvided
+            - CreditNotProcessedForCancelledRecurringBilling
+            - GoodsServicesNotAsDescribed
+            - GoodsServicesDamagedOrDefective
+            - CardholderClaimsFraudulentPurchase
+            - CardholderClaimsFraudulentUnauthorized
+            - ChargebackAtHqRequest
+            - CardholderClaimsChargeUnauthorizedAndIncorrectlyBilledForCapitalDamages
+            - InvalidAccountNumber
+            - CreditNotProcessedChargeSubmittedShouldHaveBeenSubmittedAsACredit
+            - CardholderExpectedToBeCharged
+            - CardholderClaimsChargeUnauthorizedDueToTheDifferentAmountSubmitted
+            - DeclinedBecauseTheChargeWasNotSubmittedWithinTheRequiredTimeframe
+            - DuplicateProcessingOfCharge
+            - TheChargeWasIncurredInAnInvalidCurrency
+            - CompleteSupportAndOrDocumentationWereNotProvidedAsRequested
+            - InsufficientResponseToResolveDispute
+            - ChargebackReversal
+            - NoResponseToSignedTicketRequest
+            - CancellationPolicy
+            - PaymentsCopyOfCashedCheck
+            - MedicalCopyOfOfficeVisitNotes
+            - ProofOfDelivery
+            - PaymentsPaymentReceipt
+            - ReturnPolicies
+            - SalesDraftsContracts
+            - ShippingInfo
+            - Warranties
+            - RapidDisputeResolutionCreditIssued
+            - RepresentmentDenial
+            - AtmDispute
+            - InstallmentBilling
         ReasonKey:
           type: string
           description: Descriptive reason associated with a specific Chargeback. (Code)
@@ -11511,6 +15058,15 @@ components:
             - Certegy
             - MCI
             - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
         authNetworkKey:
           type: string
           description: Authorization network of the credit card utilized for the transaction. (Code)
@@ -11539,6 +15095,7 @@ components:
             - Chase
             - Salem
             - Tampa
+            - PaySecure
         backendProcessorKey:
           type: string
           description: Internal settlement platform. (Code)
@@ -11783,6 +15340,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -12051,6 +15609,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         merchantFundingCurrencyKey:
           type: string
           description: Currency in which the original presentment was funded to the merchant. (Code)
@@ -12285,6 +15844,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         networkSettleCurrencyKey:
           type: string
           description: Currency settled with the payment network for the presentment before the deduction of any charges. (Code)
@@ -12338,6 +15898,11 @@ components:
             - NotSpecified
             - CredentialOnFile
             - ContactlessMagneticStripe
+            - MagneticStripeReadError
+            - SmartChipRead
+            - ContactlessSmartChipRead
+            - MagneticStripeRead
+            - ContactlessMagneticStripeRead
         paymentMethodKey:
           type: string
           description: Identifies the method of payment used on the transaction. (Code)
@@ -12660,6 +16225,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         submittedTxnCurrencyCodeKey:
           type: string
           description: ISO 4217 3 digit code representing the  Currency the transaction was processed in at the POS. (Code)
@@ -12942,6 +16508,11 @@ components:
               - NotSpecified
               - CredentialOnFile
               - ContactlessMagneticStripe
+              - MagneticStripeReadError
+              - SmartChipRead
+              - ContactlessSmartChipRead
+              - MagneticStripeRead
+              - ContactlessMagneticStripeRead
         networks:
           type: array
           description: Any transactions matching with any one of the specified Networks
@@ -12995,6 +16566,15 @@ components:
               - Certegy
               - MCI
               - PaypalVenmo
+              - Conduent
+              - FISG
+              - INMR
+              - PWMB
+              - SOLU
+              - WCHP
+              - AliPay
+              - EFunds
+              - ACS
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -13042,6 +16622,13 @@ components:
               - Check
               - DirectDebitMandate
               - TerminalRegistration
+              - FundingCredit
+              - MoneyTransferCredit
+              - ECommerceDebit
+              - BillPayDebit
+              - MoneyTransferDebit
+              - FundingDebit
+              - OTP
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -13649,6 +17236,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         DCCCurrencyKey:
           type: string
           description: Identifies non-local merchant enabled dynamic currency code. (Code)
@@ -13971,6 +17559,8 @@ components:
             - InvalidPassword
             - ReversalAccepted
             - ReversalNotAccepted
+            - UnacceptableTranFee
+            - NetworkDecline
         assocRespCodeKey:
           type: string
           description: Identifies the initial association response code for the transaction. (Code)
@@ -14240,6 +17830,7 @@ components:
             - BYN
             - VES
             - ZMW
+            - SLE
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -14469,6 +18060,8 @@ components:
             - InvalidPassword
             - ReversalAccepted
             - ReversalNotAccepted
+            - UnacceptableTranFee
+            - NetworkDecline
         declineReasonKey:
           type: string
           description: Identifies the decline reason for the transaction. (Code)
@@ -14991,6 +18584,15 @@ components:
             - Certegy
             - MCI
             - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
         networkKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -15048,6 +18650,11 @@ components:
             - NotSpecified
             - CredentialOnFile
             - ContactlessMagneticStripe
+            - MagneticStripeReadError
+            - SmartChipRead
+            - ContactlessSmartChipRead
+            - MagneticStripeRead
+            - ContactlessMagneticStripeRead
         paymentMethodKey:
           type: string
           description: Identifies the method of payment used on the transaction. (Code)
@@ -15117,6 +18724,7 @@ components:
             - Chase
             - Salem
             - Tampa
+            - PaySecure
         processorKey:
           type: string
           description: Identifies the originating platform (Switch). (Code)
@@ -15249,6 +18857,7 @@ components:
             - CardAccountUpdater
             - DeferredRetry
             - MixedStrategy
+            - DeferredRules
         rtActionKey:
           type: string
           description: 'Card Account Updater: Identifies the action that was taken on the account. (Code)'
@@ -15332,6 +18941,9 @@ components:
             - PinlessBillPay
             - Pin
             - Signature
+            - EBT
+            - ACH
+            - POS
         subTypeKey:
           type: string
           description: Transaction sub type codes e.g. Pin, Signature, etc. (Code)
@@ -15582,6 +19194,13 @@ components:
             - Check
             - DirectDebitMandate
             - TerminalRegistration
+            - FundingCredit
+            - MoneyTransferCredit
+            - ECommerceDebit
+            - BillPayDebit
+            - MoneyTransferDebit
+            - FundingDebit
+            - OTP
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
@@ -15746,7 +19365,7 @@ components:
           type: string
           description: User full name ( first name + last name)
           example: John Smith
-        email:
+        emailAddress:
           type: string
           description: User business email
         phoneNumber:
@@ -15817,6 +19436,164 @@ components:
           description: User applications access
           items:
             $ref: '#/components/schemas/ApplicationDto'
+    ApplicationAssignableDefaults:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Application Internal ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Application name
+          example: Disputes Manager
+        accessName:
+          type: string
+          description: Application Unique Key
+          example: FDC_EIDS
+        description:
+          type: string
+          description: Application Description
+          example: Respond to chargeback/retrieval disputes utilizing a workflow management response tool
+        displayName:
+          type: string
+          description: Application Display Name
+          example: Dispute Management
+        provisioningType:
+          type: string
+          description: Determines allowed action(ADD -> add only, UPDATE -> can add/update, DELETE -> can add/update/delete) for respective user application
+          example: DELETE
+        attributeGroups:
+          type: array
+          description: Determines grouping of attributes
+          items:
+            $ref: '#/components/schemas/FeatureAssignable'
+      description: User applications access
+    AttributeAssignable:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Attribute Internal ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Attribute Name
+          example: DM_Entitlements_DisputeManagerAccess
+        displayName:
+          type: string
+          description: Attribute display name
+          example: Dispute Manager Access
+        description:
+          type: string
+          description: Attribute Description
+          example: Identifies whether the user can only view disputes or can respond and manage disputes
+        attributeType:
+          type: string
+          description: Attribute Type(SELECT/CHECK/FREEFORM/MULTISELECT)
+          example: SELECT
+        attributeOptions:
+          type: array
+          description: Selectable options for respective attribute if type = SELECT/MULTISELECT
+          items:
+            $ref: '#/components/schemas/AttributeOptionDto'
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
+          example: true
+      description: '// Respective Application specific attributes(For example: Entitlements)'
+    FeatureAssignable:
+      type: object
+      properties:
+        attributes:
+          type: array
+          description: '// Respective Application specific attributes(For example: Entitlements)'
+          items:
+            $ref: '#/components/schemas/AttributeAssignable'
+      description: Determines grouping of attributes
+    UserAssignableDefaults:
+      type: object
+      properties:
+        ddaTruncations:
+          type: array
+          description: DDA truncation indicates to the downstream application how to display a DDA number to the user.
+          example:
+            value: R
+            display: Masked DDA Number
+          items:
+            type: string
+            enum:
+              - R
+              - 'Y'
+        cardTruncations:
+          type: array
+          description: DDA truncation indicates to the downstream application how to display a DDA number to the user.
+          example:
+            value: R
+            display: Masked DDA Number
+          items:
+            type: string
+            enum:
+              - T
+              - R
+              - 'N'
+              - 'Y'
+        accountStatuses:
+          type: array
+          description: User Account status(NONE, DELETED, DISABLED, IDLE_LOCKED, LOCKED)
+          example:
+            value: NONE
+            display: Active
+          items:
+            type: string
+            enum:
+              - NONE
+              - LOCKED
+              - IDLE_LOCKED
+              - DISABLED
+              - DELETED
+        channels:
+          type: array
+          description: User channel
+          items:
+            $ref: '#/components/schemas/NamedReferenceDto'
+        locales:
+          type: array
+          description: User Locale
+          example: en_US
+          items:
+            type: string
+            description: User Locale
+            example: en_US
+            enum:
+              - en_GB
+              - en_US
+              - de_DE
+              - es_MX
+              - fr_CA
+              - it_IT
+              - nl_NL
+              - pt_BR
+          enum:
+            - en_GB
+            - en_US
+            - de_DE
+            - es_MX
+            - fr_CA
+            - it_IT
+            - nl_NL
+            - pt_BR
+        applications:
+          type: array
+          description: User applications access
+          items:
+            $ref: '#/components/schemas/ApplicationAssignableDefaults'
     AllUserDetails:
       type: object
       properties:
