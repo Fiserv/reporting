@@ -37,9 +37,39 @@ paths:
       description: Generates a new temporary password and unlocks the user account if idle locked
       operationId: usersResetPassword
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -98,9 +128,39 @@ paths:
       description: Enables the user account from disabled status
       operationId: enableAccountStatus
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -159,9 +219,39 @@ paths:
       description: Disables the user account and revokes all access to the system
       operationId: disableAccountStatus
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -220,9 +310,39 @@ paths:
       description: Soft deletes the user account and revokes all access to the system. Soft deleted accounts will stay in the system for 18 months for audit purposes and are permanently purged after 18 months. Soft deleted accounts cannot be re-activated
       operationId: usersDelete
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -281,9 +401,39 @@ paths:
       description: Performs user search and supports filter(optional) by name/email address/username and account status (Active, Locked, Idle Locked, Disabled and Deleted)
       operationId: userSearch
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -336,9 +486,39 @@ paths:
       description: Creates a new user or updates an existing user
       operationId: saveUser
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -2198,9 +2378,39 @@ paths:
       description: Fetches respective user information which includes preferences, applications and restricted access
       operationId: getUser
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -2299,9 +2509,39 @@ paths:
       description: Pulls all users in the system for the respective Admin/Client.
       operationId: allUsersSearch
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -2883,10 +3123,6 @@ components:
               - CredentialOnFile
               - ContactlessMagneticStripe
               - MagneticStripeReadError
-              - SmartChipRead
-              - ContactlessSmartChipRead
-              - MagneticStripeRead
-              - ContactlessMagneticStripeRead
         networks:
           type: array
           description: Any transactions matching with any one of the specified Networks
@@ -3003,6 +3239,8 @@ components:
               - MoneyTransferDebit
               - FundingDebit
               - OTP
+              - CashAdvance
+              - QuasiCash
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -4228,6 +4466,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         authCurrencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -4775,6 +5014,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         currencyKey:
           type: string
           description: Processing currency code used for the transaction. (Code)
@@ -5305,10 +5545,6 @@ components:
             - CredentialOnFile
             - ContactlessMagneticStripe
             - MagneticStripeReadError
-            - SmartChipRead
-            - ContactlessSmartChipRead
-            - MagneticStripeRead
-            - ContactlessMagneticStripeRead
         paymentMethodKey:
           type: string
           description: Identifies the method of payment used on the transaction. (Code)
@@ -5541,6 +5777,8 @@ components:
             - PosCheck
             - GiftCard
             - MCDebitCanada
+            - MCPassThru
+            - VisaSigDebitCashAdvLocal
         productCodeKey:
           type: string
           description: Name of the card brand associated with the transaction. (Code)
@@ -5900,6 +6138,8 @@ components:
             - MoneyTransferDebit
             - FundingDebit
             - OTP
+            - CashAdvance
+            - QuasiCash
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -6504,6 +6744,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -9511,6 +9752,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -11544,6 +11786,18 @@ components:
             - ViIntegrityFeeDetailReport
             - ViBase2ReturnFee
             - StarTokenExchangeDebitFee
+            - MCIdentChk3dsCapInter
+            - MCIdentChk3dsCrdAddEu
+            - MCIdentChk3dsCan
+            - MCIdentChk3dsCapCan
+            - MNoRIdentChk3dsEUDomIntra
+            - MNoRIdChk3dsCapEUDomIntra
+            - MNoRIdentChk3dsEUInter
+            - MNoRIdChk3dsCapEUInter
+            - VisaPosPanKeyEnter
+            - MCIdentChk3dsEUDomIntra
+            - MCIdentChk3dsCapDomIntra
+            - MCIdentChk3dsEUInter
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -11700,6 +11954,8 @@ components:
             - PosCheck
             - GiftCard
             - MCDebitCanada
+            - MCPassThru
+            - VisaSigDebitCashAdvLocal
         productCodeKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -11983,6 +12239,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         timeZone:
           type: string
           description: TimeZone of the transaction.
@@ -12238,6 +12495,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         currencyKey:
           type: string
           description: Currency of the transaction. (Code)
@@ -12793,10 +13051,6 @@ components:
               - CredentialOnFile
               - ContactlessMagneticStripe
               - MagneticStripeReadError
-              - SmartChipRead
-              - ContactlessSmartChipRead
-              - MagneticStripeRead
-              - ContactlessMagneticStripeRead
         networks:
           type: array
           description: Any transactions matching with any one of the specified Networks
@@ -12913,6 +13167,8 @@ components:
               - MoneyTransferDebit
               - FundingDebit
               - OTP
+              - CashAdvance
+              - QuasiCash
         currency:
           type: array
           description: Transactions associated with a particular
@@ -13111,6 +13367,7 @@ components:
               - VES
               - ZMW
               - SLE
+              - LEK
         authCode:
           type: string
           description: Auth Code, Full match
@@ -13277,6 +13534,8 @@ components:
             - MoneyTransferDebit
             - FundingDebit
             - OTP
+            - CashAdvance
+            - QuasiCash
         authTypeKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.TransactionDetails.authorizationTypeIndicator. Description: Type of authorization requested (e.g. Initial, Reauth, etc.). (Code)'
@@ -13514,6 +13773,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         currencyKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.currency. Description: Currency code used for the transaction ISO 3 currency format. (Code)'
@@ -13824,10 +14084,6 @@ components:
             - CredentialOnFile
             - ContactlessMagneticStripe
             - MagneticStripeReadError
-            - SmartChipRead
-            - ContactlessSmartChipRead
-            - MagneticStripeRead
-            - ContactlessMagneticStripeRead
         paymentMethodKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posEntryMode. Description: An identifier used to indicate how the account number was entered on the transaction. (Code)'
@@ -14128,6 +14384,8 @@ components:
             - MoneyTransferDebit
             - FundingDebit
             - OTP
+            - CashAdvance
+            - QuasiCash
         txnTypeKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization. (Code)'
@@ -14981,6 +15239,11 @@ components:
             - RepresentmentDenial
             - AtmDispute
             - InstallmentBilling
+            - PaymentNotPosted
+            - CreditNotReceived
+            - DuplicationTransaction
+            - LocalRegulatoryLegalDisputes
+            - NonCompliant
         ReasonKey:
           type: string
           description: Descriptive reason associated with a specific Chargeback. (Code)
@@ -15341,6 +15604,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -15610,6 +15874,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         merchantFundingCurrencyKey:
           type: string
           description: Currency in which the original presentment was funded to the merchant. (Code)
@@ -15845,6 +16110,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         networkSettleCurrencyKey:
           type: string
           description: Currency settled with the payment network for the presentment before the deduction of any charges. (Code)
@@ -15899,10 +16165,6 @@ components:
             - CredentialOnFile
             - ContactlessMagneticStripe
             - MagneticStripeReadError
-            - SmartChipRead
-            - ContactlessSmartChipRead
-            - MagneticStripeRead
-            - ContactlessMagneticStripeRead
         paymentMethodKey:
           type: string
           description: Identifies the method of payment used on the transaction. (Code)
@@ -16226,6 +16488,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         submittedTxnCurrencyCodeKey:
           type: string
           description: ISO 4217 3 digit code representing the  Currency the transaction was processed in at the POS. (Code)
@@ -16509,10 +16772,6 @@ components:
               - CredentialOnFile
               - ContactlessMagneticStripe
               - MagneticStripeReadError
-              - SmartChipRead
-              - ContactlessSmartChipRead
-              - MagneticStripeRead
-              - ContactlessMagneticStripeRead
         networks:
           type: array
           description: Any transactions matching with any one of the specified Networks
@@ -16629,6 +16888,8 @@ components:
               - MoneyTransferDebit
               - FundingDebit
               - OTP
+              - CashAdvance
+              - QuasiCash
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -17237,6 +17498,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         DCCCurrencyKey:
           type: string
           description: Identifies non-local merchant enabled dynamic currency code. (Code)
@@ -17831,6 +18093,7 @@ components:
             - VES
             - ZMW
             - SLE
+            - LEK
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -18651,10 +18914,6 @@ components:
             - CredentialOnFile
             - ContactlessMagneticStripe
             - MagneticStripeReadError
-            - SmartChipRead
-            - ContactlessSmartChipRead
-            - MagneticStripeRead
-            - ContactlessMagneticStripeRead
         paymentMethodKey:
           type: string
           description: Identifies the method of payment used on the transaction. (Code)
@@ -19201,6 +19460,8 @@ components:
             - MoneyTransferDebit
             - FundingDebit
             - OTP
+            - CashAdvance
+            - QuasiCash
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
