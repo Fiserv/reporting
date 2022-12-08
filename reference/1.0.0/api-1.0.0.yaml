@@ -3060,9 +3060,39 @@ paths:
       description: Metadata API that pulls in available options/defaults for respective attributes(Account Status, Locales, Applications and its Entitlements etc.) for an admin/consumer account.
       operationId: getAssignableUserA
       parameters:
-        - name: apiKey
+        - name: Api-key
           in: header
           description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
           schema:
             type: string
@@ -20157,13 +20187,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -20362,13 +20392,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
