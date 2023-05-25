@@ -23,9 +23,7 @@ Get up and running with access to our development portal to use our Reporting AP
 
 ### 1. Get Access to our Developer Platform
 
-Request and create a developer account in the Developer Portal.
-
-> After registration the developer will have an instant access to Reporting APIs.
+> To get Key for accessing reporting APIs, merchant have to reach out to their account relationship manager.
 
 ### 2. Generate an API key
 
