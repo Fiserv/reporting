@@ -11,3 +11,9 @@
     sections:
     - title: API Keys
       link: docs/Security/security.md
+- sections:
+    - title: Restful API Construction
+      open: false
+      sections:
+        - title: Process a Transaction
+          link: docs/restful-api-construction.md
