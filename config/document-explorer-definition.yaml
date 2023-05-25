@@ -15,5 +15,5 @@
     - title: Restful API Construction
       open: false
       sections:
-        - title: API Keys
+        - title: Process a Transaction
           link: docs/restful-api-construction.md
