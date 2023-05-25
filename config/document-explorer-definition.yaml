@@ -16,4 +16,4 @@
       open: false
       sections:
         - title: Process a Transaction
-          link: docs/restful-api-construction.md
+          link: docs/APIs/restful-api-construction.md
