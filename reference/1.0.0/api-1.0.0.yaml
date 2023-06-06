@@ -3,7 +3,7 @@ info:
   title: OpenAPI definition
   version: v0
 servers:
-  - url: https://cat.api.fiservapps.com/reporting1
+  - url: https://qa.api.fiservapps.com/reporting
     description: Generated server url
 tags:
   - name: Funding
