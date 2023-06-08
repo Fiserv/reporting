@@ -2,12 +2,12 @@
 
 ## Environments
 
-Reporting has different environments, that allow the consumption of our RESTful APIs for client development, customer acceptance testing, and production.
+Reporting has different environments that allow the consumption of our RESTful APIs for client development, customer acceptance testing, and production.
 
-> Reporting highly recommends testing against sandbox credentails before using production environment credentials.
+> Reporting highly recommends testing against sandbox credentials before using production environment credentials.
 
 ### Sandbox
-> https://prod.api.fiservapps.com/reporting/v1/{endpoint}
+> https://prod.api.fiservapps.com/reporting{endpoint}
 
 - Mimics the production environment
 - Uses Sandbox credentials
@@ -15,7 +15,7 @@ Reporting has different environments, that allow the consumption of our RESTful 
 - View Request and Response with sandbox details
 
 ### Production 
-> https://prod.api.fiservapps.com/reporting/v1/{endpoint}
+> https://prod.api.fiservapps.com/reporting{endpoint}
 
 - Uses production credentials
 - Actual Data is rendered 
@@ -106,3 +106,7 @@ A standard API call to execute a Authorization Search call might look like this:
 })
 }
 ```
+
+### Constructing the API call with more examples
+
+Construct an [API request](?path=docs/APIs/api-model.md) to use the Reporting APIs.

@@ -11,6 +11,8 @@
     sections:
     - title: API Keys
       link: docs/Security/security.md
+    - title: Generate HMAC Authentication Keys
+      link: docs/APIs/hmac-authentication.md
 - sections:
     - title: Restful API Construction
       open: false
