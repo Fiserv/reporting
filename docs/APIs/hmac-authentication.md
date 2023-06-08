@@ -1,3 +1,7 @@
+## How to get Keys and Secret?
+
+- If client is interested in receiving a Key and Secret to test our APIs or having any questions or concerns regarding the process, please reach out to your Relationship Manager
+
 # Generate HMAC Authentication
 
 > To ensure data integrity, prevent replay attacks, and eliminate stale requests, Authentication is required as part of the Header.
@@ -113,9 +117,4 @@ output += swaps[parseInt(tb,2)] + "==";
 return output;
 }
 ```
-
-## How to get Keys and Secret?
-
-- If client is intersted to get Key and Secret to test our APIs, please reach out to your Relationship Manager
-- If there are any questions or concerns regarding the process, please reach out to [ClientLineReporting](ClientlineReporting@fiserv.com) with all the information.
 
