@@ -23,4 +23,4 @@ Get up and running with access to our development portal to use our Reporting AP
 
 ### How to get Keys and Secret?
 
-> To get Key for accessing reporting APIs, merchant have to reach out to their account relationship manager.
+- To obtain the APIKey and APISecret for accessing the reporting APIs, please reach out to your Fiserv relationship manager.
