@@ -3,7 +3,7 @@ info:
   title: OpenAPI definition
   version: v0
 servers:
-  - url: http://localhost:5005
+  - url: https://qa.api.fiservapps.com/reporting
     description: Generated server url
 tags:
   - name: Funding
@@ -527,6 +527,114 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SaveUserRequest'
+            examples:
+              Save New User with Single Application:
+                description: Save New User with Single Application
+                value:
+                  firstName: John
+                  lastName: Smith
+                  emailAddress: test@fiserv.com
+                  phoneNumber:
+                    - countryCode: '+1'
+                      number: '1234567890'
+                      region: US
+                      type: business
+                    - countryCode: '+1'
+                      number: '1234567890'
+                      region: US
+                      type: business
+                  zipCode: '30022'
+                  preferences:
+                    locale: en_US
+                  federated: false
+                  mfaEnabled: true
+                  channel:
+                    id: 1
+                    name: First Data Services
+                  clientAccess:
+                    - fiserv
+                  applications:
+                    - id: 3
+                      name: ClientLine Reporting
+                      accessName: FDC_CLR
+                      attributeGroups:
+                        - attibutes:
+                            - id: 7
+                              name: CLR_Entitlements_FeeReporting
+              Save Existing User with Single Application:
+                description: Save Existing User with Single Application
+                value:
+                  userId: 9088095
+                  userName: cl.abcd123
+                  firstName: Bran
+                  lastName: Smith
+                  emailAddress: brantest@fiserv.com
+                  phoneNumber:
+                    - countryCode: '+1'
+                      number: '9876543210'
+                      region: US
+                      type: business
+                  zipCode: '70040'
+                  preferences:
+                    locale: en_US
+                  federated: true
+                  mfaEnabled: false
+                  clientDefinedIdentifier: tests
+                  channel:
+                    id: 1
+                    name: First Data Services
+                  clientAccess:
+                    - fiserv
+                    - firstdata
+                  applications:
+                    - id: 1
+                      name: Disputes Manager
+                      accessName: FDC_EIDS
+                      attributeGroups:
+                        - attributes:
+                            - id: 1
+                              name: DM_Entitlements_DisputeManagerAccess
+                              attributeValues:
+                                - '4'
+              Save New User with Multiple Applications:
+                description: Save New User with Multiple Applications
+                value:
+                  firstName: King
+                  lastName: Queen
+                  emailAddress: kingqueentest@fiserv.com
+                  phoneNumber:
+                    - countryCode: '+1'
+                      number: '1234567890'
+                      region: US
+                      type: business
+                  zipCode: '70022'
+                  preferences:
+                    locale: en_US
+                  federated: false
+                  mfaEnabled: false
+                  channel:
+                    id: 1
+                    name: First Data Services
+                  clientAccess:
+                    - fiserv
+                    - firstdata
+                  applications:
+                    - id: 1
+                      name: Disputes Manager
+                      accessName: FDC_EIDS
+                      attributeGroups:
+                        - attributes:
+                            - id: 1
+                              name: DM_Entitlements_DisputeManagerAccess
+                              attributeValues:
+                                - '4'
+                    - id: 3
+                      name: ClientLine Reporting
+                      accessName: FDC_CLR
+                      attributeGroups:
+                        - attibutes:
+                            - id: 7
+                              name: CLR_Entitlements_FeeReporting
         required: true
       responses:
         '200':
@@ -3185,6 +3293,11 @@ paths:
           required: false
           schema:
             type: integer
+        - name: includeDeletedUsers
+          in: query
+          required: false
+          schema:
+            type: boolean
       responses:
         '200':
           description: Success
@@ -3358,6 +3471,170 @@ components:
             - DISABLED
             - IDLE_LOCKED
             - LOCKED
+    NamedReferenceDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique Id
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Channel Name
+          example: First Data Services
+    SaveUserApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Application Internal ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Application name
+          example: Disputes Manager
+        accessName:
+          type: string
+          description: Application Unique Key
+          example: FDC_EIDS
+        attributeGroups:
+          type: array
+          description: Determines grouping of attributes
+          items:
+            $ref: '#/components/schemas/SaveUserFeatureDto'
+      description: User applications access
+    SaveUserAttributeDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Attribute Internal ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: Attribute Name
+          example: DM_Entitlements_DisputeManagerAccess
+        attributeValues:
+          type: array
+          description: Determines the user attribute value for respective application
+          example:
+            - '4'
+          items:
+            type: string
+            description: Determines the user attribute value for respective application
+            example: '["4"]'
+      description: '// Respective Application specific attributes(For example: Entitlements)'
+    SaveUserFeatureDto:
+      type: object
+      properties:
+        attributes:
+          type: array
+          description: '// Respective Application specific attributes(For example: Entitlements)'
+          items:
+            $ref: '#/components/schemas/SaveUserAttributeDto'
+      description: Determines grouping of attributes
+    SaveUserRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: Internal key that uniquely identifies the user
+          format: int64
+          example: 1234567
+        userName:
+          type: string
+          description: User login name
+          example: cl.test123
+        firstName:
+          type: string
+          description: User First Name
+          example: John
+        lastName:
+          type: string
+          description: User Last Name
+          example: Smith
+        emailAddress:
+          type: string
+          description: User business email
+        phoneNumber:
+          type: array
+          description: User contact number(business/mobile)
+          items:
+            $ref: '#/components/schemas/UserPhoneDto'
+        zipCode:
+          type: string
+          description: User zip code
+          example: '30022'
+        preferences:
+          $ref: '#/components/schemas/UserPreferenceDto'
+        federated:
+          type: boolean
+          description: If true, user can only federate into BusinessTrack from respective client system for authentication. Direct login access via BusinessTrack portal will be revoked
+          example: true
+        clientDefinedIdentifier:
+          type: string
+        mfaEnabled:
+          type: boolean
+          description: If true, user account is enabled with multi factor authentication. Supports email MFA with OTP(One time passcode) sent to email address associated with user account
+          example: true
+        channel:
+          $ref: '#/components/schemas/NamedReferenceDto'
+        clientAccess:
+          type: array
+          description: Client ID's(Every merchant is associated with unique client id)
+          example:
+            - fiserv
+            - firstdata
+          items:
+            type: string
+            description: Client ID's(Every merchant is associated with unique client id)
+            example: '["fiserv","firstdata"]'
+        applications:
+          uniqueItems: true
+          type: array
+          description: User applications access
+          items:
+            $ref: '#/components/schemas/SaveUserApplication'
+    UserPhoneDto:
+      type: object
+      properties:
+        countryCode:
+          type: string
+          description: Country code
+          example: '+1'
+        number:
+          type: string
+          description: Phone number
+          example: '1234567890'
+        region:
+          type: string
+          description: region
+          example: US
+        type:
+          type: string
+          description: business/mobile
+          example: business
+      description: User contact number(business/mobile)
+    UserPreferenceDto:
+      type: object
+      properties:
+        locale:
+          type: string
+          description: User Locale
+          example: en_US
+          enum:
+            - en_GB
+            - en_US
+            - de_DE
+            - es_MX
+            - fr_CA
+            - it_IT
+            - nl_NL
+            - pt_BR
+      description: User preferences (locale, language, amount format, date format and time zone) details
     SaveUserResult:
       type: object
       properties:
@@ -3470,168 +3747,6 @@ components:
                 type: string
               localizedMessage:
                 type: string
-    NamedReferenceDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique Id
-          format: int64
-          example: 1
-        name:
-          type: string
-          description: Channel Name
-          example: First Data Services
-    SaveUserApplication:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Application Internal ID
-          format: int64
-          example: 1
-        name:
-          type: string
-          description: Application name
-          example: Disputes Manager
-        accessName:
-          type: string
-          description: Application Unique Key
-          example: FDC_EIDS
-        attributeGroups:
-          type: array
-          description: Determines grouping of attributes
-          items:
-            $ref: '#/components/schemas/SaveUserFeatureDto'
-      description: User applications access
-    SaveUserAttributeDto:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Attribute Internal ID
-          format: int64
-          example: 1
-        name:
-          type: string
-          description: Attribute Name
-          example: DM_Entitlements_DisputeManagerAccess
-        attributeValues:
-          type: array
-          description: Determines the user attribute value for respective application
-          example:
-            - '4'
-          items:
-            type: string
-            description: Determines the user attribute value for respective application
-            example: '["4"]'
-      description: '// Respective Application specific attributes(For example: Entitlements)'
-    SaveUserFeatureDto:
-      type: object
-      properties:
-        attributes:
-          type: array
-          description: '// Respective Application specific attributes(For example: Entitlements)'
-          items:
-            $ref: '#/components/schemas/SaveUserAttributeDto'
-      description: Determines grouping of attributes
-    SaveUserRequest:
-      type: object
-      properties:
-        userId:
-          type: integer
-          description: Internal key that uniquely identifies the user
-          format: int64
-          example: 1234567
-        userName:
-          type: string
-          description: User login name
-          example: cl.test123
-        firstName:
-          type: string
-          description: User First Name
-          example: John
-        lastName:
-          type: string
-          description: User Last Name
-          example: Smith
-        emailAddress:
-          type: string
-          description: User business email
-        phoneNumber:
-          type: array
-          description: User contact number(business/mobile)
-          items:
-            $ref: '#/components/schemas/UserPhoneDto'
-        zipCode:
-          type: string
-          description: User zip code
-          example: '30022'
-        preferences:
-          $ref: '#/components/schemas/UserPreferenceDto'
-        federated:
-          type: boolean
-          description: If true, user can only federate into BusinessTrack from respective client system for authentication. Direct login access via BusinessTrack portal will be revoked
-          example: true
-        mfaEnabled:
-          type: boolean
-          description: If true, user account is enabled with multi factor authentication. Supports email MFA with OTP(One time passcode) sent to email address associated with user account
-          example: true
-        channel:
-          $ref: '#/components/schemas/NamedReferenceDto'
-        clientAccess:
-          type: array
-          description: Client ID's(Every merchant is associated with unique client id)
-          example:
-            - fiserv
-            - firstdata
-          items:
-            type: string
-            description: Client ID's(Every merchant is associated with unique client id)
-            example: '["fiserv","firstdata"]'
-        applications:
-          uniqueItems: true
-          type: array
-          description: User applications access
-          items:
-            $ref: '#/components/schemas/SaveUserApplication'
-    UserPhoneDto:
-      type: object
-      properties:
-        countryCode:
-          type: string
-          description: Country code
-          example: '+1'
-        number:
-          type: string
-          description: Phone number
-          example: '1234567890'
-        region:
-          type: string
-          description: region
-          example: US
-        type:
-          type: string
-          description: business/mobile
-          example: business
-      description: User contact number(business/mobile)
-    UserPreferenceDto:
-      type: object
-      properties:
-        locale:
-          type: string
-          description: User Locale
-          example: en_US
-          enum:
-            - en_GB
-            - en_US
-            - de_DE
-            - es_MX
-            - fr_CA
-            - it_IT
-            - nl_NL
-            - pt_BR
-      description: User preferences (locale, language, amount format, date format and time zone) details
     StatementPDFAPIrequest:
       required:
         - fromDate
@@ -3813,6 +3928,14 @@ components:
               - AliPay
               - EFunds
               - ACS
+              - ConnectPay
+              - Buypass
+              - APM
+              - ATB
+              - ATG
+              - Alaska
+              - eFunds
+              - StarEast
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -3869,6 +3992,12 @@ components:
               - OTP
               - CashAdvance
               - QuasiCash
+              - Chargeback
+              - ChargebackReversal
+              - DeclinedAuth
+              - RapidDeposit
+              - BatchInquiry
+              - ReAuthorization
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -4051,15 +4180,19 @@ components:
             type: string
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
             enum:
+              - AVSResponse
+              - AVSResponseKey
               - ECIIndicator
               - ECIIndicatorKey
               - RejectReasonCode
               - RejectReasonCodeKey
               - AccountNumber
+              - Acquirer
               - AcquirerFeeAmount
               - AcquirerFeeCapInd
               - AcquirerFeePerTranAmount
               - AcquirerFeePerTranRate
+              - AcquirerKey
               - AcquirerRefNo
               - AdminFeeAmount
               - AdminFeeCapInd
@@ -4069,6 +4202,9 @@ components:
               - AgreementId
               - AirLineTicketNumber
               - AreaOfEvent
+              - AugAverageDis
+              - AugNetAmount
+              - AugNetSalesAm
               - AuthCode
               - AuthCurrency
               - AuthCurrencyKey
@@ -4103,6 +4239,8 @@ components:
               - CardSchemeDescription
               - CardServiceType
               - CardUsage
+              - CardUsageDescKey
+              - CardUsageDscKey
               - CardholderIDMethod
               - CardholderNumber
               - CashBackAmount
@@ -4129,6 +4267,7 @@ components:
               - ConvinienceFee
               - Currency
               - CurrencyKey
+              - CustRefNr
               - CustomTracking
               - Cvc2Result
               - Cvv2Result
@@ -4136,6 +4275,11 @@ components:
               - Dda
               - DdaLast4
               - DdaLength
+              - DebitCashBackAmount
+              - DebitNetwork
+              - DebitNetworkIdDsc
+              - DebitNetworkIdDscKey
+              - DebitNetworkKey
               - DebitTerminalDate
               - DebitTerminalTime
               - DefCharge
@@ -4143,6 +4287,8 @@ components:
               - DowngradeRejectDesc
               - DowngradeRejectDescKey
               - DowngradeRejectReasonCD
+              - DowngradeRejectReasonFlag
+              - DowngradeRejectReasonFlagKey
               - DriverID
               - EffectiveDate
               - EntryModeSource
@@ -4209,6 +4355,9 @@ components:
               - MobileIndicator
               - MobileWallet
               - MobileWalletKey
+              - MultiClearingSequenceCount
+              - MultiClearingSequenceNumber
+              - NativeDebitNetworkId
               - NetSalesCount
               - Network
               - NetworkKey
@@ -4217,6 +4366,13 @@ components:
               - NetworkSecurityFeePerTranAmount
               - NetworkSecurityFeePerTranRate
               - NewAuthFee
+              - NonAugAverageDis
+              - NonAugIcFeeAmount
+              - NonAugNetAmount
+              - NonAugPlanCode
+              - NonAugPlanCodeDesc
+              - NonAugmentPlanFlag
+              - NonAugmentPlanFlagKey
               - OdometerReading
               - OrderNumber
               - OrigPlanCodeDesc
@@ -4227,10 +4383,13 @@ components:
               - PaymentMethodKey
               - PcTaxAmount
               - PcTerminalCapability
+              - PerTranDifference
               - Percent
               - PinlessFlag
               - PinlessIndicator
               - PinlessIndicatorKey
+              - PlanCdValidator
+              - PlanCdValidatorKey
               - PlanCode
               - PlanCodeDesc
               - PlatformID
@@ -4243,6 +4402,7 @@ components:
               - PostingChargeDesc5
               - PostingMethod
               - PrimaryStopReason
+              - ProcessedInterchangeSavings
               - ProcessedNetAmount
               - ProcessedRefundAmount
               - ProcessedRejectAmount
@@ -4252,7 +4412,12 @@ components:
               - ProductCode
               - ProductCodeKey
               - PurchaseIdentifier
+              - RateDifference
               - ReadTerminalCapacity
+              - RealTimeClearingFPI
+              - RealTimeClearingIndicator
+              - RealTimeClearingIndicatorKey
+              - RealTimeClearingNetworkId
               - ReceiptNumber
               - ReclassCd
               - ReclassCdKey
@@ -4286,6 +4451,7 @@ components:
               - StoreNumber
               - SubMerchantID
               - SubMerchantName
+              - SubmittedInterchangeSavings
               - SubmittedNetAmount
               - SubmittedRefundAmount
               - SubmittedRejectAmount
@@ -4300,6 +4466,8 @@ components:
               - TerminalID
               - TerminalTransactionDt
               - TipAmount
+              - TokenFlag
+              - TokenFlagKey
               - TokenRequesterId
               - TokenType
               - TotalAuthAmount
@@ -4338,6 +4506,50 @@ components:
     SettlementObj:
       type: object
       properties:
+        AVSResponse:
+          type: string
+          description: Address Verification Status.
+          example: 'Addr Only (Discover: Addr & Zip) Match'
+          enum:
+            - Unknown
+            - AddressOnly
+            - AddressOnlyIntl
+            - NoAddressZipIntl
+            - NoAddress
+            - AddressZipIntlIssuers
+            - IssuerNotParticipating
+            - GlobalNotParticipating
+            - AddressZipUK
+            - NoAddressIntlIssuer
+            - NoAddressZip
+            - IntlAddressZip
+            - NoResponse
+            - ZipOnly
+            - ZipOnlyIntl
+            - NoZipIntl
+            - Retry
+            - NotSupported
+            - InfoNotAvailable
+            - Zip9Only
+            - AddressZip
+            - NameOnly
+            - NameAddressOnly
+            - NameZipOnly
+            - NameAddressZip
+            - NoName
+            - NoNameAddressZip
+            - KValue
+            - LValue
+            - VValue
+            - ZeroValue
+            - NoZip
+            - NoAddressZipUK
+            - AddressZipDiscAddress
+            - ErrorResponseMrchCat
+        AVSResponseKey:
+          type: string
+          description: Address Verification Status. (Code)
+          example: '1'
         ECIIndicator:
           type: string
           description: Indicates the electronic commerce indicator used for the transaction.
@@ -4839,6 +5051,10 @@ components:
           type: string
           description: Card number used for authorization transaction.
           example: 666666XXXXXX4444
+        acquirer:
+          type: string
+          description: Multi Acquirer Processor.
+          example: Chase
         acquirerFeeAmount:
           type: number
           description: Acquirer fee amount.
@@ -4858,6 +5074,10 @@ components:
           description: Acquirer fee rate per transaction.
           format: double
           example: 0.99999
+        acquirerKey:
+          type: string
+          description: Multi Acquirer Processor. (Code)
+          example: '1'
         acquirerRefNo:
           type: string
           description: 'Acquirer reference #: An ARN in credit card transactions is the Acquirer reference number, a unique no that tags a credit card txn when it goes from the merchant''s bank (acquiring bank) through the card network to the cardholders bank (the issuer).'
@@ -4897,6 +5117,20 @@ components:
           type: string
           description: Area of event.
           example: AAA
+        augAverageDis:
+          type: string
+          description: Aug Average Discount
+          example: '0.99999'
+        augNetAmount:
+          type: number
+          description: Augment Net Amount
+          format: double
+          example: 0.99999
+        augNetSalesAm:
+          type: number
+          description: Augment Net Sales Amount
+          format: double
+          example: 0.99999
         authCode:
           type: string
           description: Authorization code from association(s). Generally, 6/7 alphanumeric code that gets printed on the receipt.
@@ -5343,6 +5577,14 @@ components:
           type: string
           description: Card usage.
           example: D
+        cardUsageDescKey:
+          type: string
+          description: Description for Card Usage (Code)
+          example: '0'
+        cardUsageDscKey:
+          type: string
+          description: Card Usage type like Credit or Debit. (Code)
+          example: C
         cardholderIDMethod:
           type: string
           description: Indicates how the cardholder was identified by the merchant. This field is only required for Visa transactions.
@@ -5361,9 +5603,9 @@ components:
           description: Indicator if it is a card holder activated terminal.
           example: 'Y'
         catureMethodHB:
-          type: integer
+          type: string
           description: Batch source.
-          format: int32
+          example: ''
         catureMethodHBKey:
           type: string
           description: Batch source. (Code)
@@ -5647,6 +5889,10 @@ components:
           type: string
           description: Processing currency code used for the transaction. (Code)
           example: '1'
+        custRefNr:
+          type: string
+          description: Customer Reference Number
+          example: '9999999999999'
         customTracking:
           type: string
           description: The customer tracking number associated with the original transaction.
@@ -5676,6 +5922,88 @@ components:
           description: DDA length.
           format: int32
           example: 99
+        debitCashBackAmount:
+          type: number
+          description: Debit Cash back amount provided for the transaction
+          format: double
+          example: 999.99
+        debitNetwork:
+          type: string
+          description: Name of the authorizing network associated with the transaction.
+          example: Accel
+          enum:
+            - Unknown
+            - Amex
+            - Visa
+            - Master
+            - Discover
+            - Pulse
+            - Accel
+            - Interlink
+            - Jeanie
+            - Maestro
+            - NYCE
+            - CU24
+            - Shazam
+            - EBT
+            - AFFN
+            - Telecheck
+            - Diners
+            - PayPal
+            - ValueLink
+            - Private
+            - Debit
+            - Voyager
+            - ATH
+            - JCB
+            - StarNE
+            - StarSE
+            - StarW
+            - StarAccess
+            - FleetCor
+            - SVS
+            - WEX
+            - Incomm
+            - Interac
+            - NA
+            - Moneris
+            - VaultedCard
+            - PAVD
+            - MCSend
+            - UnionPay
+            - FraudFlex
+            - Certegy
+            - MCI
+            - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
+            - ConnectPay
+            - Buypass
+            - APM
+            - ATB
+            - ATG
+            - Alaska
+            - eFunds
+            - StarEast
+        debitNetworkIdDsc:
+          type: string
+          description: Debit Network like STAR, MAESTRO etc.
+          example: ''
+        debitNetworkIdDscKey:
+          type: string
+          description: Debit Network like STAR, MAESTRO etc. (Code)
+          example: 000010-STAR
+        debitNetworkKey:
+          type: string
+          description: Name of the authorizing network associated with the transaction. (Code)
+          example: '6'
         debitTerminalTime:
           type: string
           description: Hour, minute and second the terminal processed the debit transaction.
@@ -5731,6 +6059,14 @@ components:
           type: string
           description: Downgrade Reason Code.
           example: '999'
+        downgradeRejectReasonFlag:
+          type: string
+          description: DOWNGRADE REJECT REASON FLAG
+          example: ''
+        downgradeRejectReasonFlagKey:
+          type: string
+          description: DOWNGRADE REJECT REASON FLAG (Code)
+          example: ''
         driverID:
           type: string
           description: Driver license number.
@@ -5991,9 +6327,9 @@ components:
           description: Multi-Currency Configuration Type (Code)
           example: '1'
         merchantCategory:
-          type: integer
+          type: string
           description: Identifies the standard merchant category code assigned to the transaction.
-          format: int32
+          example: U.K. Petrol Stations, Electronic Hot File (9999)
         merchantCategoryKey:
           type: string
           description: Identifies the standard merchant category code assigned to the transaction. (Code)
@@ -6040,6 +6376,18 @@ components:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
           example: '0'
+        multiClearingSequenceCount:
+          type: string
+          description: This field describes the amount of shipments within a split shipment transaction.
+          example: '01'
+        multiClearingSequenceNumber:
+          type: string
+          description: This will allow the merchant to identify which shipment is in dispute in a split shipment transaction.
+          example: '03'
+        nativeDebitNetworkId:
+          type: string
+          description: Native Debit Network Id
+          example: '12345'
         netSalesCount:
           type: integer
           description: Net sales count.
@@ -6102,6 +6450,14 @@ components:
             - AliPay
             - EFunds
             - ACS
+            - ConnectPay
+            - Buypass
+            - APM
+            - ATB
+            - ATG
+            - Alaska
+            - eFunds
+            - StarEast
         networkKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -6130,6 +6486,36 @@ components:
           description: New authorization fee.
           format: double
           example: -0.9999
+        nonAugAverageDis:
+          type: string
+          description: Non Augment Average Discount
+          example: '0.99999'
+        nonAugIcFeeAmount:
+          type: number
+          description: Non Augment Interchange charge fee amount.
+          format: double
+          example: 0.99999
+        nonAugNetAmount:
+          type: number
+          description: Non Augment Net Amount
+          format: double
+          example: 0.99999
+        nonAugPlanCode:
+          type: string
+          description: Interchange rate / Non Augment Plan Code.
+          example: '999'
+        nonAugPlanCodeDesc:
+          type: string
+          description: Interchange Rate / Non Augment Plan Code Description.
+          example: '999 : NON AUG PLAN CODE DESC'
+        nonAugmentPlanFlag:
+          type: string
+          description: Non Augment Plan Flag
+          example: ''
+        nonAugmentPlanFlagKey:
+          type: string
+          description: Non Augment Plan Flag (Code)
+          example: ''
         odometerReading:
           type: string
           description: Odometer reading.
@@ -6186,6 +6572,11 @@ components:
           type: string
           description: Code indicating if the card was present or not present.
           example: A99
+        perTranDifference:
+          type: number
+          description: Per Tran Difference
+          format: double
+          example: 0.99999
         percent:
           type: number
           description: The interchange fee percentage rate rounded to 4 decimal places
@@ -6203,6 +6594,14 @@ components:
           type: string
           description: Pinless POS Debit Indicator. (Code)
           example: ''
+        planCdValidator:
+          type: string
+          description: Plan Code Validation Flag.
+          example: VALID
+        planCdValidatorKey:
+          type: string
+          description: Plan Code Validation Flag. (Code)
+          example: VALID
         planCode:
           type: string
           description: Interchange rate / plan code.
@@ -6251,6 +6650,11 @@ components:
           type: string
           description: Primary stop reason.
           example: '1'
+        processedInterchangeSavings:
+          type: number
+          description: Processed Interchange Savings Amount
+          format: double
+          example: 0.99999
         processedNetAmount:
           type: number
           description: Processed net amount.
@@ -6407,6 +6811,25 @@ components:
             - MCDebitCanada
             - MCPassThru
             - VisaSigDebitCashAdvLocal
+            - Encore
+            - Nyce
+            - Most
+            - Aafes
+            - Ses
+            - Cashstation
+            - Pulse
+            - ETC
+            - Explore
+            - Interlink
+            - Tier2Credit
+            - CheckNonWarranty
+            - Petroleum3
+            - Petroleum4
+            - EarnLoyalty
+            - MaetroChip
+            - Solo
+            - SoloChip
+            - SettlementBatch
         productCodeKey:
           type: string
           description: Name of the card brand associated with the transaction. (Code)
@@ -6415,10 +6838,31 @@ components:
           type: string
           description: The purchase identifier information.
           example: '9999999999'
+        rateDifference:
+          type: number
+          description: Rate Difference
+          format: double
+          example: 0.99999
         readTerminalCapacity:
           type: string
           description: Identifies the terminal reading capacity.
           example: '0'
+        realTimeClearingFPI:
+          type: string
+          description: Real Time Clearing Fee Program Indicator
+          example: '999'
+        realTimeClearingIndicator:
+          type: string
+          description: Real Time Clearing Indicator.
+          example: ''
+        realTimeClearingIndicatorKey:
+          type: string
+          description: Real Time Clearing Indicator. (Code)
+          example: 'YES'
+        realTimeClearingNetworkId:
+          type: string
+          description: Real Time Clearing Network Id
+          example: '99999'
         receiptNumber:
           type: string
           description: Receipt number.
@@ -6557,6 +7001,11 @@ components:
           type: string
           description: Sub merchant name.
           example: STORE NAME
+        submittedInterchangeSavings:
+          type: number
+          description: Submitted Interchange Savings Amount
+          format: double
+          example: 0.99999
         submittedNetAmount:
           type: number
           description: Submitted net amount.
@@ -6619,6 +7068,14 @@ components:
           description: Tip amount.
           format: double
           example: 9.99
+        tokenFlag:
+          type: string
+          description: TOKEN FLAG
+          example: ''
+        tokenFlagKey:
+          type: string
+          description: TOKEN FLAG (Code)
+          example: ''
         tokenRequesterId:
           type: string
           description: Token requester ID.
@@ -6768,6 +7225,12 @@ components:
             - OTP
             - CashAdvance
             - QuasiCash
+            - Chargeback
+            - ChargebackReversal
+            - DeclinedAuth
+            - RapidDeposit
+            - BatchInquiry
+            - ReAuthorization
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -7062,6 +7525,7 @@ components:
             - PaymentsPaymentReceipt
             - PaymentsCopyOfCashedCheck
             - MedicalCopyOfOfficeVisitNotes
+            - NoValidFormOfIdentification
         ReasonKey:
           type: string
           description: Descriptive reason associated with a specific Retrieval. (Code)
@@ -7138,6 +7602,14 @@ components:
             - AliPay
             - EFunds
             - ACS
+            - ConnectPay
+            - Buypass
+            - APM
+            - ATB
+            - ATG
+            - Alaska
+            - eFunds
+            - StarEast
         authNetworkKey:
           type: string
           description: Authorization network of the credit card utilized for the transaction. (Code)
@@ -10486,6 +10958,7 @@ components:
             - DiscountsServiceCharges
             - InterchangeAssessment
             - Adjustment
+            - ProgramFees
         majorCategoryKey:
           type: string
           description: Identifies the major category for the merchant. (Code)
@@ -12430,6 +12903,43 @@ components:
             - MCIdentChk3dsEUDomIntra
             - MCIdentChk3dsCapDomIntra
             - MCIdentChk3dsEUInter
+            - MCMasterComClaimsMgrFee
+            - MCEUMerchAdvCode
+            - MCMerchAdvCode
+            - VIAnnualVbassFee
+            - VICvv2ResultMOrNFee
+            - VIMagStripeContactlessFee
+            - NWVisaPrearbCnpRemedyDMS
+            - VisaFraudRemedyUpfrontDMS
+            - VisaFraudRemedyMerchantDMS
+            - VNvrAprReatmptEUDomIntra
+            - VisaNvrAprReatmptUSDom
+            - VisaNvrAprReatmptCanDom
+            - VisaNvrAprReatmptEUInter
+            - VisaNvrAprReatmptUSInter
+            - VisaNvrAprReatmptCanInter
+            - VExDclnReatmptsEUDomIntra
+            - VisaExDclnReatmptsUSDom
+            - VisaExDclnReatmptsCanDom
+            - VisaExDclnReatmptsEUInter
+            - VisaExDclnReatmptsUSInter
+            - VisExDclnReatmptsCanInter
+            - VisaDataQualityEUDomIntra
+            - VisaDataQualityEUInter
+            - VIEstimatedAuthFee
+            - VIIncrementalAuthFee
+            - DebitCrdTranProcess
+            - NWInterlinkPrearbCNPRemedySMS
+            - AllLostfilingFee
+            - FilingWithdrawalSMS
+            - NWLtAcpt020InterlinkSMS
+            - INCRtvlUnionPaySMS
+            - INCCbkUnionPaySMS
+            - INCMerchRespUnionPaySMS
+            - INCOutExcptUnionPaySMS
+            - NWINCCbkUnionPaySMS
+            - NWCbkRepreUnionPaySMS
+            - AllDisputeImageFee
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -12588,6 +13098,25 @@ components:
             - MCDebitCanada
             - MCPassThru
             - VisaSigDebitCashAdvLocal
+            - Encore
+            - Nyce
+            - Most
+            - Aafes
+            - Ses
+            - Cashstation
+            - Pulse
+            - ETC
+            - Explore
+            - Interlink
+            - Tier2Credit
+            - CheckNonWarranty
+            - Petroleum3
+            - Petroleum4
+            - EarnLoyalty
+            - MaetroChip
+            - Solo
+            - SoloChip
+            - SettlementBatch
         productCodeKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -12678,6 +13207,7 @@ components:
             - PaymentDate
             - ApplyDate
             - ExpiryDate
+            - TransactionDate
         currency:
           type: string
           description: Currency of the transaction.
@@ -13257,6 +13787,8 @@ components:
             - Promotions
             - Loans
             - Refunds
+            - VendorPayments
+            - Grants
         paymentTypeKey:
           type: string
           description: Determine the type of payment that is being processed. (Code)
@@ -13745,6 +14277,14 @@ components:
               - AliPay
               - EFunds
               - ACS
+              - ConnectPay
+              - Buypass
+              - APM
+              - ATB
+              - ATG
+              - Alaska
+              - eFunds
+              - StarEast
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -13801,6 +14341,12 @@ components:
               - OTP
               - CashAdvance
               - QuasiCash
+              - Chargeback
+              - ChargebackReversal
+              - DeclinedAuth
+              - RapidDeposit
+              - BatchInquiry
+              - ReAuthorization
         currency:
           type: array
           description: Transactions associated with a particular
@@ -14168,6 +14714,12 @@ components:
             - OTP
             - CashAdvance
             - QuasiCash
+            - Chargeback
+            - ChargebackReversal
+            - DeclinedAuth
+            - RapidDeposit
+            - BatchInquiry
+            - ReAuthorization
         authTypeKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.TransactionDetails.authorizationTypeIndicator. Description: Type of authorization requested (e.g. Initial, Reauth, etc.). (Code)'
@@ -14475,6 +15027,14 @@ components:
             - AliPay
             - EFunds
             - ACS
+            - ConnectPay
+            - Buypass
+            - APM
+            - ATB
+            - ATG
+            - Alaska
+            - eFunds
+            - StarEast
         directedRoutingNetworkKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.DirectedRouting.network. Description: Identifies the debit card processing network. (Code)'
@@ -14669,6 +15229,14 @@ components:
             - AliPay
             - EFunds
             - ACS
+            - ConnectPay
+            - Buypass
+            - APM
+            - ATB
+            - ATG
+            - Alaska
+            - eFunds
+            - StarEast
         networkAVSCode:
           type: string
           description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.BankAssociationDetails.AvsSecurityCodeResponse.Association.avsCode. Description: Bank AVS response code.'
@@ -14849,6 +15417,14 @@ components:
             - DecryptedWallet
             - PaymentToken
             - Payment3DS
+            - PaymentEMV
+            - PaymentTrack
+            - PaymentManual
+            - PaymentCardEncrypted
+            - SamsungPay
+            - NetworkToken
+            - PaymentSession
+            - AppleTapToPay
         sourceTypeKey:
           type: string
           description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Payment source for a transaction request. (Code)'
@@ -15018,6 +15594,12 @@ components:
             - OTP
             - CashAdvance
             - QuasiCash
+            - Chargeback
+            - ChargebackReversal
+            - DeclinedAuth
+            - RapidDeposit
+            - BatchInquiry
+            - ReAuthorization
         txnTypeKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization. (Code)'
@@ -15962,6 +16544,14 @@ components:
             - AliPay
             - EFunds
             - ACS
+            - ConnectPay
+            - Buypass
+            - APM
+            - ATB
+            - ATG
+            - Alaska
+            - eFunds
+            - StarEast
         authNetworkKey:
           type: string
           description: Authorization network of the credit card utilized for the transaction. (Code)
@@ -17466,6 +18056,14 @@ components:
               - AliPay
               - EFunds
               - ACS
+              - ConnectPay
+              - Buypass
+              - APM
+              - ATB
+              - ATG
+              - Alaska
+              - eFunds
+              - StarEast
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -17522,6 +18120,12 @@ components:
               - OTP
               - CashAdvance
               - QuasiCash
+              - Chargeback
+              - ChargebackReversal
+              - DeclinedAuth
+              - RapidDeposit
+              - BatchInquiry
+              - ReAuthorization
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -19488,6 +20092,14 @@ components:
             - AliPay
             - EFunds
             - ACS
+            - ConnectPay
+            - Buypass
+            - APM
+            - ATB
+            - ATG
+            - Alaska
+            - eFunds
+            - StarEast
         networkKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -20094,6 +20706,12 @@ components:
             - OTP
             - CashAdvance
             - QuasiCash
+            - Chargeback
+            - ChargebackReversal
+            - DeclinedAuth
+            - RapidDeposit
+            - BatchInquiry
+            - ReAuthorization
         typeKey:
           type: string
           description: Transaction type code e.g. sale, refund etc. (Code)
@@ -20187,13 +20805,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -20277,6 +20895,8 @@ components:
           example: '30022'
         channel:
           $ref: '#/components/schemas/NamedReferenceDto'
+        clientDefinedIdentifier:
+          type: string
         preferences:
           $ref: '#/components/schemas/UserPreferenceDto'
         lastLoginTimestamp:
@@ -20392,13 +21012,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
