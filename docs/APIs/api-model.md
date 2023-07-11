@@ -23,15 +23,17 @@ titles: Request, Response
 -->
 
 ```json
-curl -X 'POST' \
-  'http://localhost:5005/v1/funding/summary' \
-  -H 'accept: application/json' \
-  -H 'apiKey: YOUR KEY' \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "fromDate": "20210801",
-        "toDate": "20210807"
-      }'
+curl --location 'http://localhost:5005/v1/funding/summary' \
+--header 'Content-Type: Application/JsOn' \
+--header 'Client-Request-Id: {{ClientRequestId}}' \
+--header 'Api-Key: {{key}}' \
+--header 'Timestamp: {{time}}' \
+--header 'Authorization: {{signature}}' \
+--data '
+{
+"fromDate": "20210801",
+"toDate": "20210807"
+}'
 ```
 
 <!--
@@ -74,17 +76,18 @@ titles: Request, Response
 -->
 
 ```json
-curl -X 'POST' \
-  'http://localhost:5005/v1/authorization/summary' \
-  -H 'accept: application/json' \
-  -H 'apiKey: YOUR KEY' \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "fromDate": "20210801",
-        "toDate": "20210807",
-        "summaryBy": "TxnDay",
-        "filters": {}
-      }'
+curl --location 'http://localhost:5005/v1/authorization/summary' \
+--header 'Content-Type: Application/JsOn' \
+--header 'Client-Request-Id: {{ClientRequestId}}' \
+--header 'Api-Key: {{key}}' \
+--header 'Timestamp: {{time}}' \
+--header 'Authorization: {{signature}}' \
+--data '
+{
+"fromDate": "20210801",
+"toDate": "20210807",
+"summaryBy": "TxnDay"
+}'
 ```
 
 <!--
@@ -212,26 +215,27 @@ titles: Request, Response
 -->
 
 ```json
-curl -X 'POST' \
-  'http://localhost:5005/v1/authorization/summary' \
-  -H 'accept: application/json' \
-  -H 'apiKey: YOUR KEY' \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "fromDate": "20210801",
-        "toDate": "20210807",
-        "summaryBy": "Network",
-        "filters": {
-          "networks": [
-            "Visa",
-            "Master",
-            "Discover",
-            "Amex",
-            "JCB",
-            "Diners"
-          ]
-        }
-      }'
+curl --location 'http://localhost:5005/v1/authorization/summary' \
+--header 'Content-Type: Application/Json' \
+--header 'Client-Request-Id: {{ClientRequestId}}' \
+--header 'Api-Key: {{key}}' \
+--header 'Timestamp: {{time}}' \
+--header 'Authorization: {{signature}}' \
+--data '{
+"fromDate": "20210801",
+"toDate": "20210807",
+"summaryBy": "Network",
+"filters": {
+"networks": [
+"Visa",
+"Master",
+"Discover",
+"Amex",
+"JCB",
+"Diners"
+]
+}
+}'
 ```
 
 <!--
@@ -289,16 +293,18 @@ titles: Request, Response
 -->
 
 ```json
-curl -X 'POST' \
-  'http://localhost:5005/v1/chargeback/summary' \
-  -H 'accept: application/json' \
-  -H 'apiKey: YOUR KEY' \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "fromDate": "20210801",
-        "toDate": "20210807",
-        "summaryBy": "WorkType"
-      }'
+curl --location 'http://localhost:5005/v1/chargeback/summary' \
+--header 'Content-Type: Application/JsOn' \
+--header 'Client-Request-Id: {{ClientRequestId}}' \
+--header 'Api-Key: {{key}}' \
+--header 'Timestamp: {{time}}' \
+--header 'Authorization: {{signature}}' \
+--data '
+{
+"fromDate": "20210801",
+"toDate": "20210807",
+"summaryBy": "WorkType"
+}'
 ```
 
 <!--
@@ -354,41 +360,42 @@ titles: Request, Response
 -->
 
 ```json
-curl -X 'POST' \
-  'http://localhost:5005/v1/authorization/search' \
-  -H 'accept: application/json' \
-  -H 'apiKey: YOUR KEY' \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "fromDate": "20210801",
-        "toDate": "20210807",
-        "limit": 20,
-        "filters": {
-          "networks": [
-            "Visa",
-            "Master",
-            "Discover",
-            "Amex",
-            "JCB",
-            "Diners"
-          ]
-        },
-        "fields": [
-          "ApprovalCode",
-          "TransactionDateTime",
-          "Type",
-          "AccountNumber",
-          "CardExpiryDate",
-          "Currency",
-          "Network",
-          "AuthCode",
-          "PaymentMethod",
-          "SiteID",
-          "TerminalID",
-          "OrdNo",
-          "ReferenceNumber"
-        ]
-      }'
+curl --location 'http://localhost:5005/v1/authorization/search' \
+--header 'Content-Type: Application/JsOn' \
+--header 'Client-Request-Id: {{ClientRequestId}}' \
+--header 'Api-Key: {{key}}' \
+--header 'Timestamp: {{time}}' \
+--header 'Authorization: {{signature}}' \
+--data '{
+"fromDate": "20210801",
+"toDate": "20210807",
+"limit": 20,
+"filters": {
+"networks": [
+"Visa",
+"Master",
+"Discover",
+"Amex",
+"JCB",
+"Diners"
+]
+},
+"fields": [
+"ApprovalCode",
+"TransactionDateTime",
+"Type",
+"AccountNumber",
+"CardExpiryDate",
+"Currency",
+"Network",
+"AuthCode",
+"PaymentMethod",
+"SiteID",
+"TerminalID",
+"OrdNo",
+"ReferenceNumber"
+]
+}'
 ```
 
 <!--
