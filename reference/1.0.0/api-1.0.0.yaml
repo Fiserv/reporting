@@ -3129,7 +3129,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FetchUserResponse'
+                $ref: '#/components/schemas/UserAuditInfoDto'
         '400':
           description: Invalid request
           content:
@@ -28696,6 +28696,41 @@ components:
           type: string
           description: Identifies the voucher number in the transaction.
           example: 0123456789ABCDE
+    UserAuditInfoDto:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: Internal key that uniquely identifies the user
+          format: int64
+          example: 1234567
+        userName:
+          type: string
+          description: User login name
+          example: cl.test123
+        message:
+          type: string
+          description: User message
+          example: 'Gift Card Business Intelligence '
+        oldValue:
+          type: string
+          description: Previous access level
+          example: Read Only
+        newValue:
+          type: string
+          description: Present access level
+          example: ADMIN
+        modifiedBy:
+          type: string
+          description: User who modified this account
+          example: cl.test123
+        modifiedTimestamp:
+          type: string
+          description: User modified timestamp (in UTC)
+          format: date-time
+          example: '2021-07-15T21:09:00Z'
+        attribute:
+          type: string
     ApplicationDto:
       type: object
       properties:
@@ -28765,13 +28800,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -28972,13 +29007,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
