@@ -3072,6 +3072,90 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
       x-group-name: Authorizations
+  /v1/users/{userid}/audit:
+    get:
+      tags:
+        - User Management
+      summary: Get User Audit
+      description: Fetches respective user information which includes preferences, applications and restricted access
+      operationId: getUserAudit
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: userid
+          in: path
+          description: Unique ID associated with the user
+          required: true
+          schema:
+            type: string
+            example: 1234567
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuditInfoDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: User Audit
+      x-group-name: User Management
   /v1/users/{userid}:
     get:
       tags:
@@ -4183,7 +4267,7 @@ components:
               - ECIIndicatorKey
               - IndicatesTypeofcommerce
               - MerchantTransactionReferenceNumber
-              - OriginalCardNumber
+              - OriginalAccountNumber
               - OriginalExpiryDate
               - RejectReasonCode
               - RejectReasonCodeKey
@@ -4226,7 +4310,6 @@ components:
               - AuthorizationTypeKey
               - AvsFlag
               - BankReferenceNumber
-              - BankTransactionReferenceID
               - BaseRate
               - BatchDate
               - BatchDescription
@@ -4252,7 +4335,6 @@ components:
               - CardUsage
               - CardUsageDescKey
               - CardUsageDscKey
-              - CardUsageIndicator
               - CardholderIDMethod
               - CardholderNumber
               - CashBackAmount
@@ -4378,15 +4460,8 @@ components:
               - MobileWalletKey
               - MultiClearingSequenceCount
               - MultiClearingSequenceNumber
-              - NativeAVSFlag
               - NativeDebitNetworkId
               - NativeEciIndicator
-              - NativeNetworkId
-              - NativeProcessedCurrency
-              - NativeProductCode
-              - NativeSubmittedCurrency
-              - NativeTransactionMode
-              - NativeTransactionStatus
               - NativeTransactionType
               - NetSalesCount
               - Network
@@ -4537,7 +4612,6 @@ components:
               - TrmnBtchNr
               - Type
               - TypeKey
-              - UserData
               - VehicleNumber
               - VisaPrdtId
               - VisaPurchaseIdentifierFormat
@@ -4546,6 +4620,44 @@ components:
               - WeeklyRentalRate
         filters:
           $ref: '#/components/schemas/SettlementFilters'
+        authBinFields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - Network
+            - ApprovalCode
+            - Amount
+            - AuthCode
+            - OrdNo
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["Network","ApprovalCode","Amount","AuthCode","OrdNo"]'
+            enum:
+              - Details
+              - Regulated
+              - Reloadable
+              - Country
+              - CardClass
+              - Issuer
+              - ProductSubType
+              - ProcessingIndicator
+              - FundSource
+              - DebitNetwork
+              - MoneySend
+              - MoneyTransfer
+              - OnlineGambling
+              - FastFunds
+              - OriginalCredit
+              - Id
+              - TokenBin
+              - Fsa
+              - CardSubType
+              - CardBrand
+              - EBTState
+              - B2bProgram
+              - BillingCurrency
+              - Bin
       description: Request object for Settlement search
     SettlementObj:
       type: object
@@ -4625,7 +4737,7 @@ components:
           type: string
           description: Merchant Transaction ReferenceNumber .
           example: '434585441885'
-        OriginalCardNumber:
+        OriginalAccountNumber:
           type: string
           description: Transaction Original Card Number.
           example: 481583H04PD06PP8000
@@ -5586,10 +5698,6 @@ components:
           type: string
           description: Unique number in merchant's bank deposit for funding.
           example: M99AA99AA
-        bankTransactionReferenceID:
-          type: string
-          description: Bank Transaction Reference ID, Applicable for Visa and MasterCard transactions.
-          example: '999999999999999'
         baseRate:
           type: number
           description: Base Rate.
@@ -5689,10 +5797,6 @@ components:
           type: string
           description: Card Usage type like Credit or Debit. (Code)
           example: C
-        cardUsageIndicator:
-          type: string
-          description: Card usage Indicator.
-          example: 'Y'
         cardholderIDMethod:
           type: string
           description: Indicates how the cardholder was identified by the merchant. This field is only required for Visa transactions.
@@ -6517,6 +6621,7 @@ components:
             - Netflix
             - Fitbit
             - Garmin
+            - Venmo
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
@@ -6529,10 +6634,6 @@ components:
           type: string
           description: This will allow the merchant to identify which shipment is in dispute in a split shipment transaction.
           example: '03'
-        nativeAVSFlag:
-          type: string
-          description: ' NativeCode indicating the level of Address Verification.'
-          example: E
         nativeDebitNetworkId:
           type: string
           description: Native Debit Network Id
@@ -6541,30 +6642,6 @@ components:
           type: string
           description: Indicates the electronic commerce indicator used for the transaction.
           example: '7'
-        nativeNetworkId:
-          type: string
-          description: Native Debit Network code that processed the transaction.
-          example: '030005'
-        nativeProcessedCurrency:
-          type: string
-          description: Native Processing currency code used for the transaction.
-          example: '840'
-        nativeProductCode:
-          type: string
-          description: Native Code of the card brand associated with the transaction.
-          example: '00001'
-        nativeSubmittedCurrency:
-          type: string
-          description: Native Submitted currency code used for the transaction.
-          example: '840'
-        nativeTransactionMode:
-          type: string
-          description: Transaction mode code associated with the transaction. Also known as capture method.
-          example: E
-        nativeTransactionStatus:
-          type: string
-          description: Native Transaction processing status code associated with the settle transaction.
-          example: A
         nativeTransactionType:
           type: string
           description: Native Transaction type code associated with the transaction
@@ -7477,10 +7554,6 @@ components:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
           example: '2'
-        userData:
-          type: string
-          description: Discretionary data sent on transaction by the merchant.
-          example: AA99BB99CC99
         vehicleNumber:
           type: string
           description: Vehicle number.
@@ -7579,10 +7652,6 @@ components:
     RetrievalObj:
       type: object
       properties:
-        NativeDebitNetworkID:
-          type: string
-          description: Native Debit network ID.
-          example: '1'
         Reason:
           type: string
           description: Descriptive reason associated with a specific retrieval.
@@ -8280,10 +8349,6 @@ components:
           type: string
           description: Merchant order number.
           example: '14014375232156'
-        orgRsnCode:
-          type: string
-          description: Request Reason Code Original Values.
-          example: 12AB
         origSlipNumber:
           type: string
           description: Slip number of the original presentment. This is a link to the TR feed item no field.
@@ -8412,7 +8477,6 @@ components:
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
             example: '["Reason","AccountNumber","AuthNetwork","Currency","InvoiceNumber","Status","TrackingNumber"]'
             enum:
-              - NativeDebitNetworkID
               - Reason
               - ReasonKey
               - UserData2
@@ -8456,7 +8520,6 @@ components:
               - NetworkSettleCurrency
               - OmniPayClientNumber
               - OrderNumber
-              - OrgRsnCode
               - OrigSlipNumber
               - PaypalTransactionID
               - ProcessedTransactionAmount
@@ -8482,6 +8545,44 @@ components:
               - UniqueTransactionIdentifier
         filters:
           $ref: '#/components/schemas/RetrievalFilters'
+        authBinFields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - Network
+            - ApprovalCode
+            - Amount
+            - AuthCode
+            - OrdNo
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["Network","ApprovalCode","Amount","AuthCode","OrdNo"]'
+            enum:
+              - Details
+              - Regulated
+              - Reloadable
+              - Country
+              - CardClass
+              - Issuer
+              - ProductSubType
+              - ProcessingIndicator
+              - FundSource
+              - DebitNetwork
+              - MoneySend
+              - MoneyTransfer
+              - OnlineGambling
+              - FastFunds
+              - OriginalCredit
+              - Id
+              - TokenBin
+              - Fsa
+              - CardSubType
+              - CardBrand
+              - EBTState
+              - B2bProgram
+              - BillingCurrency
+              - Bin
       description: Request object for Retrievals search
     SitesFilters:
       type: object
@@ -10273,6 +10374,11 @@ components:
           type: string
           description: Number of days since the last financial activity with the card.
           example: '11'
+        deactivationBaseAmount:
+          type: number
+          description: Deactivation base amount associated with the transaction.
+          format: double
+          example: 999.99
         expirationDate:
           type: string
           description: Account expiration date is returned on approved transactions & declined transactions due to card being expired (EST).
@@ -10321,6 +10427,11 @@ components:
         reloadBaseAmount:
           type: number
           description: Reload base amount associated with the transaction.
+          format: double
+          example: 999.99
+        replacementBaseAmount:
+          type: number
+          description: Replacement base amount associated with the transaction.
           format: double
           example: 999.99
         reversalBaseAmount:
@@ -10416,6 +10527,7 @@ components:
               - CurrencyCode
               - CurrencyCodeKey
               - DaysSinceLastTxn
+              - DeactivationBaseAmount
               - ExpirationDate
               - ExpirationDateMax
               - ExpirationDateMin
@@ -10438,6 +10550,7 @@ components:
               - PromotionName
               - RedemptionBaseAmount
               - ReloadBaseAmount
+              - ReplacementBaseAmount
               - ReversalBaseAmount
               - ServiceFeeBaseAmount
               - State
@@ -13966,6 +14079,39 @@ components:
             - CardBrandFee
             - CommercehubStdPerTranFee
             - CommercehubPrmPerTranFee
+            - VisaRealTimeAcctUpdateFee
+            - ApprovedVisaRetryPercentage
+            - ApprovedVisaRetryFlatFee
+            - DeclinedVisaRetryPercentage
+            - DeclinedVisaRetryFlatFee
+            - ApprovedMCRetryPercentage
+            - ApprovedMCRetryFlatFee
+            - DeclinedMCRetryPercentage
+            - DeclinedMCRetryFlatFee
+            - MCRealTimeUpdateMatchFee
+            - JcbCBFee
+            - MulticurrencyFee
+            - PFJcbCBFee
+            - PFMulticurrencyFee
+            - PFGatewayFee
+            - PFGlobalePricingFee
+            - VisaNonChipTerminalUse
+            - McPreAuthFeeCp
+            - McPreAuthFeeCnp
+            - McPreAuthFeeCpMin
+            - McPreAuthFeeCnpMin
+            - McPreAuthFeeDomMin
+            - McPreAuthFeeXborMin
+            - McLacPreAuthFeeDomMin
+            - McLacPreAuthFeeXborMin
+            - McAuthOptimizerNsf
+            - McTpeMChipDeploymentPrg
+            - ViDigitalCommerceSvcsFee
+            - ViDigitalCommerceSvcFeeMn
+            - NwDiscInqReqNonRespDms
+            - NwDiscRepresentmentFeeDms
+            - McPocIntegUndefAuthLacNonUs
+            - McProcIntegUndefAuthLacApNonUs
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -14508,18 +14654,6 @@ components:
           type: string
           description: The bank name for the payment transaction.
           example: Chase
-        batchOrigId:
-          type: string
-          description: Originator ID of the merchant.
-          example: '123420024321'
-        batchRecipientId:
-          type: string
-          description: Batch generated unique ID of the recipient.
-          example: 8a7fc3f07b577c61017b893488c2212c
-        batchTransactionId:
-          type: string
-          description: Batch generated unique transaction ID.
-          example: 8a7fe9117d797973017d9f9eb15904e0
         checkAmount:
           type: number
           description: Amount of the check.
@@ -14776,22 +14910,10 @@ components:
           description: The fee associated to the payment transaction.
           format: double
           example: 999.99
-        fsPaymentTime:
-          type: string
-          description: Payment time of the transaction.
-          example: '00:00:00.000'
         fundingAccount:
           type: string
           description: Disbursement funding account.
           example: '123456789123'
-        fundsMerchantName:
-          type: string
-          description: The name of the merchant.
-          example: Acme Co
-        fundsPaymentStatusCode:
-          type: string
-          description: The status of the payment code.
-          example: DI
         merchantId:
           type: string
           description: System generated unique merchant id.
@@ -14881,6 +15003,7 @@ components:
             - ReversalPending
             - ReversalFailed
             - InProcess
+            - InReview
         paymentStatusKey:
           type: string
           description: The status of the payment. (Code)
@@ -14902,6 +15025,7 @@ components:
             - Refunds
             - VendorPayments
             - Grants
+            - Reimbursement
         paymentTypeKey:
           type: string
           description: Determine the type of payment that is being processed. (Code)
@@ -15124,66 +15248,6 @@ components:
           type: string
           description: The second line of the street address of the recipient.
           example: Apt 101
-        tmxAccountEmail:
-          type: string
-          description: TMX Account Email
-          example: test1@gmail.com
-        tmxAgentType:
-          type: string
-          description: TMX Agent Type
-          example: browser_computer
-        tmxDeviceId:
-          type: string
-          description: TMX Device ID
-          example: 53a3b51266e04f309918996e41a13a6b
-        tmxFuzzyDeviceId:
-          type: string
-          description: TMX fuzzy deviceID
-          example: 53a3b51266e04f309918996e41a13a6b
-        tmxJsOs:
-          type: string
-          description: TMX JS OS
-          example: Windows 10
-        tmxPolicyScore:
-          type: string
-          description: TMX Policy Score
-          example: '100'
-        tmxReviewStatus:
-          type: string
-          description: TMX Review Status
-          example: pass
-        tmxRiskRating:
-          type: string
-          description: TMX Risk Rating
-          example: high
-        tmxRules:
-          type: string
-          description: TMX Rules
-          example: json
-        tmxSessionId:
-          type: string
-          description: TMX Session Id
-          example: e76fc413-5a36-439f-94c8-b8a80075b66fqww
-        tmxSummaryRiskScore:
-          type: string
-          description: TMX Summary Risk Scorer
-          example: '100'
-        tmxTrueIp:
-          type: string
-          description: TMX True Ip
-          example: 223.177.224.140
-        tmxTrueIpGeo:
-          type: string
-          description: TMX True Ip Geo
-          example: US
-        tmxTrueIpIsp:
-          type: string
-          description: TMX True Ip ISP
-          example: Comcast
-        tmxUsOs:
-          type: string
-          description: TMX US OS
-          example: win10
         transactionAmount:
           type: number
           description: Amount of the entire transaction set.
@@ -15201,10 +15265,6 @@ components:
           type: string
           description: The payment number for a reference of the transaction. This is passed by the client on the reference fields.
           example: 115061248A
-        transactionPaymentType:
-          type: string
-          description: Transaction Limit Payment Type
-          example: '100'
         transactionStatus:
           type: string
           description: The status of the transaction.
@@ -15276,9 +15336,6 @@ components:
               - ApprovalCode
               - ApprovalCodeKey
               - BankName
-              - BatchOrigId
-              - BatchRecipientId
-              - BatchTransactionId
               - CheckAmount
               - CheckID
               - CheckNumber
@@ -15295,10 +15352,7 @@ components:
               - Email
               - ExpiryDate
               - FeeAmount
-              - FsPaymentTime
               - FundingAccount
-              - FundsMerchantName
-              - FundsPaymentStatusCode
               - MerchantId
               - MerchantName
               - MerchantStatus
@@ -15348,28 +15402,12 @@ components:
               - StateKey
               - StreetOne
               - StreetTwo
-              - TmxAccountEmail
-              - TmxAgentType
-              - TmxDeviceId
-              - TmxFuzzyDeviceId
-              - TmxJsOs
-              - TmxPolicyScore
-              - TmxReviewStatus
-              - TmxRiskRating
-              - TmxRules
-              - TmxSessionId
-              - TmxSummaryRiskScore
-              - TmxTrueIp
-              - TmxTrueIpGeo
-              - TmxTrueIpIsp
-              - TmxUsOs
               - TransactionAmount
               - TransactionClaimNumber
               - TransactionCreateDate
               - TransactionDate
               - TransactionId
               - TransactionPaymentNumber
-              - TransactionPaymentType
               - TransactionStatus
               - TransactionStatusKey
               - TxnDesc
@@ -16182,6 +16220,14 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.customerServiceNumber. Description: The Customer Service Number of the merchant.'
           example: '999999999'
+        customerTaxID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.customer.taxId. Description: The tax identifier of the customer.'
+          example: '9999'
+        customerVatRegNum:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.orderData.supplierVatRegistrationNumber. Description: Customer/Supplier VAT Registration Number.'
+          example: SVAT33333
         directedRoutingNetwork:
           type: string
           description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.DirectedRouting.network. Description: Identifies the debit card processing network.'
@@ -16327,6 +16373,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.country. Description: The country of the merchant where the transaction happened.'
           example: USA
+        merchantCustID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.customer.merchantCustomerId. Description: Merchants identifier for a Customer.'
+          example: '999999999'
         merchantHouse:
           type: string
           description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.houseNumberOrName. Description: The House Number or Name of the merchant where the transaction happened.'
@@ -16359,6 +16409,14 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.street. Description: The street assigned to the processing merchant.'
           example: 1 Sample Way
+        merchantTaxID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.merchantDetails.taxId. Description: The tax identifier of the merchant.'
+          example: '9999'
+        merchantVatRegNum:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.merchantDetails.vatRegistrationNumber. Description: Merchant VAT Registration Number.'
+          example: MVAT33333
         messageCategory:
           type: string
           description: 'Commerce Hub Data Model Name: Request.additionalData3DS.messageCategory. Description: 3DS Message Category.'
@@ -16377,36 +16435,19 @@ components:
           example: '1'
         mobileWallet:
           type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay, etc.).'
-          example: Apple Pay
-          enum:
-            - Unknown
-            - Apple
-            - Google
-            - Samsung
-            - Walmart
-            - Sams
-            - PayPal
-            - Visa
-            - Amazon
-            - Masterpass
-            - India
-            - Microsoft
-            - Facebook
-            - Netflix
-            - Fitbit
-            - Garmin
+          description: 'Commerce Hub Data Model Name: Request.Source.walletType. Description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay, etc.).'
+          example: ''
         mobileWalletKey:
           type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay, etc.). (Code)'
-          example: '1'
+          description: 'Commerce Hub Data Model Name: Request.Source.walletType. Description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay, etc.). (Code)'
+          example: ''
         mrchInvcNum:
           type: string
           description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantInvoiceNumber. Description: Merchant invoice number (aka reference number).'
           example: '11111111'
         mrchOrdrID:
           type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantOrderId. Description: Merchant order ID (aka customer reference number or purchase order number).'
+          description: 'Commerce Hub Data Model Name: Request.TransactionDetails.merchantOrderId. Description: Merchant order ID (aka customer reference number or purchase order number).'
           example: '11111111'
         mrchTokenType:
           type: string
@@ -16505,6 +16546,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: processorResponseDetails.networkRouted. Description: The field identifies which network the request was routed to. (Code)'
           example: ''
+        orderDate:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.orderData.orderDate. Description: The date when the order was placed.'
+          example: 12-31-2000
         orderID:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.orderId. Description: Order identifier returned in the parameter orderId from a Charge transaction.'
@@ -16725,30 +16770,54 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.additionalData3DS.serviceProviderTransactionId. Description: 3DS service provider transaction id.'
           example: APP
+        shipFromPostalCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shipperAddress.address.postalCode. Description: The Zip/Postal Code provided on the shipper address.'
+          example: '07310'
+        shipToCity:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.city. Description: The City on the shipping address.'
+          example: Berkeley Heights
+        shipToCountry:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.country. Description: The Country on the shipping address.'
+          example: US
+        shipToEmail:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.shipToEmail. Description: The Email provided on the shipping address.'
+          example: john.smith@email.com
+        shipToHouseNum:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.houseNumberOrName. Description: The house/street number/name on the shipping address.'
+          example: '11'
+        shipToName:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.firstName + Request.shippingAddress.lastName. Description: The Name on the shipping address.'
+          example: John Smith
+        shipToPhone:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.phone.phoneNumber. Description: The Phone number provided on the shipping address.'
+          example: 222-333-4444
+        shipToPostalCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.postalCode. Description: The Zip/Postal Code on the shipping address.'
+          example: '07310'
+        shipToState:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.stateOrProvince. Description: The State/Province on the shipping address.'
+          example: NJ
+        shipToStreet:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.street. Description: The Street on the shipping address.'
+          example: Connell Drive
         sourceType:
           type: string
           description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Payment source for a transaction request.'
-          example: Apple Pay
-          enum:
-            - Unknown
-            - PaymentCard
-            - ApplePay
-            - GooglePay
-            - DecryptedWallet
-            - PaymentToken
-            - Payment3DS
-            - PaymentEMV
-            - PaymentTrack
-            - PaymentManual
-            - PaymentCardEncrypted
-            - SamsungPay
-            - NetworkToken
-            - PaymentSession
-            - AppleTapToPay
+          example: ''
         sourceTypeKey:
           type: string
           description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Payment source for a transaction request. (Code)'
-          example: '2'
+          example: ''
         statusReason3DS:
           type: string
           description: 'Commerce Hub Data Model Name: Request.additionalData3DS.statusReason. Description: 3DS Transaction Status Reason.'
@@ -17034,6 +17103,8 @@ components:
               - CustIPAddress
               - CustomerName
               - CustomerServiceNumber
+              - CustomerTaxID
+              - CustomerVatRegNum
               - DirectedRoutingNetwork
               - DirectedRoutingNetworkKey
               - DsTranID
@@ -17056,6 +17127,7 @@ components:
               - InvoiceNumber
               - MerchantCity
               - MerchantCountry
+              - MerchantCustID
               - MerchantHouse
               - MerchantID
               - MerchantMCC
@@ -17064,6 +17136,8 @@ components:
               - MerchantPostalCode
               - MerchantState
               - MerchantStreet
+              - MerchantTaxID
+              - MerchantVatRegNum
               - MessageCategory
               - MobileInteraction
               - MobileInteractionKey
@@ -17080,7 +17154,10 @@ components:
               - NetworkKey
               - NetworkRouted
               - NetworkRoutedKey
+              - OrderAmountDetails
+              - OrderDate
               - OrderID
+              - OrderItemDetails
               - OrigProcessorName
               - OrigProcessorPlatform
               - Origin
@@ -17129,6 +17206,16 @@ components:
               - ServiceEntitlement
               - ServiceProvider3DS
               - ServiceProviderTransactionId
+              - ShipFromPostalCode
+              - ShipToCity
+              - ShipToCountry
+              - ShipToEmail
+              - ShipToHouseNum
+              - ShipToName
+              - ShipToPhone
+              - ShipToPostalCode
+              - ShipToState
+              - ShipToStreet
               - SourceType
               - SourceTypeKey
               - StatusReason3DS
@@ -17360,7 +17447,6 @@ components:
               - MerchantFUndingAmount
               - MerchantFundingCurrency
               - MerchantFundingCurrencyKey
-              - MerchantOrderNumber
               - MerchantProductCode
               - MerchantProductCodeKey
               - MerchantSettleAmount
@@ -17369,11 +17455,8 @@ components:
               - MobileWalletKey
               - MultiClearingSequenceCount
               - MultiClearingSequenceNumber
-              - NativeAuthNetwork
               - NativeDebitNetworkId
               - NativeEciIndicator
-              - NativeProcessedCurrency
-              - NativeServiceCode
               - NetworkSettleAmount
               - NetworkSettleCurrency
               - NetworkSettleCurrencyKey
@@ -17388,7 +17471,6 @@ components:
               - PaymentMethod
               - PaymentMethodKey
               - PaypalTransactionID
-              - PosEntryModeCode
               - PosEntryModeDescription
               - PosEntryModeDescriptionKey
               - PpolProgramData
@@ -17439,10 +17521,47 @@ components:
               - WinLoss
               - WinLossKey
               - WorkType
-              - WorkTypeCycle
               - WorkTypeKey
         filters:
           $ref: '#/components/schemas/ChargebackFilters'
+        authBinFields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - Network
+            - ApprovalCode
+            - Amount
+            - AuthCode
+            - OrdNo
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["Network","ApprovalCode","Amount","AuthCode","OrdNo"]'
+            enum:
+              - Details
+              - Regulated
+              - Reloadable
+              - Country
+              - CardClass
+              - Issuer
+              - ProductSubType
+              - ProcessingIndicator
+              - FundSource
+              - DebitNetwork
+              - MoneySend
+              - MoneyTransfer
+              - OnlineGambling
+              - FastFunds
+              - OriginalCredit
+              - Id
+              - TokenBin
+              - Fsa
+              - CardSubType
+              - CardBrand
+              - EBTState
+              - B2bProgram
+              - BillingCurrency
+              - Bin
       description: Request object for Chargeback search
     ChargeBackObj:
       type: object
@@ -18839,10 +18958,6 @@ components:
           type: string
           description: Currency in which the original presentment was funded to the merchant. (Code)
           example: '1'
-        merchantOrderNumber:
-          type: string
-          description: Merchant Order Number.
-          example: WS8TZOOK4FFX
         merchantProductCode:
           type: string
           description: Merchant network of the cerdit card utilized for the transaction.
@@ -19007,6 +19122,7 @@ components:
             - Netflix
             - Fitbit
             - Garmin
+            - Venmo
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
@@ -19019,10 +19135,6 @@ components:
           type: string
           description: This will allow the merchant to identify which shipment is in dispute in a split shipment transaction.
           example: '03'
-        nativeAuthNetwork:
-          type: string
-          description: Native Authorization Network Code utilized for the transaction.
-          example: '00002'
         nativeDebitNetworkId:
           type: string
           description: Native Debit network Id .
@@ -19031,14 +19143,6 @@ components:
           type: string
           description: Electronic Commerce Indicator (ECI) is a value returned by Visa, MasterCard, JCB, and American Express etc. indicating the outcome of authentication attempted on transactions
           example: '7'
-        nativeProcessedCurrency:
-          type: string
-          description: Native Currency Code used for the transaction.
-          example: '840'
-        nativeServiceCode:
-          type: string
-          description: Identifies the transaction service code.
-          example: '675'
         networkSettleAmount:
           type: string
           description: Amount settled with the payment network for the presentment (that is, the interchange settlement amount), before the deduction of any charges.
@@ -19299,10 +19403,6 @@ components:
           type: string
           description: Unique identifier for PayPal transaction.
           example: MWEILWXKU
-        posEntryModeCode:
-          type: string
-          description: Identifies the code of the method of payment used on the transaction.
-          example: '31'
         posEntryModeDescription:
           type: string
           description: Identifies the method of payment used on the transaction.
@@ -19885,10 +19985,6 @@ components:
             - FirstChargebackReversal
             - SecondChargebackReversal
             - Oploss
-        workTypeCycle:
-          type: string
-          description: IDS category of where the chargeback is in the chargeback cycle.
-          example: Incoming
         workTypeKey:
           type: string
           description: Various stages of chargeback resolution. (Code)
@@ -20214,6 +20310,7 @@ components:
               - AdjustmentIndicator
               - AlternativeMerchantId
               - Amount
+              - AoAcctUpdaterErrCode
               - ApprovalCode
               - ApprovalCodeKey
               - AssocRespCode
@@ -20255,6 +20352,7 @@ components:
               - DrdRouteFunction
               - DriverID
               - DutyAmount
+              - EmployeeNumber
               - EmvAppCryptogram
               - EmvAppInterchangeProfile
               - EmvAppTxnCounter
@@ -20337,6 +20435,7 @@ components:
               - NetworkTokenRetryAttemptKey
               - OdometerReading
               - OldAccountNumber
+              - OldExpDate
               - OnlineTxnInd
               - OnlineTxnIndKey
               - OrdNo
@@ -20550,6 +20649,7 @@ components:
               - Seqno
               - ServerId
               - ServiceCode
+              - ServiceID
               - SettleCutOffTime
               - ShipmentFromZip
               - ShipmentToCountryCode
@@ -20571,6 +20671,7 @@ components:
               - TokenResponseIndKey
               - TppVarID
               - TppVarIDKey
+              - TrailerNumber
               - TransactionDate
               - TransactionDateTime
               - TransactionTime
@@ -20590,6 +20691,44 @@ components:
               - VoucherNumber
         filters:
           $ref: '#/components/schemas/AuthorizationFilters'
+        authBinFields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          example:
+            - Network
+            - ApprovalCode
+            - Amount
+            - AuthCode
+            - OrdNo
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            example: '["Network","ApprovalCode","Amount","AuthCode","OrdNo"]'
+            enum:
+              - Details
+              - Regulated
+              - Reloadable
+              - Country
+              - CardClass
+              - Issuer
+              - ProductSubType
+              - ProcessingIndicator
+              - FundSource
+              - DebitNetwork
+              - MoneySend
+              - MoneyTransfer
+              - OnlineGambling
+              - FastFunds
+              - OriginalCredit
+              - Id
+              - TokenBin
+              - Fsa
+              - CardSubType
+              - CardBrand
+              - EBTState
+              - B2bProgram
+              - BillingCurrency
+              - Bin
       description: Request details for authorization search
     AuthorizationObj:
       type: object
@@ -20984,6 +21123,10 @@ components:
           description: Amount requested for the authorization transaction.
           format: double
           example: 999.99
+        aoAcctUpdaterErrCode:
+          type: string
+          description: Real Time Account updater error code received from Visa.
+          example: VAU008
         approvalCode:
           type: string
           description: Identifies if the authorization was approved or declined.
@@ -22206,6 +22349,10 @@ components:
           description: Identifies the amount of duty charges in the transaction.
           format: double
           example: 999999999.99
+        employeeNumber:
+          type: string
+          description: Employee Number
+          example: '10112567'
         emvAppCryptogram:
           type: string
           description: Identifies the online card authentication cryptogram generated by the card during the transaction.
@@ -22670,6 +22817,7 @@ components:
             - Netflix
             - Fitbit
             - Garmin
+            - Venmo
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay, etc.). (Code)
@@ -22839,6 +22987,10 @@ components:
           type: string
           description: Old Card number.
           example: 666666XXXXXX4444
+        oldExpDate:
+          type: string
+          description: Expiration Date as it was originally received. Only populated if we go to AO.
+          example: '2210'
         onlineTxnInd:
           type: string
           description: Indicating whether this transaction came via online or batch server (compass)
@@ -28179,6 +28331,10 @@ components:
           type: string
           description: Value determines if card is chip capable.
           example: 9ZZ
+        serviceID:
+          type: string
+          description: Service ID
+          example: '2345574765'
         settleCutOffTime:
           type: integer
           description: Cutoff time setup for settlement of transaction(s) for a Merchant.
@@ -28413,6 +28569,10 @@ components:
           type: string
           description: Identifies the third-party processor or value added reseller involved in the transaction. (Code)
           example: ''
+        trailerNumber:
+          type: string
+          description: Trailer Number
+          example: '10112567'
         transactionTime:
           type: integer
           description: Time (EPOCH) of the authorization transaction.
@@ -28536,6 +28696,41 @@ components:
           type: string
           description: Identifies the voucher number in the transaction.
           example: 0123456789ABCDE
+    UserAuditInfoDto:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: Internal key that uniquely identifies the user
+          format: int64
+          example: 1234567
+        userName:
+          type: string
+          description: User login name
+          example: cl.test123
+        message:
+          type: string
+          description: User message
+          example: 'Gift Card Business Intelligence '
+        oldValue:
+          type: string
+          description: Previous access level
+          example: Read Only
+        newValue:
+          type: string
+          description: Present access level
+          example: ADMIN
+        modifiedBy:
+          type: string
+          description: User who modified this account
+          example: cl.test123
+        modifiedTimestamp:
+          type: string
+          description: User modified timestamp (in UTC)
+          format: date-time
+          example: '2021-07-15T21:09:00Z'
+        attribute:
+          type: string
     ApplicationDto:
       type: object
       properties:
@@ -28605,13 +28800,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -28812,13 +29007,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
