@@ -4402,6 +4402,8 @@ components:
               - ThreeDSDeviceDataInit
               - ThreeDSAuthentication
               - DCC
+              - CardholderFundsTransfer
+              - InterchangePayment
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -4810,7 +4812,6 @@ components:
               - OriginalPlanCode
               - OwdChargeAmt
               - PanSequenceNumber
-              - PartAuthIndicator
               - PaymentMethod
               - PaymentMethodKey
               - PcTaxAmount
@@ -4929,12 +4930,15 @@ components:
               - TransactionStatus
               - TransactionStatusKey
               - TransactionTime
+              - TransactionUcaf
+              - TransactionUcafKey
               - TrckrNbr
               - TrmnBtchClosDt
               - TrmnBtchClosTm
               - TrmnBtchNr
               - Type
               - TypeKey
+              - UserData
               - VehicleNumber
               - VisaPrdtId
               - VisaPurchaseIdentifierFormat
@@ -7135,10 +7139,6 @@ components:
           type: string
           description: Identifies the card sequence number.
           example: AAA
-        partAuthIndicator:
-          type: string
-          description: Code indicating if Partial Authorization is supported(0/null = not supported, 1 = Supported).
-          example: '1'
         paymentMethod:
           type: string
           description: Identifies the method of payment used on the transaction.
@@ -7804,6 +7804,14 @@ components:
           type: string
           description: The hour, minute and second when the transaction was performed.
           example: '2359000000'
+        transactionUcaf:
+          type: string
+          description: Transaction Ucaf Indicator
+          example: Attempted but no authorization
+        transactionUcafKey:
+          type: string
+          description: Transaction Ucaf Indicator (Code)
+          example: '1'
         trckrNbr:
           type: string
           description: Uniquely identifies a transaction.
@@ -7880,10 +7888,16 @@ components:
             - ThreeDSDeviceDataInit
             - ThreeDSAuthentication
             - DCC
+            - CardholderFundsTransfer
+            - InterchangePayment
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
           example: '2'
+        userData:
+          type: string
+          description: Discretionary data sent on transaction by the merchant.
+          example: AA99BB99CC99
         vehicleNumber:
           type: string
           description: Vehicle number.
@@ -8611,6 +8625,10 @@ components:
           type: string
           description: First six digits of card number.
           example: '123456'
+        first8:
+          type: string
+          description: First eight digits of card number.
+          example: '123456'
         fulfillmentSlipNumber:
           type: string
           description: Unique identifier for the fulfillment.
@@ -8833,6 +8851,7 @@ components:
               - EcIndicatorKey
               - ExternalMid
               - First6
+              - First8
               - FulfillmentSlipNumber
               - FulfilmentDate
               - InvoiceNumber
@@ -15924,6 +15943,8 @@ components:
               - ThreeDSDeviceDataInit
               - ThreeDSAuthentication
               - DCC
+              - CardholderFundsTransfer
+              - InterchangePayment
         currency:
           type: array
           description: Transactions associated with a particular
@@ -17260,6 +17281,8 @@ components:
             - ThreeDSDeviceDataInit
             - ThreeDSAuthentication
             - DCC
+            - CardholderFundsTransfer
+            - InterchangePayment
         txnTypeDetail:
           type: string
           description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction type detail as indicated by source.'
@@ -17660,6 +17683,8 @@ components:
               - ThreeDSDeviceDataInit
               - ThreeDSAuthentication
               - DCC
+              - CardholderFundsTransfer
+              - InterchangePayment
         currency:
           type: array
           description: Transactions associated with a particular
@@ -18530,6 +18555,8 @@ components:
             - ThreeDSDeviceDataInit
             - ThreeDSAuthentication
             - DCC
+            - CardholderFundsTransfer
+            - InterchangePayment
         txnTypeDetail:
           type: string
           description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction type detail as indicated by source.'
@@ -18979,6 +19006,8 @@ components:
               - TransactionDate
               - TransactionType
               - TransactionTypeKey
+              - TransactionUcaf
+              - TransactionUcafKey
               - UniqueTransactionId
               - UploadID
               - UserData
@@ -21414,6 +21443,14 @@ components:
           type: string
           description: Transaction type that identifies the transactions as a sale/refund etc. (Code)
           example: '9'
+        transactionUcaf:
+          type: string
+          description: Transaction Ucaf Indicator
+          example: Attempted but no authorization
+        transactionUcafKey:
+          type: string
+          description: Transaction Ucaf Indicator (Code)
+          example: '1'
         uniqueTransactionId:
           type: string
           description: Unique transaction identifier will be generated at point of sale before the transaction is sent for authorization or offline approval.
@@ -21654,6 +21691,8 @@ components:
               - ThreeDSDeviceDataInit
               - ThreeDSAuthentication
               - DCC
+              - CardholderFundsTransfer
+              - InterchangePayment
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -22184,44 +22223,6 @@ components:
               - VoucherNumber
         filters:
           $ref: '#/components/schemas/AuthorizationFilters'
-        authBinFields:
-          type: array
-          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-          example:
-            - Network
-            - ApprovalCode
-            - Amount
-            - AuthCode
-            - OrdNo
-          items:
-            type: string
-            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            example: '["Network","ApprovalCode","Amount","AuthCode","OrdNo"]'
-            enum:
-              - Details
-              - Regulated
-              - Reloadable
-              - Country
-              - CardClass
-              - Issuer
-              - ProductSubType
-              - ProcessingIndicator
-              - FundSource
-              - DebitNetwork
-              - MoneySend
-              - MoneyTransfer
-              - OnlineGambling
-              - FastFunds
-              - OriginalCredit
-              - Id
-              - TokenBin
-              - Fsa
-              - CardSubType
-              - CardBrand
-              - EBTState
-              - B2bProgram
-              - BillingCurrency
-              - Bin
       description: Request details for authorization search
     AuthorizationObj:
       type: object
@@ -30168,6 +30169,8 @@ components:
             - ThreeDSDeviceDataInit
             - ThreeDSAuthentication
             - DCC
+            - CardholderFundsTransfer
+            - InterchangePayment
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -30300,13 +30303,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -30507,13 +30510,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
