@@ -24,6 +24,8 @@ tags:
     description: Reference Information & details
   - name: CommerceHub
     description: CommerceHub search and summary details
+  - name: PayFacAdjustments
+    description: PayFacAdjustments details and summaries
   - name: User Management
     description: Analyze Users Management
   - name: Authorizations
@@ -1754,13 +1756,264 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Transactions Search
       x-group-name: Prepaid
+  /v1/payfacAdjustments/summary:
+    post:
+      tags:
+        - PayFacAdjustments
+      summary: Summary
+      description: Returns an aggregated view of settlement transactions utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
+      operationId: getCumulativeReport_2
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayFacAjustmentSummaryRequest'
+            examples:
+              Payment Facilitator Adjustments transactions summary:
+                description: Payment Facilitator Adjustments transactions summary
+                value:
+                  fromDate: '20231015'
+                  toDate: '20231015'
+              ' Payment Facilitator Adjustments transactions summary by SiteID':
+                description: ' Payment Facilitator Adjustments transactions summary by SiteID'
+                value:
+                  fromDate: '20231015'
+                  toDate: '20231015'
+                  summaryBy: SiteID
+              ' Payment Facilitator Adjustments transactions summary by Filters':
+                description: ' Payment Facilitator Adjustments transactions summary by Filters'
+                value: |-
+                  {
+                    "fromDate": "20231015",
+                    "toDate": "20231015",
+                    "summaryBy": "SiteID",
+                    "filters": {
+                          "siteIDs": "222222222222",
+                      }}
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PayFacAdjustmentSummaryResponse'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Summary
+      x-group-name: Settlement
+  /v1/payfacAdjustments/search:
+    post:
+      tags:
+        - PayFacAdjustments
+      summary: Search
+      description: Provides a list of PayFacAdjustments transactions and their attributes based on optional filter criteria.
+      operationId: search_2
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayFacAdjustmentSearchRequest'
+            examples:
+              List Payment Facilitator Adjustments:
+                description: List Payment Facilitator Adjustments
+                value: |-
+                  {
+                    "fromDate": "20231015",
+                    "toDate": "20231015",
+                  }
+              List Payment Facilitator Adjustments with specific fields:
+                description: List Payment Facilitator Adjustments with specific fields
+                value:
+                  fromDate: '20231015'
+                  toDate: '20231015'
+                  limit: 3
+                  fields:
+                    - BilledAmount
+                    - SubMerchantNumber
+                    - SiteID
+                    - FeeCode
+                    - FeeSequenceDesc
+              List Payment Facilitator Adjustments with specific Filters:
+                description: List Payment Facilitator Adjustments with specific Filters
+                value:
+                  fromDate: '20231015'
+                  toDate: '20231015'
+                  limit: 3
+                  fields:
+                    - BilledAmount
+                    - SubMerchantNumber
+                    - SiteID
+                    - FeeCode
+                    - FeeSequenceDesc
+                  filters:
+                    siteIDs: '222222222222'
+                    feeCode: 0A8
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PayFacAdjustmentsObj'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Search
+      x-group-name: PayFacAdjustments
   /v1/funding/summary:
     post:
       tags:
         - Funding
       summary: Summary
       description: Returns an aggregated view of funding transactions utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
-      operationId: getCumulativeReport_2
+      operationId: getCumulativeReport_3
       parameters:
         - name: Api-key
           in: header
@@ -1881,7 +2134,7 @@ paths:
         - Funding
       summary: Search
       description: Provides a list of funding transactions and their attributes based on optional filter criteria.
-      operationId: search_2
+      operationId: search_3
       parameters:
         - name: Api-key
           in: header
@@ -2167,7 +2420,7 @@ paths:
         - Disbursements
       summary: Search
       description: Provides a list of disbursements payments and their attributes based on optional filter criteria.
-      operationId: search_3
+      operationId: search_4
       parameters:
         - name: Api-key
           in: header
@@ -2418,7 +2671,7 @@ paths:
         - CommerceHub
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_4
+      operationId: search_5
       parameters:
         - name: Api-key
           in: header
@@ -2639,7 +2892,7 @@ paths:
         - CommerceHub
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_5
+      operationId: search_6
       parameters:
         - name: Api-key
           in: header
@@ -2753,7 +3006,7 @@ paths:
         - Chargebacks
       summary: Summary
       description: Returns an aggregated view of chargebacks utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
-      operationId: getCumulativeReport_3
+      operationId: getCumulativeReport_4
       parameters:
         - name: Api-key
           in: header
@@ -2881,7 +3134,7 @@ paths:
         - Chargebacks
       summary: Search
       description: Provides a list of chargebacks and their attributes based on optional filter criteria.
-      operationId: search_6
+      operationId: search_7
       parameters:
         - name: Api-key
           in: header
@@ -3131,7 +3384,7 @@ paths:
         - Authorizations
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_7
+      operationId: search_8
       parameters:
         - name: Api-key
           in: header
@@ -3503,6 +3756,11 @@ paths:
           in: header
           description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
           required: true
+          schema:
+            type: string
+        - name: accessName
+          in: query
+          required: false
           schema:
             type: string
       responses:
@@ -4409,6 +4667,7 @@ components:
               - DCC
               - CardholderFundsTransfer
               - InterchangePayment
+              - PaymentToThirdParty
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -7460,6 +7719,31 @@ components:
             - Solo
             - SoloChip
             - SettlementBatch
+            - IntlAternativePayment
+            - OffersPOSRedemption
+            - OffersSetRedemption
+            - PostOfficePrivateLabel
+            - CashAdvanceAmericanExpress
+            - MastercardMVP
+            - Masterlink
+            - MaestroDebit
+            - VisaDebitStandard
+            - MastercardDebitStandard
+            - MastercardSigDebitCashAdvanceLocal
+            - VisaOnusCredit
+            - VisaOnusSigDebit
+            - VisaOnusCreditCashAdvance
+            - VisaOnusSigDebitCashAdvance
+            - VisaOnusMobCredit
+            - VisaOnusMobSigDebit
+            - VisaMobSigDebitLocal
+            - MastercardOnusCredit
+            - MastercardOnusSigDebit
+            - MastercardOnusCreditCashAdvance
+            - MastercardOnusSigDebitCashAdvance
+            - MastercardOnusMobCredit
+            - MastercardOnusMobSigDebit
+            - MastercardMobSigDebitLocal
         productCodeKey:
           type: string
           description: Name of the card brand associated with the transaction. (Code)
@@ -7911,6 +8195,7 @@ components:
             - DCC
             - CardholderFundsTransfer
             - InterchangePayment
+            - PaymentToThirdParty
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -11720,6 +12005,184 @@ components:
         filters:
           $ref: '#/components/schemas/PrepaidTransactionFilters'
       description: Request object for Prepaid Transactions search.
+    PayFacAdjustmentFilters:
+      type: object
+      properties:
+        siteIDs:
+          type: array
+          description: Transactions associated with one of the Site IDs specified
+          example:
+            - '1111111'
+          items:
+            type: string
+            description: Transactions associated with one of the Site IDs specified
+            example: '["1111111"]'
+        subMerchantNumber:
+          type: string
+          description: An unique identifier assigned to the merchant. Also known as a MID.
+          example: '123456789123'
+        subMerchantName:
+          type: string
+          description: The name assigned to the processing sub merchant.
+          example: SUB MERCHANT NAME
+        feeCode:
+          type: string
+          description: Fee Sequence Code.
+          example: 0A8
+        feeSequenceDesc:
+          type: string
+          description: Fee Sequence Description.
+          example: VISA SALES TRANS FEE
+        planCode:
+          type: string
+          description: Plan Code.
+          example: 0A8
+        text1:
+          type: string
+          description: Transaction Details of PayFac Adjustments.
+          example: VISA SALES TRANS FEE
+      description: Various filter options for Payment Facilitator Report queries
+    PayFacAjustmentSummaryRequest:
+      required:
+        - fromDate
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        summaryBy:
+          type: string
+          description: Summary grouped by this field
+          example: SiteID
+          enum:
+            - TxnDay
+            - TxnWeek
+            - TxnMonth
+            - TxnQuarter
+            - TxnYear
+            - SiteID
+            - SubMerchantNumber
+            - FeeCode
+            - Text1
+            - Text2
+        filters:
+          $ref: '#/components/schemas/PayFacAdjustmentFilters'
+      description: Request object for settlement summary report creation
+    PayFacAdjustmentSummaryResponse:
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency Information
+          example: USD
+        value:
+          type: string
+          description: The value of the summary by field
+          example: Visa
+        countTotal:
+          type: integer
+          description: Count of Retrievals
+          format: int64
+          example: 757
+        transactionAmountTotal:
+          type: number
+          description: Original Transaction Amount that is disputed by Cardholder.
+          format: double
+          example: 11909212
+      description: Summary response object which maps the data points returned from the summary request
+    PayFacAdjustmentSearchRequest:
+      required:
+        - fromDate
+        - limit
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        limit:
+          maximum: 1000000
+          minimum: 1
+          type: integer
+          description: The maximum number of records that will be returned
+          format: int32
+          example: 3
+          default: 10
+        fields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            enum:
+              - BilledAmount
+              - FeeCode
+              - FeeSequenceDesc
+              - PlanCode
+              - PostedDate
+              - SiteID
+              - SubMerchantName
+              - SubMerchantNumber
+              - Text1
+              - Text2
+        filters:
+          $ref: '#/components/schemas/PayFacAdjustmentFilters'
+      description: Request object for Payment Facilitator search
+    PayFacAdjustmentsObj:
+      type: object
+      properties:
+        billedAmount:
+          type: number
+          description: PayFac Billing Amount.
+          format: double
+          example: 999.99
+        feeCode:
+          type: string
+          description: Fee Sequence Code.
+          example: 0BC
+        feeSequenceDesc:
+          type: string
+          description: Fee Sequence Description.
+          example: VISA SALES TRANS FEE
+        planCode:
+          type: string
+          description: Plan Code.
+          example: 0BC
+        postedDate:
+          type: string
+          description: Date when the posting to/from the merchant associated with this transaction.
+          format: date-time
+        siteID:
+          type: string
+          description: An unique identifier assigned to the merchant. Also known as a MID.
+          example: '123456789123'
+        subMerchantName:
+          type: string
+          description: The name assigned to the processing sub merchant.
+          example: SUB MERCHANT NAME
+        subMerchantNumber:
+          type: string
+          description: An unique identifier assigned to the merchant. Also known as a MID.
+          example: '123456789123'
+        text1:
+          type: string
+          description: Transaction Details of PayFac Adjustments.
+          example: VISA SALES TRANS FEE
+        text2:
+          type: string
+          description: Transaction Details of PayFac Adjustments.
+          example: VISA SALES TRANS FEE
     FundingFilters:
       type: object
       properties:
@@ -14545,6 +15008,7 @@ components:
             - RefundReqRspMcTier1
             - RefundReqRspMcTier2
             - NwCollaborationAdjMcDms
+            - NetworkTokenTransactionFee
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -14759,6 +15223,31 @@ components:
             - Solo
             - SoloChip
             - SettlementBatch
+            - IntlAternativePayment
+            - OffersPOSRedemption
+            - OffersSetRedemption
+            - PostOfficePrivateLabel
+            - CashAdvanceAmericanExpress
+            - MastercardMVP
+            - Masterlink
+            - MaestroDebit
+            - VisaDebitStandard
+            - MastercardDebitStandard
+            - MastercardSigDebitCashAdvanceLocal
+            - VisaOnusCredit
+            - VisaOnusSigDebit
+            - VisaOnusCreditCashAdvance
+            - VisaOnusSigDebitCashAdvance
+            - VisaOnusMobCredit
+            - VisaOnusMobSigDebit
+            - VisaMobSigDebitLocal
+            - MastercardOnusCredit
+            - MastercardOnusSigDebit
+            - MastercardOnusCreditCashAdvance
+            - MastercardOnusSigDebitCashAdvance
+            - MastercardOnusMobCredit
+            - MastercardOnusMobSigDebit
+            - MastercardMobSigDebitLocal
         productCodeKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -16090,6 +16579,7 @@ components:
               - DCC
               - CardholderFundsTransfer
               - InterchangePayment
+              - PaymentToThirdParty
         currency:
           type: array
           description: Transactions associated with a particular
@@ -17432,6 +17922,7 @@ components:
             - DCC
             - CardholderFundsTransfer
             - InterchangePayment
+            - PaymentToThirdParty
         txnTypeDetail:
           type: string
           description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction type detail as indicated by source.'
@@ -17834,6 +18325,7 @@ components:
               - DCC
               - CardholderFundsTransfer
               - InterchangePayment
+              - PaymentToThirdParty
         currency:
           type: array
           description: Transactions associated with a particular
@@ -18774,6 +19266,7 @@ components:
             - DCC
             - CardholderFundsTransfer
             - InterchangePayment
+            - PaymentToThirdParty
         txnTypeDetail:
           type: string
           description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction type detail as indicated by source.'
@@ -20838,6 +21331,31 @@ components:
             - Solo
             - SoloChip
             - SettlementBatch
+            - IntlAternativePayment
+            - OffersPOSRedemption
+            - OffersSetRedemption
+            - PostOfficePrivateLabel
+            - CashAdvanceAmericanExpress
+            - MastercardMVP
+            - Masterlink
+            - MaestroDebit
+            - VisaDebitStandard
+            - MastercardDebitStandard
+            - MastercardSigDebitCashAdvanceLocal
+            - VisaOnusCredit
+            - VisaOnusSigDebit
+            - VisaOnusCreditCashAdvance
+            - VisaOnusSigDebitCashAdvance
+            - VisaOnusMobCredit
+            - VisaOnusMobSigDebit
+            - VisaMobSigDebitLocal
+            - MastercardOnusCredit
+            - MastercardOnusSigDebit
+            - MastercardOnusCreditCashAdvance
+            - MastercardOnusSigDebitCashAdvance
+            - MastercardOnusMobCredit
+            - MastercardOnusMobSigDebit
+            - MastercardMobSigDebitLocal
         merchantProductCodeKey:
           type: string
           description: Merchant network of the cerdit card utilized for the transaction. (Code)
@@ -21964,6 +22482,7 @@ components:
               - DCC
               - CardholderFundsTransfer
               - InterchangePayment
+              - PaymentToThirdParty
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -30637,6 +31156,7 @@ components:
             - DCC
             - CardholderFundsTransfer
             - InterchangePayment
+            - PaymentToThirdParty
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -30769,13 +31289,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -30978,13 +31498,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
