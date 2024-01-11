@@ -1761,7 +1761,7 @@ paths:
       tags:
         - PayFacAdjustments
       summary: Summary
-      description: Returns an aggregated view of settlement transactions utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
+      description: Returns an aggregated view of PayFacAdjustments transactions utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
       operationId: getCumulativeReport_2
       parameters:
         - name: Api-key
@@ -1819,14 +1819,12 @@ paths:
                   summaryBy: SiteID
               ' Payment Facilitator Adjustments transactions summary by Filters':
                 description: ' Payment Facilitator Adjustments transactions summary by Filters'
-                value: |-
-                  {
-                    "fromDate": "20231015",
-                    "toDate": "20231015",
-                    "summaryBy": "SiteID",
-                    "filters": {
-                          "siteIDs": "222222222222",
-                      }}
+                value:
+                  fromDate: '20231015'
+                  toDate: '20231015'
+                  summaryBy: SiteID
+                  filters:
+                    siteIDs: '222222222222'
         required: true
       responses:
         '200':
@@ -1874,7 +1872,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Summary
-      x-group-name: Settlement
+      x-group-name: PayFacAdjustments
   /v1/payfacAdjustments/search:
     post:
       tags:
@@ -1927,11 +1925,9 @@ paths:
             examples:
               List Payment Facilitator Adjustments:
                 description: List Payment Facilitator Adjustments
-                value: |-
-                  {
-                    "fromDate": "20231015",
-                    "toDate": "20231015",
-                  }
+                value:
+                  fromDate: '20231015'
+                  toDate: '20231015'
               List Payment Facilitator Adjustments with specific fields:
                 description: List Payment Facilitator Adjustments with specific fields
                 value:
@@ -4596,6 +4592,12 @@ components:
               - Alaska
               - eFunds
               - StarEast
+              - MaestroInternational
+              - Rupay
+              - CUP
+              - EFTPos
+              - SCBOnUs
+              - AmexOptBlue
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -4668,6 +4670,7 @@ components:
               - CardholderFundsTransfer
               - InterchangePayment
               - PaymentToThirdParty
+              - Tip
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -5295,6 +5298,8 @@ components:
             - ReAuthTxn
             - IVR
             - NotEComm
+            - InternetElectronic
+            - InternetPhysical
         ECIIndicatorKey:
           type: string
           description: Indicates the electronic commerce indicator used for the transaction. (Code)
@@ -6786,6 +6791,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         debitNetworkIdDsc:
           type: string
           description: Debit Network like STAR, MAESTRO etc.
@@ -7213,6 +7224,16 @@ components:
             - Garmin
             - Venmo
             - WalmartScan
+            - CupQR
+            - GrabPay
+            - AliPay
+            - DuitNow
+            - FPS
+            - PayMe
+            - PayNow
+            - SingtelDash
+            - TouchNGo
+            - WechatPay
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
@@ -7307,6 +7328,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         networkKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -7585,6 +7612,7 @@ components:
             - Tampa
             - PaySecure
             - DDP
+            - Base24
         processorKey:
           type: string
           description: Identifies the settlement platform. (Code)
@@ -8196,6 +8224,7 @@ components:
             - CardholderFundsTransfer
             - InterchangePayment
             - PaymentToThirdParty
+            - Tip
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -8587,6 +8616,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         authNetworkKey:
           type: string
           description: Authorization network of the credit card utilized for the transaction. (Code)
@@ -8613,6 +8648,7 @@ components:
             - Tampa
             - PaySecure
             - DDP
+            - Base24
         backendProcessorKey:
           type: string
           description: Internal settlement platform. (Code)
@@ -8892,6 +8928,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         debitNetworkIDKey:
           type: string
           description: Debit network description. (Code)
@@ -8928,6 +8970,8 @@ components:
             - ReAuthTxn
             - IVR
             - NotEComm
+            - InternetElectronic
+            - InternetPhysical
         ecIndicatorKey:
           type: string
           description: Electronic Commerce Indicator (ECI) is a value returned by Visa, MasterCard, JCB, and American Express etc. indicating the outcome of authentication attempted on transactions. (Code)
@@ -9054,6 +9098,7 @@ components:
             - Inquiry
             - Claim
             - PreChargeback
+            - RefundRequest
         retrievalRequestTypeKey:
           type: string
           description: Request Type for the retrieval. (Code)
@@ -9255,6 +9300,7 @@ components:
             - Tampa
             - PaySecure
             - DDP
+            - Base24
       description: Various filter options for sites queries
     SitesSearchRequest:
       type: object
@@ -9450,6 +9496,7 @@ components:
             - Tampa
             - PaySecure
             - DDP
+            - Base24
         platformKey:
           type: string
           description: Identifies the processor for the merchant. (Code)
@@ -10518,6 +10565,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         debitNetworkKey:
           type: string
           description: Identifies debit network participant. (Code)
@@ -15089,6 +15142,7 @@ components:
             - Tampa
             - PaySecure
             - DDP
+            - Base24
         processorKey:
           type: string
           description: Identifies the funding platform. (Code)
@@ -16508,6 +16562,12 @@ components:
               - Alaska
               - eFunds
               - StarEast
+              - MaestroInternational
+              - Rupay
+              - CUP
+              - EFTPos
+              - SCBOnUs
+              - AmexOptBlue
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -16580,6 +16640,7 @@ components:
               - CardholderFundsTransfer
               - InterchangePayment
               - PaymentToThirdParty
+              - Tip
         currency:
           type: array
           description: Transactions associated with a particular
@@ -16859,6 +16920,8 @@ components:
             - ReAuthTxn
             - IVR
             - NotEComm
+            - InternetElectronic
+            - InternetPhysical
         ECIndicatorKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.eciIndicator. Description: The Electronic Commerce Indicator used for the transaction. (Code)'
@@ -17277,6 +17340,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         directedRoutingNetworkKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.DirectedRouting.network. Description: Identifies the debit card processing network. (Code)'
@@ -17498,6 +17567,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         networkAVSCode:
           type: string
           description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.BankAssociationDetails.AvsSecurityCodeResponse.Association.avsCode. Description: Bank AVS response code.'
@@ -17923,6 +17998,7 @@ components:
             - CardholderFundsTransfer
             - InterchangePayment
             - PaymentToThirdParty
+            - Tip
         txnTypeDetail:
           type: string
           description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction type detail as indicated by source.'
@@ -18254,6 +18330,12 @@ components:
               - Alaska
               - eFunds
               - StarEast
+              - MaestroInternational
+              - Rupay
+              - CUP
+              - EFTPos
+              - SCBOnUs
+              - AmexOptBlue
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -18326,6 +18408,7 @@ components:
               - CardholderFundsTransfer
               - InterchangePayment
               - PaymentToThirdParty
+              - Tip
         currency:
           type: array
           description: Transactions associated with a particular
@@ -18742,6 +18825,22 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.additionalData3DS.channel. Description: Channel (e.g. Browser, APP, 3RI)'
           example: APP
+        checkAccountNumber:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.source.check.accountNumber. Description: Account number endorsed on the check.'
+          example: '19471508'
+        checkNumber:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.source.check.checkData. Description: Check number of the check presented.'
+          example: '4005550000000019'
+        checkRoutingNumber:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.source.check.routingNumber. Description: Routing number endorsed on the check.'
+          example: '19471508'
+        checkType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.source.check.checkType. Description: Describes the check type.'
+          example: PERSONAL
         clientRequestID:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.clientRequestId. Description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control.'
@@ -18754,10 +18853,22 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.currency. Description: Currency code used for the transaction ISO 3 currency format.'
           example: ''
-        customerName:
+        customerEmail:
           type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.Card.nameOnCard. Description: Cardholder name.'
+          description: 'Commerce Hub Data Model Name: Request.customer.email. Description: Email of the customer.'
+          example: john.smith@email.com
+        customerFirstName:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.customer.firstName. Description: First Name of the customer.'
           example: JXXXXXXXE
+        customerLastName:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.customer.lastName. Description: Last Name of the customer.'
+          example: SXXXXXH
+        customerPhone:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.customer.phone[0].phoneNumber. Description: Phone number of the customer.'
+          example: 222-333-4444
         customerServiceNumber:
           type: string
           description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.customerServiceNumber. Description: The Customer Service Number of the merchant.'
@@ -18926,6 +19037,14 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.TransactionDetails.merchantTransactionId. Description: Merchant transaction ID (aka transaction reference ID).'
           example: ''
+        nameOnCard:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.Card.nameOnCard. Description: Name as it appears on the Card.'
+          example: JXXXXXXXE
+        nameOnCheck:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.source.check.nameOnCheck. Description: Check holder name.'
+          example: Jane Smith
         network:
           type: string
           description: 'Commerce Hub Data Model Name: Response.NetworkDetails.Network.network. Description: Name of the authorizing network associated with the transaction.'
@@ -19267,10 +19386,7 @@ components:
             - CardholderFundsTransfer
             - InterchangePayment
             - PaymentToThirdParty
-        txnTypeDetail:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction type detail as indicated by source.'
-          example: ''
+            - Tip
         txnTypeKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization. (Code)'
@@ -19355,10 +19471,17 @@ components:
               - Cavv
               - ChallengeStatus
               - Channel3DS
+              - CheckAccountNumber
+              - CheckNumber
+              - CheckRoutingNumber
+              - CheckType
               - ClientRequestID
               - ClientType
               - Currency
-              - CustomerName
+              - CustomerEmail
+              - CustomerFirstName
+              - CustomerLastName
+              - CustomerPhone
               - CustomerServiceNumber
               - CustomerTaxID
               - CustomerVatRegNum
@@ -19401,6 +19524,8 @@ components:
               - MrchOrdrID
               - MrchTokenType
               - MrchTranID
+              - NameOnCard
+              - NameOnCheck
               - Network
               - NetworkAVSCode
               - NetworkCVVCode
@@ -19474,7 +19599,6 @@ components:
               - TxnState
               - TxnTerminalID
               - TxnType
-              - TxnTypeDetail
               - TxnTypeKey
               - Xid
         filters:
@@ -19879,6 +20003,8 @@ components:
             - ReAuthTxn
             - IVR
             - NotEComm
+            - InternetElectronic
+            - InternetPhysical
         ECIndicatorKey:
           type: string
           description: Electronic Commerce Indicator (ECI) is a value returned by Visa, MasterCard, JCB, and American Express etc. indicating the outcome of authentication attempted on transactions. (Code)
@@ -20355,6 +20481,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         authNetworkKey:
           type: string
           description: Authorization network of the credit card utilized for the transaction. (Code)
@@ -20385,6 +20517,7 @@ components:
             - Tampa
             - PaySecure
             - DDP
+            - Base24
         backendProcessorKey:
           type: string
           description: Internal settlement platform. (Code)
@@ -20723,6 +20856,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         debitNetworkIdKey:
           type: string
           description: Debit network description. (Code)
@@ -21392,6 +21531,16 @@ components:
             - Garmin
             - Venmo
             - WalmartScan
+            - CupQR
+            - GrabPay
+            - AliPay
+            - DuitNow
+            - FPS
+            - PayMe
+            - PayNow
+            - SingtelDash
+            - TouchNGo
+            - WechatPay
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
@@ -22411,6 +22560,12 @@ components:
               - Alaska
               - eFunds
               - StarEast
+              - MaestroInternational
+              - Rupay
+              - CUP
+              - EFTPos
+              - SCBOnUs
+              - AmexOptBlue
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -22483,6 +22638,7 @@ components:
               - CardholderFundsTransfer
               - InterchangePayment
               - PaymentToThirdParty
+              - Tip
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -22764,6 +22920,7 @@ components:
               - OrdNo
               - OrigAuthResponse
               - OrigAuthResponseDesc
+              - OriginalTxnID
               - ParID
               - PartialApprovalFlag
               - PartnerOrderID
@@ -22939,7 +23096,6 @@ components:
               - Product9nProductCode
               - Product9nProductCodeKey
               - ProductAmount
-              - ProductDetails
               - ProductQuantity
               - ProductUnitOfMeasure
               - ProductUnitOfMeasureKey
@@ -22979,6 +23135,8 @@ components:
               - ShipmentToCountryCode
               - ShipmentToZip
               - SiteID
+              - SoftPosIndicator
+              - SoftPosIndicatorKey
               - SourceType
               - SubMerchantId
               - SubType
@@ -23332,6 +23490,8 @@ components:
             - ReAuthTxn
             - IVR
             - NotEComm
+            - InternetElectronic
+            - InternetPhysical
         ECIIndicatorKey:
           type: string
           description: Indicates the electronic commerce indicator used for the transaction. (Code)
@@ -25121,6 +25281,16 @@ components:
             - Garmin
             - Venmo
             - WalmartScan
+            - CupQR
+            - GrabPay
+            - AliPay
+            - DuitNow
+            - FPS
+            - PayMe
+            - PayNow
+            - SingtelDash
+            - TouchNGo
+            - WechatPay
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay, etc.). (Code)
@@ -25230,6 +25400,12 @@ components:
             - Alaska
             - eFunds
             - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
         networkAuthIndicator2:
           type: string
           description: Identifies if auth was performed with PAN or NT - 2nd Try.
@@ -25314,6 +25490,10 @@ components:
           type: string
           description: Original Authorization Response Description.
           example: 9876543210ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        originalTxnID:
+          type: string
+          description: Original transaction ID.
+          example: '999999999999999'
         parID:
           type: string
           description: Par ID
@@ -25419,6 +25599,7 @@ components:
             - Tampa
             - PaySecure
             - DDP
+            - Base24
         processorKey:
           type: string
           description: Identifies the originating platform (Switch). (Code)
@@ -30628,10 +30809,6 @@ components:
           description: Identifies the amount of the item described in this record.
           format: double
           example: 9999999.99
-        productDetails:
-          type: string
-          description: Product details (up to 20 sets).
-          example: JSON String
         productQuantity:
           type: number
           description: Identifies the number of units in the transaction.
@@ -30833,6 +31010,17 @@ components:
           description: An unique identifier assigned to the merchant. Also known as a MID.
           format: int64
           example: 123456789123
+        softPosIndicator:
+          type: string
+          description: Soft Pos Indicator
+          example: Soft Pos
+          enum:
+            - Unknown
+            - AppleTapToPay
+        softPosIndicatorKey:
+          type: string
+          description: Soft Pos Indicator (Code)
+          example: '1'
         sourceType:
           type: string
           description: Indicates source type.
@@ -30854,6 +31042,9 @@ components:
             - EBT
             - ACH
             - POS
+            - IVR
+            - SI
+            - EComm
         subTypeKey:
           type: string
           description: Transaction sub type codes e.g., Pin, Signature, etc. (Code)
@@ -31157,6 +31348,7 @@ components:
             - CardholderFundsTransfer
             - InterchangePayment
             - PaymentToThirdParty
+            - Tip
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -31289,13 +31481,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -31498,13 +31690,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
