@@ -3950,7 +3950,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BinInfo'
+                  $ref: '#/components/schemas/BinInfoResponse'
         '400':
           description: The request cannot be validated
           content:
@@ -5057,6 +5057,7 @@ components:
               - McCardholderAuthentication
               - McPrdtId
               - McSecurityProtocol
+              - McTerminalID
               - McpConfigTyp
               - McpConfigTypKey
               - MerchantCategory
@@ -5096,6 +5097,7 @@ components:
               - OriginalPlanCode
               - OwdChargeAmt
               - PanSequenceNumber
+              - PayTranId
               - PaymentMethod
               - PaymentMethodKey
               - PcTaxAmount
@@ -5192,6 +5194,7 @@ components:
               - TaxExemptKey
               - TerminalID
               - TerminalTransactionDt
+              - ThirdPartyProviderId
               - TipAmount
               - TokenFlag
               - TokenFlagKey
@@ -7162,6 +7165,10 @@ components:
           type: string
           description: Indicates the presence and type of security protocol present in the authorization process in support of UCAF.
           example: '1'
+        mcTerminalID:
+          type: string
+          description: Mastercard Terminal ID.
+          example: '12345678'
         mcpConfigTyp:
           type: string
           description: Multi-Currency Configuration Type
@@ -7429,6 +7436,10 @@ components:
           type: string
           description: Identifies the card sequence number.
           example: AAA
+        payTranId:
+          type: string
+          description: PaySecure Transaction ID.
+          example: 0002-28f89de9-7e0d-44f9-bac5-44b8f6350fe0
         paymentMethod:
           type: string
           description: Identifies the method of payment used on the transaction.
@@ -8030,6 +8041,10 @@ components:
           type: string
           description: Identifies the local date of the authorized transaction.
           format: date-time
+        thirdPartyProviderId:
+          type: string
+          description: Third Party Provider ID.
+          example: YTA999
         tipAmount:
           type: number
           description: Tip amount.
@@ -9064,6 +9079,10 @@ components:
           type: string
           description: Slip number of the original presentment. This is a link to the TR feed item no field.
           example: '11844329007'
+        payTranId:
+          type: string
+          description: PaySecure Transaction ID.
+          example: 0002-28f89de9-7e0d-44f9-bac5-44b8f6350fe0
         paypalTransactionID:
           type: string
           description: Paypal transaction ID.
@@ -9154,6 +9173,10 @@ components:
           type: string
           description: Terminal ID.
           example: '023545062484'
+        thirdPartyProviderId:
+          type: string
+          description: Third Party Provider ID.
+          example: YTA999
         trackingNumber:
           type: string
           description: The tracking number of the disputed transaction.
@@ -9227,6 +9250,7 @@ components:
               - DisputeAmount
               - DisputeID
               - DueDate
+              - DueDttm
               - EcIndicator
               - EcIndicatorKey
               - ExternalMid
@@ -9250,6 +9274,7 @@ components:
               - OmniPayClientNumber
               - OrderNumber
               - OrigSlipNumber
+              - PayTranId
               - PaypalTransactionID
               - ProcessedTransactionAmount
               - ReceivedDate
@@ -9269,6 +9294,7 @@ components:
               - SubmittedTransactionAmount
               - SvcCd
               - TerminalId
+              - ThirdPartyProviderId
               - TrackingNumber
               - TransactionDate
               - UniqueTransactionIdentifier
@@ -15062,6 +15088,15 @@ components:
             - RefundReqRspMcTier2
             - NwCollaborationAdjMcDms
             - NetworkTokenTransactionFee
+            - MastercardCnpFee
+            - MastercardCnpPerItemFee
+            - VisaCnpFee
+            - VisaCnpPerItemFee
+            - DinersCnpFee
+            - DinersCnpPerItemFee
+            - NyceNetworkAnnualFee
+            - PulseNetworkAnnualFee
+            - CulianceNetworkAnnualFee
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -15605,6 +15640,15 @@ components:
             - Halifax
             - Honolulu
             - EST
+            - Singapore
+            - Hongkong
+            - Malaysia
+            - Perth
+            - Eucla
+            - Darwin
+            - Brisbane
+            - Adelaide
+            - Sydney
       description: Various filter options for Disbursements queries
     DisbursementsObj:
       type: object
@@ -16039,6 +16083,7 @@ components:
             - VendorPayments
             - Grants
             - Reimbursement
+            - FederalGovernment
         paymentTypeKey:
           type: string
           description: Determine the type of payment that is being processed. (Code)
@@ -18828,7 +18873,7 @@ components:
         checkAccountNumber:
           type: string
           description: 'Commerce Hub Data Model Name: Request.source.check.accountNumber. Description: Account number endorsed on the check.'
-          example: '19471508'
+          example: XXXXXXX1234
         checkNumber:
           type: string
           description: 'Commerce Hub Data Model Name: Request.source.check.checkData. Description: Check number of the check presented.'
@@ -19218,6 +19263,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Payment source for a transaction request.'
           example: ''
+        specialPymtInd:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.transactionInteraction.specialPayment. Description: Special Payment can be used via API, HCO, VPOS, Quick Key, and Recurring. Special Payment transaction can be processed via MOTO, eCommerce, or Retail terminals.'
+          example: B
         splitTenderId:
           type: string
           description: 'Commerce Hub Data Model Name: Response.transactionDetails.splitTenderId. Description: A partially-authorized transaction will generate a Split Tender ID. Subsequent transactions to complete the authorization should include the Split Tender ID so that all the transactions comprising that authorization can be linked using the Split-Tender tab.'
@@ -19571,6 +19620,7 @@ components:
               - ShipToState
               - ShipToStreet
               - SourceType
+              - SpecialPymtInd
               - SplitSettlementDetails
               - SplitTenderId
               - StatusReason3DS
@@ -19816,6 +19866,7 @@ components:
               - OrigTranCurrency
               - OriginalChargebackSlipNumber
               - PartialAmountFlag
+              - PayTranId
               - PaymentMethod
               - PaymentMethodKey
               - PaypalTransactionID
@@ -19853,6 +19904,7 @@ components:
               - SvcCd
               - SvcCdKey
               - TerminalId
+              - ThirdPartyProviderId
               - TokenRequesterID
               - TokenResponseInd
               - TokenResponseIndKey
@@ -21795,6 +21847,10 @@ components:
           type: string
           description: Flag to indicate if the issuer has identified this chargeback as a partial chargeback.
           example: 'Yes'
+        payTranId:
+          type: string
+          description: PaySecure Transaction ID.
+          example: 0002-28f89de9-7e0d-44f9-bac5-44b8f6350fe0
         paymentMethod:
           type: string
           description: Identifies the method of payment used on the transaction.
@@ -22187,6 +22243,10 @@ components:
           type: string
           description: Terminal ID.
           example: '023545062484'
+        thirdPartyProviderId:
+          type: string
+          description: Third party provider ID.
+          example: YTA999
         tokenRequesterID:
           type: string
           description: Token Requester ID.
@@ -22926,6 +22986,8 @@ components:
               - PartnerOrderID
               - PaymentMethod
               - PaymentMethodKey
+              - PaymentMode
+              - PaymentModeKey
               - PaypalAccountNumber
               - PaypalTransactionID
               - PosConditionCode
@@ -23149,8 +23211,10 @@ components:
               - TimeTaken
               - TipAmount
               - TokenId
+              - TokenProviderID
               - TokenResponseInd
               - TokenResponseIndKey
+              - TopUpAmt
               - TppVarID
               - TppVarIDKey
               - TrailerNumber
@@ -25528,6 +25592,18 @@ components:
           type: string
           description: Identifies the method of payment used on the transaction. (Code)
           example: '6'
+        paymentMode:
+          type: string
+          description: Indicates the type of transaction performed
+          example: Carded
+          enum:
+            - Unknown
+            - Carded
+            - LPM
+        paymentModeKey:
+          type: string
+          description: Indicates the type of transaction performed (Code)
+          example: '1'
         paypalAccountNumber:
           type: string
           description: PayPal account number used for authorization transaction.
@@ -31083,6 +31159,10 @@ components:
           type: string
           description: Token number.
           example: 9A@9a#9A$9a[
+        tokenProviderID:
+          type: string
+          description: Unique code assigned to each token provider.
+          example: 0123456789ABCDEF
         tokenResponseInd:
           type: string
           description: Tokenization response indicator.
@@ -31228,6 +31308,11 @@ components:
           type: string
           description: Tokenization response indicator. (Code)
           example: '30'
+        topUpAmt:
+          type: number
+          description: Top up amount entered for pre-auth top up transactions.
+          format: double
+          example: 54.92
         tppVarID:
           type: string
           description: Identifies the third-party processor or value added reseller involved in the transaction.
@@ -31481,13 +31566,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -31690,13 +31775,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
@@ -31816,726 +31901,131 @@ components:
           description: Page Number
           format: int32
           example: 3
-    BinInfo:
+    BinInfoResponse:
       type: object
       properties:
-        bd:
+        binID:
           type: string
-        id:
+          description: The unique identifier for the bin associated with the card.
+          example: '560046'
+        issuerID:
           type: string
-        in:
+          description: Unique ID for the card Issuer.
+          example: '13582'
+        issuerName:
           type: string
-        es:
+          description: Card issuer name.
+          example: Founders Federal Credit Union
+        ebtState:
           type: string
-          enum:
-            - Unknown
-            - AL
-            - AK
-            - AZ
-            - AR
-            - CA
-            - CO
-            - CT
-            - DE
-            - DC
-            - FL
-            - GA
-            - GU
-            - HI
-            - ID
-            - IL
-            - IN
-            - IA
-            - KS
-            - KY
-            - LA
-            - ME
-            - MD
-            - MA
-            - MI
-            - MN
-            - MS
-            - MO
-            - MT
-            - NE
-            - NV
-            - NH
-            - NJ
-            - NM
-            - NY
-            - NC
-            - ND
-            - OH
-            - OK
-            - OR
-            - PA
-            - PR
-            - RI
-            - SC
-            - SD
-            - TN
-            - TX
-            - UT
-            - VT
-            - VA
-            - VI
-            - WA
-            - WV
-            - WI
-            - WY
-            - AB
-            - BC
-            - MB
-            - NB
-            - NL
-            - NT
-            - NS
-            - NU
-            - 'ON'
-            - PE
-            - QC
-            - SK
-            - YT
-        an:
+          description: Identifies the EBT state if the card is EBT eligible.
+          example: Unknown
+        authNetwork:
           type: string
-          enum:
-            - DebitOnly
-            - Amex
-            - Visa
-            - Master
-            - Discover
-            - ClosedLoop
-            - Unknown
-            - PrivateLabel
-        ct:
+          description: Authorization network of the credit card utilized for the transaction.
+          example: DebitOnly
+        issueDetail:
           type: string
-          enum:
-            - CreditHybrid
-            - DebitPinOnlyWithEBT
-            - DebitHybrid
-            - USACommercialDebitNotPinCapable
-            - USACommercialDebitPinCapable
-            - NonUSAConsumerDebitNotPinCapable
-            - NonUSACommercialDebitNotPinCapable
-            - NonUSAConsumerDebitPinCapable
-            - NonUSACommercialDebitPinCapable
-            - DebitPinOnlyWithoutEBT
-            - PrivateLabelMC
-            - SignatureOnly
-            - TrueCredit
-            - Unknown
-        it:
+          description: A detailed identification of the card type.
+          example: DebitPinOnlyWithoutEBT
+        issueType:
           type: string
-          enum:
-            - Credit
-            - Debit
-            - Unknown
-            - Prepaid
-        la:
+          description: Identifies the card as credit, debit or prepaid.
+          example: Debit
+        lowAccount:
           type: string
-        ha:
+          description: Lowest numerical account number associated with this bin.
+          example: '1310000200000000000'
+        highAccount:
           type: string
-        sd:
+          description: Highest numerical account number associated with this bin.
+          example: '1310000299999999999'
+        shortDescription:
           type: string
-        rl:
+          description: Short description of Bin range
+          example: 4238850 (0-1)
+        regulator:
           type: string
-          enum:
-            - Unknown
-            - Unregulated
-            - Regulated
-            - RegulatedWithFraud
-        rd:
+          description: Identifies the bank regulation of the card.
+          example: Unregulated
+        reloadable:
           type: string
-          enum:
-            - Unknown
-            - Reloadable
-            - NonReloadable
-        ic:
+          description: Identifies if the card is reloadable.
+          example: Unknown
+        issuingCountry:
           type: string
-          enum:
-            - Unknown
-            - USA
-            - AFG
-            - ALB
-            - DZA
-            - AND
-            - AGO
-            - ATG
-            - AZE
-            - ARG
-            - AUS
-            - AUT
-            - BHS
-            - BHR
-            - BGD
-            - ARM
-            - BRB
-            - BEL
-            - BMU
-            - BTN
-            - BOL
-            - BIH
-            - BWA
-            - BRA
-            - BLZ
-            - SLB
-            - VGB
-            - BRN
-            - BGR
-            - MMR
-            - BLR
-            - KHM
-            - CMR
-            - CAN
-            - CPV
-            - CYM
-            - LKA
-            - TCD
-            - CHL
-            - CHN
-            - TWN
-            - COL
-            - COM
-            - MYT
-            - COG
-            - COD
-            - COK
-            - CRI
-            - HRV
-            - CUB
-            - CYP
-            - CZE
-            - BEN
-            - DNK
-            - DMA
-            - DOM
-            - ECU
-            - SLV
-            - GNQ
-            - ETH
-            - ERI
-            - EST
-            - FRO
-            - FJI
-            - FIN
-            - FRA
-            - GUF
-            - PYF
-            - DJI
-            - GEO
-            - GMB
-            - PSE
-            - DEU
-            - GHA
-            - GIB
-            - GRC
-            - GRD
-            - GLP
-            - GUM
-            - GTM
-            - GIN
-            - GUY
-            - VAT
-            - HND
-            - HKG
-            - HUN
-            - ISL
-            - IND
-            - IDN
-            - IRQ
-            - IRL
-            - ISR
-            - ITA
-            - CIV
-            - JAM
-            - JPN
-            - KAZ
-            - JOR
-            - KEN
-            - KOR
-            - KWT
-            - KGZ
-            - LAO
-            - LBN
-            - LSO
-            - LVA
-            - LBR
-            - LIE
-            - LTU
-            - LUX
-            - MAC
-            - MDG
-            - MWI
-            - MYS
-            - MDV
-            - MLT
-            - MTQ
-            - MRT
-            - MUS
-            - MEX
-            - MCO
-            - MNG
-            - MDA
-            - MNE
-            - MSR
-            - MAR
-            - MOZ
-            - OMN
-            - NAM
-            - NPL
-            - NLD
-            - CUW
-            - ABW
-            - SXM
-            - BES
-            - NCL
-            - VUT
-            - NZL
-            - NIC
-            - NGA
-            - NOR
-            - PLW
-            - PAK
-            - PAN
-            - PNG
-            - PRY
-            - PER
-            - PHL
-            - POL
-            - PRT
-            - PRI
-            - QAT
-            - REU
-            - ROU
-            - RUS
-            - RWA
-            - KNA
-            - AIA
-            - LCA
-            - VCT
-            - SMR
-            - SAU
-            - SEN
-            - SRB
-            - SYC
-            - SLE
-            - SGP
-            - SVK
-            - VNM
-            - SVN
-            - SOM
-            - ZAF
-            - ZWE
-            - ESP
-            - SUR
-            - SWZ
-            - SWE
-            - CHE
-            - TJK
-            - THA
-            - TGO
-            - TTO
-            - ARE
-            - TUN
-            - TUR
-            - TCA
-            - UGA
-            - UKR
-            - MKD
-            - EGY
-            - GBR
-            - GGY
-            - JEY
-            - IMN
-            - TZA
-            - VIR
-            - BFA
-            - ASM
-            - BDI
-            - CAF
-            - SGS
-            - GAB
-            - KIR
-            - GRL
-            - HTI
-            - LBY
-            - MLI
-            - NRU
-            - ANT
-            - NER
-            - MNP
-            - UMI
-            - FSM
-            - GNB
-            - TLS
-            - BLM
-            - STP
-            - SSD
-            - TON
-            - TKM
-            - URY
-            - UZB
-            - VEN
-            - WSM
-            - YEM
-            - ZMB
-            - ATA
-            - BVT
-            - CXR
-            - CCK
-            - FLK
-            - ALA
-            - ATF
-            - HMD
-            - IRN
-            - PRK
-            - NIU
-            - NFK
-            - MHL
-            - PCN
-            - SHN
-            - MAF
-            - SPM
-            - SDN
-            - ESH
-            - SJM
-            - SYR
-            - TKL
-            - TUV
-            - WLF
-            - IOT
-            - ROM
-            - ZAR
-            - TMP
-            - QZZ
-        ac:
+          description: The Global BIN file includes cards issued from other countries and will be reported as long as they reside on the VISA ARDEF, MC MPE, and Maestro BIN file. Debit networks other than Maestro will recognize all BINs as USA and no international distinction.
+          example: USA
+        active:
           type: boolean
-        d_st:
+          description: Indicates if the bin is currently active.
+          example: false
+        star:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_ac:
+          description: Identifies the routing eligibility to Star network.
+          example: NA
+        accel:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_ny:
+          description: Identifies the routing eligibility to Accel network.
+          example: NA
+        nyce:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_je:
+          description: Identifies the routing eligibility to Nyce network.
+          example: NA
+        jeanie:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_in:
+          description: Identifies the routing eligibility to Jeanie network.
+          example: NA
+        interlink:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_vi:
+          description: Identifies the routing eligibility to Interlink network.
+          example: NA
+        visa:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_ma:
+          description: Identifies the routing eligibility to Visa network.
+          example: NA
+        maestro:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_cu:
+          description: Identifies the routing eligibility to Maestro network.
+          example: NA
+        cu24:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_af:
+          description: Identifies the routing eligibility to CU24 network.
+          example: NA
+        af:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_sh:
+          description: Identifies the routing eligibility to AFFN network.
+          example: NA
+        shazam:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_eb:
+          description: Identifies the routing eligibility to Shazam network.
+          example: PinPOS
+        ebt:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_it:
+          description: Identifies the routing eligibility to EBT network.
+          example: NA
+        interac:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_pu:
+          description: Identifies the routing eligibility to Interac network.
+          example: NA
+        pulse:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        d_at:
+          description: Identifies the routing eligibility to Pulse network.
+          example: NA
+        ath:
           type: string
-          enum:
-            - NA
-            - PinPinlessPOS
-            - PinPOSPinlessBillPay
-            - PinPOS
-            - PinPOSPinlessPOSPinlessBillPay
-            - PinlessBillPay
-            - PinlessPOS
-            - PinlessBillPayPinlessPOS
-        cc:
+          description: Identifies the routing eligibility to ATH network.
+          example: NA
+        cardClass:
           type: string
-          enum:
-            - Unknown
-            - Business
-            - Consumer
-            - Corporate
-            - Purchase
-        cs:
+          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions – to collect addenda or not. Visa, MasterCard and Discover only.
+          example: Consumer
+        cardSubType:
           type: string
-          enum:
-            - Unknown
-            - A2
-            - C3
-            - D4
-            - D5
-            - D6
-            - D7
-            - D8
-            - D9
-            - D10
-            - D11
-            - D12
-            - D13
-            - D14
-            - D15
-            - D16
-            - D17
-            - M18
-            - M19
-            - M20
-            - M21
-            - M22
-            - M23
-            - M24
-            - M25
-            - M26
-            - M27
-            - M28
-            - M29
-            - M30
-            - M31
-            - M32
-            - M33
-            - M34
-            - M35
-            - M36
-            - M37
-            - M38
-            - M39
-            - M40
-            - M41
-            - M42
-            - M43
-            - M44
-            - M45
-            - M46
-            - M47
-            - M48
-            - M49
-            - M50
-            - M51
-            - M52
-            - M53
-            - M54
-            - M55
-            - M56
-            - M57
-            - M58
-            - M59
-            - M60
-            - M61
-            - M62
-            - M63
-            - M64
-            - M65
-            - M66
-            - M67
-            - M68
-            - M69
-            - M70
-            - M71
-            - M72
-            - M73
-            - M74
-            - M75
-            - M76
-            - M77
-            - M78
-            - M79
-            - M80
-            - M81
-            - M82
-            - M83
-            - M84
-            - M85
-            - M86
-            - M87
-            - M88
-            - M89
-            - M90
-            - M91
-            - M92
-            - M93
-            - M94
-            - M95
-            - M96
-            - M97
-            - M98
-            - M99
-            - M100
-            - M101
-            - M102
-            - M103
-            - M104
-            - M105
-            - M106
-            - M107
-            - M108
-            - M109
-            - M110
-            - M111
-            - M112
-            - M113
-            - M114
-            - M115
-            - M116
-            - M117
-            - M118
-            - M119
-            - M120
-            - M121
-            - M122
-            - M123
-            - N124
-            - P125
-            - V126
-            - V127
-            - V128
-            - V129
-            - V130
-            - V131
-            - V132
-            - V133
-            - V134
-            - V135
-            - V136
-            - V137
-            - V138
-            - V139
-            - V140
-            - V141
-            - V142
-            - V143
-            - V144
-            - V145
-            - V146
-            - V147
-            - V148
-            - V149
-            - V150
-            - V151
-            - V152
-            - V153
-            - V154
-            - V155
-            - V156
-            - V157
-            - V158
-            - V159
-            - V160
-            - V161
-        bl:
+          description: Identifies the card sub type. Applicable to credit networks.
+          example: V157
+        binLength:
           type: integer
+          description: Length of the bin.
           format: int32
+          example: 8
