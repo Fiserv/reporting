@@ -8,15 +8,13 @@
     sections:
     - title: API Keys
       link: docs/Security/security.md
-    - title: Generate HMAC Authentication Keys
-      link: docs/APIs/hmac-authentication.md
 - sections:
     - title: Restful API Construction
       open: false
       sections:
-        - title: Process a Transaction
-          link: docs/APIs/restful-api-construction using Hmac.md
+        - title: Process a Transaction using HMAC Authentication
+          link: docs/APIs/restful-api-construction-using-Hmac.md
         - title: Process a Transaction using Basic Auth and IP
-          link: docs/APIs/restful-api-construction using Basic Auth_Ip address.md
+          link: docs/APIs/restful-api-construction-using-Basic-Auth_Ip-address.md
         - title: Process a Transaction using OAuthV2
-          link: docs/APIs/restful-api-construction using OAuthV2.md
+          link: docs/APIs/restful-api-construction-using-OAuthV2.md
