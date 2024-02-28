@@ -2,9 +2,14 @@
 
 ## Environments
 
-Reporting has different environments that allow the consumption of our RESTful APIs for client development, customer acceptance testing, and production. As part of OAuth v2 Authentication, Merchant have to make 2 API calls.More information on OAuthV2 can be found out on [wiki page](https://en.wikipedia.org/wiki/OAuth)
-1. One for token generation where the access token is valid only for 59 minutes. After 59 minutes, merchant have to generate the access token again by calling the /token/generate API call.
-2. Another one is actual API Reporting call
+Reporting has different environments that allow the consumption of our RESTful APIs for client development, customer acceptance testing, and production. As part of OAuth v2 Authentication, Merchant must make 2 API calls. More information on OAuthV2 can be found out on [wiki page](https://en.wikipedia.org/wiki/OAuth)
+
+1.	One for the token generation where the access token is valid only for 59 minutes. After 59 minutes, merchant must generate the access token again by calling the /token/generate API call.
+2.	Subsequent call is the actual API Reporting call.
+
+### Below is the Type of Authorization tab to be selected, complete the following relevant details.
+
+We get the token from the field : "access_token" from the response. Once we have the access_token we will be ready to make the actual API call.
 
 ## Token Generation API call would be 
 > https://prod.api.fiservapps.com/reporting/token/generate

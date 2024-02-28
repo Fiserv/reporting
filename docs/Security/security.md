@@ -18,15 +18,11 @@ curl -X GET "https://cat.api.firstdata.com/reporting/fraud/search/getMetaData" -
 ```
 
 For more information on creating and using API keys for your organization using: 
-1. Hmac Authentication, please click [here](?path=docs/APIs/restful-api-construction.md)
-2. Basic Authentication + IP address please click [here](?path=docs/APIs/restful-api-construction using Basic Auth_Ip address.md)
-3. OAuth 2.0 Authentication please click [here](?path=docs/APIs/restful-api-construction using OAuthV2.md)
-
+1. Hmac Authentication, please click [here](?path=docs/APIs/restful-api-construction-using-Hmac.md)
+2. Basic Authentication + IP address please click [here](?path=docs/APIs/restful-api-construction-using-Basic-Auth_Ip-address.md)
+3. OAuth 2.0 Authentication please click [here](?path=docs/APIs/restful-api-construction-using-OAuthV2.md)
+    
 ---
-
-## Access Reporting APIs
-
-Get up and running with access to our development portal to use our Reporting APis.
 
 ### How to get Keys and Secret?
 
