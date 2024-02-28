@@ -1,8 +1,7 @@
 # Constructing a RESTful API Request using Basic Authentication and IP address check
 
 ## Environments
-
-Reporting has different environments that allow the consumption of our RESTful APIs for client development, customer acceptance testing, and production.More information on how HTTP Basic Auth works can be seen in this [wiki page](https://en.wikipedia.org/wiki/Basic_access_authentication).As part of Extra security Fiserv allows API calls from certain **IP addresses** which are shared by Relationship Manager only. Any API call that comes from Other IPs which are not shared by Relationship Manager will be blocked.So its mandated for any merchant to share their trusted Ip ranges. Hence we name it as Basic Authentication + Ip address check.  
+Reporting has different environments that allow the consumption of our RESTful APIs for client development, customer acceptance testing, and production. More information on how HTTP Basic Auth works can be seen in this [wiki page](https://en.wikipedia.org/wiki/Basic_access_authentication). As part of extra security Fiserv allows API calls from certain IP addresses which are shared by the Relationship Manager only. Any API call that comes from other IPs which are not shared by the Relationship Manager will be blocked. It is mandated for any merchant to share their trusted IP ranges, hence we name it as Basic Authentication + Ip address check.
 
 > Reporting highly recommends testing against sandbox credentials before using production environment credentials.
 
