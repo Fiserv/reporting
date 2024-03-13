@@ -21,6 +21,10 @@ Api-Key | String | N/A | API Key provided to the merchant associating the reques
 Auth-Token-Type | String | N/A | Indicates Authorization type OAuthV2.
 Client-Request-Id | String | N/A | A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
 
+### As part of Body: 
+Select x-www-form-urlencoded as Body content type which is used to encode form data as Key-value pairs.
+Key is **grant_type** and Value is **client_credentials**
+
 ### Following is the Type of Authorization tab to be selected and fill following relevant details
 
 For Authorization tab: Select Type as **Basic Auth**. This Basic Auth signature will be generated as Authorization: Basic <signature>, where signature is the Base64 encoding of Key and Secret joined by a single colon :
