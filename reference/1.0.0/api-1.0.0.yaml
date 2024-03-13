@@ -2554,234 +2554,13 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
       x-group-name: Disbursements
-  /v1/commercehub/ver1/summary:
-    post:
-      tags:
-        - CommerceHub
-      summary: Summary
-      description: Returns an aggregated view of authorization transactions (pre-settle) utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
-      operationId: getSummary
-      parameters:
-        - name: Api-key
-          in: header
-          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
-          required: true
-          schema:
-            type: string
-        - name: Content-Type
-          in: header
-          description: The content type. Valid value (application/json).
-          required: true
-          schema:
-            type: string
-        - name: Client-Request-Id
-          in: header
-          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
-          required: true
-          schema:
-            type: string
-        - name: Timestamp
-          in: header
-          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
-          required: true
-          schema:
-            type: string
-        - name: Auth-Token-Type
-          in: header
-          description: Indicates authorization type HMAC, JWT, or AccessToken.
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CommerceHubSummaryRequest'
-            examples:
-              CommerceHub summary by Transaction Month:
-                description: CommerceHub summary by Transaction Month
-                value:
-                  fromDate: '20210801'
-                  toDate: '20210807'
-                  summaryBy: TxnMonth
-                  filters:
-                    currency:
-                      - USD
-        required: true
-      responses:
-        '200':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CommerceHubReportingObj'
-        '400':
-          description: The request cannot be validated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '401':
-          description: The request was unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '404':
-          description: The request resource does not exist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '500':
-          description: An unexpected internal server error occurred
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '503':
-          description: The service was unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '504':
-          description: The request timed out while waiting for a response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Summary
-      x-group-name: CommerceHub
-  /v1/commercehub/ver1/search:
-    post:
-      tags:
-        - CommerceHub
-      summary: Search
-      description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_5
-      parameters:
-        - name: Api-key
-          in: header
-          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
-          required: true
-          schema:
-            type: string
-        - name: Content-Type
-          in: header
-          description: The content type. Valid value (application/json).
-          required: true
-          schema:
-            type: string
-        - name: Client-Request-Id
-          in: header
-          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
-          required: true
-          schema:
-            type: string
-        - name: Timestamp
-          in: header
-          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
-          required: true
-          schema:
-            type: string
-        - name: Auth-Token-Type
-          in: header
-          description: Indicates authorization type HMAC, JWT, or AccessToken.
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CommerceHubSearchRequest'
-            examples:
-              CommerceHub Reporting Search:
-                description: CommerceHub Reporting Search
-                value:
-                  fromDate: '20210801'
-                  toDate: '20210807'
-                  limit: 3
-                  fields:
-                    - ApprovalCode
-                    - AccountNumber
-                    - Amount
-                    - Currency
-                    - PaymentMethod
-                    - Network
-                  filters:
-                    approvalCodes:
-                      - Approved
-        required: true
-      responses:
-        '200':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CommerceHubReportingObj'
-        '400':
-          description: The request cannot be validated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '401':
-          description: The request was unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '404':
-          description: The request resource does not exist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '500':
-          description: An unexpected internal server error occurred
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '503':
-          description: The service was unavailable
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '504':
-          description: The request timed out while waiting for a response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Search
-      x-group-name: CommerceHub
   /v1/commercehub/summary:
     post:
       tags:
         - CommerceHub
       summary: Summary
       description: Returns an aggregated view of authorization transactions (pre-settle) utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
-      operationId: getSummary_1
+      operationId: getSummary
       parameters:
         - name: Api-key
           in: header
@@ -2888,7 +2667,7 @@ paths:
         - CommerceHub
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_6
+      operationId: search_5
       parameters:
         - name: Api-key
           in: header
@@ -3130,7 +2909,7 @@ paths:
         - Chargebacks
       summary: Search
       description: Provides a list of chargebacks and their attributes based on optional filter criteria.
-      operationId: search_7
+      operationId: search_6
       parameters:
         - name: Api-key
           in: header
@@ -3253,7 +3032,7 @@ paths:
         - Authorizations
       summary: Summary
       description: Returns an aggregated view of authorization transactions (pre-settle) utilizing the specified grouping field across a specified date range. Optional filters are available to get reports for specific criteria.
-      operationId: getSummary_2
+      operationId: getSummary_1
       parameters:
         - name: Api-key
           in: header
@@ -3380,7 +3159,7 @@ paths:
         - Authorizations
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_8
+      operationId: search_7
       parameters:
         - name: Api-key
           in: header
@@ -16498,1774 +16277,6 @@ components:
         filters:
           $ref: '#/components/schemas/DisbursementsFilters'
       description: Request object for Disbursement search
-    CommerceHubReportingFilters:
-      type: object
-      properties:
-        approvalCodes:
-          type: array
-          description: Any transactions matching with any one of the specified Approval Codes
-          example:
-            - Approved
-          items:
-            type: string
-            description: Any transactions matching with any one of the specified Approval Codes
-            example: '["Approved"]'
-            enum:
-              - Unknown
-              - Approved
-              - Declined
-        paymentMethods:
-          type: array
-          description: Any transactions matching with any one of the specified Payment Methods
-          example:
-            - EMV
-          items:
-            type: string
-            description: Any transactions matching with any one of the specified Payment Methods
-            example: '["EMV"]'
-            enum:
-              - Unknown
-              - Manual
-              - MagneticStripe
-              - OCR
-              - EMV
-              - ContactlessChip
-              - MobileECommerce
-              - Fallback
-              - BarCode
-              - NotSpecified
-              - CredentialOnFile
-              - ContactlessMagneticStripe
-              - MagneticStripeReadError
-        networks:
-          type: array
-          description: Any transactions matching with any one of the specified Networks
-          example:
-            - Master
-          items:
-            type: string
-            description: Any transactions matching with any one of the specified Networks
-            example: '["Master"]'
-            enum:
-              - Unknown
-              - Amex
-              - Visa
-              - Master
-              - Discover
-              - Pulse
-              - Accel
-              - Interlink
-              - Jeanie
-              - Maestro
-              - NYCE
-              - CU24
-              - Shazam
-              - EBT
-              - AFFN
-              - Telecheck
-              - Diners
-              - PayPal
-              - ValueLink
-              - Private
-              - Debit
-              - Voyager
-              - ATH
-              - JCB
-              - StarNE
-              - StarSE
-              - StarW
-              - StarAccess
-              - FleetCor
-              - SVS
-              - WEX
-              - Incomm
-              - Interac
-              - NA
-              - Moneris
-              - VaultedCard
-              - PAVD
-              - MCSend
-              - UnionPay
-              - FraudFlex
-              - Certegy
-              - MCI
-              - PaypalVenmo
-              - Conduent
-              - FISG
-              - INMR
-              - PWMB
-              - SOLU
-              - WCHP
-              - AliPay
-              - EFunds
-              - ACS
-              - ConnectPay
-              - Buypass
-              - APM
-              - ATB
-              - ATG
-              - Alaska
-              - eFunds
-              - StarEast
-              - MaestroInternational
-              - Rupay
-              - CUP
-              - EFTPos
-              - SCBOnUs
-              - AmexOptBlue
-        types:
-          type: array
-          description: Any transactions matching with any one of the specified Transaction Types
-          example:
-            - Purchase
-          items:
-            type: string
-            description: Any transactions matching with any one of the specified Transaction Types
-            example: '["Purchase"]'
-            enum:
-              - Unknown
-              - Totals
-              - Purchase
-              - PreAuthRequest
-              - PreAuthComplete
-              - Reversal
-              - Return
-              - Cancellation
-              - MailAuth
-              - Activate
-              - Recharge
-              - Verification
-              - TeleCheck
-              - StartFueling
-              - DoNotUse
-              - Fee
-              - Withdrawal
-              - Deposit
-              - Transfer
-              - Balance
-              - FraudScore
-              - GenToken
-              - Adjustment
-              - ReportAsLost
-              - CloseAccount
-              - FreezeAccount
-              - UnfreezeAccount
-              - History
-              - TimeoutReversal
-              - SetupAutoReload
-              - ReturnReversal
-              - Cashback
-              - Forced
-              - PaymentInitialization
-              - Check
-              - DirectDebitMandate
-              - TerminalRegistration
-              - FundingCredit
-              - MoneyTransferCredit
-              - ECommerceDebit
-              - BillPayDebit
-              - MoneyTransferDebit
-              - FundingDebit
-              - OTP
-              - CashAdvance
-              - QuasiCash
-              - Chargeback
-              - ChargebackReversal
-              - DeclinedAuth
-              - RapidDeposit
-              - BatchInquiry
-              - ReAuthorization
-              - AggregateBalanceInquiry
-              - SecurityCredentials
-              - AccountInformation
-              - TransactionInquiry
-              - ThreeDSDeviceDataInit
-              - ThreeDSAuthentication
-              - DCC
-              - CardholderFundsTransfer
-              - InterchangePayment
-              - PaymentToThirdParty
-              - Tip
-        currency:
-          type: array
-          description: Transactions associated with a particular
-          example:
-            - USD
-          items:
-            type: string
-            description: Transactions associated with a particular
-            example: '["USD"]'
-            enum:
-              - Unknown
-              - USD
-              - AFN
-              - DZD
-              - ARS
-              - AMD
-              - AWG
-              - AUD
-              - AZN
-              - BSD
-              - BHD
-              - THB
-              - PAB
-              - BBD
-              - BYR
-              - BZD
-              - BMD
-              - VEF
-              - BOB
-              - BRL
-              - BND
-              - BGN
-              - BIF
-              - CAD
-              - CVE
-              - KYD
-              - XOF
-              - XAF
-              - XPF
-              - CLP
-              - COP
-              - KMF
-              - BAM
-              - NIO
-              - CRC
-              - HRK
-              - CUP
-              - CZK
-              - GMD
-              - DKK
-              - MKD
-              - DJF
-              - STD
-              - DOP
-              - VND
-              - XCD
-              - EGP
-              - SVC
-              - ETB
-              - EUR
-              - FKP
-              - FJD
-              - HUF
-              - CDF
-              - GHS
-              - GIP
-              - HTG
-              - PYG
-              - GNF
-              - GWP
-              - GYD
-              - HKD
-              - UAH
-              - ISK
-              - INR
-              - IRR
-              - IQD
-              - JMD
-              - JOD
-              - KES
-              - PGK
-              - LAK
-              - KWD
-              - MWK
-              - ZMK
-              - AOA
-              - MMK
-              - GEL
-              - LVL
-              - LBP
-              - ALL
-              - HNL
-              - SLL
-              - LRD
-              - LYD
-              - SZL
-              - LTL
-              - LSL
-              - MGA
-              - MYR
-              - MUR
-              - MZN
-              - MXN
-              - MXV
-              - MDL
-              - MAD
-              - BOV
-              - NGN
-              - ERN
-              - NAD
-              - NPR
-              - ANG
-              - ILS
-              - RON
-              - TWD
-              - TRY
-              - NZD
-              - BTN
-              - KPW
-              - NOK
-              - PEN
-              - MRO
-              - TOP
-              - PKR
-              - MOP
-              - UYU
-              - PHP
-              - GBP
-              - BWP
-              - QAR
-              - GTQ
-              - ZAR
-              - OMR
-              - KHR
-              - MVR
-              - IDR
-              - RUB
-              - RWF
-              - SHP
-              - SAR
-              - XDR
-              - RSD
-              - SCR
-              - SGD
-              - SBD
-              - KGS
-              - SOS
-              - TJS
-              - LKR
-              - SDG
-              - SRD
-              - SEK
-              - CHF
-              - SYP
-              - BDT
-              - WST
-              - TZS
-              - KZT
-              - TTD
-              - MNT
-              - TND
-              - AED
-              - UGX
-              - COU
-              - CLF
-              - UYI
-              - USN
-              - USS
-              - UZS
-              - VUV
-              - CHE
-              - CHW
-              - KRW
-              - YER
-              - JPY
-              - CNY
-              - PLN
-              - XBA
-              - XTS
-              - XBB
-              - XBD
-              - XBC
-              - XAU
-              - XPD
-              - XPT
-              - XAG
-              - XXX
-              - XFU
-              - TMT
-              - ZWL
-              - CUC
-              - SSP
-              - XUA
-              - XSU
-              - BYN
-              - VES
-              - ZMW
-              - SLE
-              - LEK
-        authCode:
-          type: string
-          description: Auth Code, Full match
-          example: I7B1Q1
-        first6:
-          maxLength: 6
-          minLength: 6
-          type: string
-          description: 'First 6 of the card #, Full match'
-          example: '528757'
-        last4:
-          maxLength: 4
-          minLength: 4
-          type: string
-          description: 'Last 4 of the card #, Full match'
-          example: '0000'
-      description: Various filter options for authorizations queries
-    CommerceHubSummaryRequest:
-      required:
-        - fromDate
-        - toDate
-      type: object
-      properties:
-        fromDate:
-          type: string
-          description: yyyymmdd string denoting the start date for the query
-          example: '20210801'
-        toDate:
-          type: string
-          description: yyyymmdd string denoting the end date for the query
-          example: '20210807'
-        summaryBy:
-          type: string
-          description: Summary grouped by this field
-          example: Network
-          enum:
-            - TxnDay
-            - TxnWeek
-            - TxnMonth
-            - TxnQuarter
-            - TxnYear
-            - Network
-            - TxnType
-            - PaymentMethod
-            - TxnState
-            - SourceType
-            - ApiKey
-        filters:
-          $ref: '#/components/schemas/CommerceHubReportingFilters'
-      description: Request object for authorization summary report creation
-    CommerceHubReportingObj:
-      type: object
-      properties:
-        BYOM:
-          type: string
-          description: Identifies whether the commercehub mid is a 'Bring Your Own MID'.
-          example: 'No'
-        BYOMKey:
-          type: string
-          description: Identifies whether the commercehub mid is a 'Bring Your Own MID'. (Code)
-          example: '0'
-        ECIndicator:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.eciIndicator. Description: The Electronic Commerce Indicator used for the transaction.'
-          example: Secure E-Comm
-          enum:
-            - Unknown
-            - SingleMail
-            - Recurring
-            - Installment
-            - SecureEComm
-            - NonAuthEComm
-            - EncryptedEComm
-            - NonSecureEComm
-            - DeferredTxn
-            - OptionalRegionalUse
-            - SingleMailRetail
-            - ReAuthTxn
-            - IVR
-            - NotEComm
-            - InternetElectronic
-            - InternetPhysical
-        ECIndicatorKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.eciIndicator. Description: The Electronic Commerce Indicator used for the transaction. (Code)'
-          example: '4'
-        accountNumber:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.Card.cardData. Description: Card number or encrypted data.'
-          example: 123456XXXXXXXX5555
-        accountType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.accountType. Description: Information about the account type that is used.'
-          example: ''
-        acsReferenceNumber3DS:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.acsReferenceNumber. Description: 3DS ACS Reference number.'
-          example: ABCD1234-EFGH2345-IJKL14...
-        acsTransactionId3DS:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.acsTransactionId. Description: ACS Transaction ID.'
-          example: ABCD1234-EFGH2345-IJKL14...
-        amount:
-          type: number
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.total. Description: The approved amount of the transaction.'
-          format: double
-          example: 9.99
-        apiKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.apikey. Description: Request identifier in API that can be used to request logs from the support team.'
-          example: McdjzLKKksIVxliNpiJlHPZ7QnnFBiXX
-        apiTraceID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.apiTraceId. Description: Request identifier in API that can be used to request logs from the support team.'
-          example: 5fcd13e2ec114c58b5216c542a4ce4d7
-        approvalCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.ApprovalStatus. Description: Final status of the transaction.'
-          example: Approved
-          enum:
-            - Unknown
-            - Approved
-            - Declined
-        approvalCodeKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.ApprovalStatus. Description: Final status of the transaction. (Code)'
-          example: '1'
-        authCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.approvalCode. Description: Authorization code from Association(s). Generally 6/7 alphanumeric code that gets printed on the receipt.'
-          example: GD6HDE7
-        authType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.authorizationTypeIndicator. Description: Type of authorization requested (e.g. Initial, Reauth, etc.).'
-          example: Recurring
-          enum:
-            - OneTime
-            - Recurring
-            - Installment
-            - CardOnFile
-            - Deferred
-        authTypeKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.authorizationTypeIndicator. Description: Type of authorization requested (e.g. Initial, Reauth, etc.). (Code)'
-          example: '1'
-        authenticationAttemptResult:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.authenticationAttemptResult. Description: 3DS Authentication Attempt Result.'
-          example: '0'
-        authenticationStatus3DS:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.authenticationStatus. Description: 3DS Transaction Status.'
-          example: 'N'
-        authorizationTypeIndicator:
-          type: string
-          description: 'Commerce Hub Data Model Name: transactionDetails:authorizationTypeIndicator. Description: An indicator for the type of Authorization performed.'
-          example: ''
-        billPaymentType:
-          type: string
-          description: 'Commerce Hub Data Model Name: additionalDataCommon.billPaymentType. Description: Bill Payment type indicating if the payment is either a recurring/installment/deferred.'
-          example: ''
-        billingAddress:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.street. Description: Street address.'
-          example: 1 Sample Way
-        billingCity:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.city. Description: City or locality.'
-          example: Anytown
-        billingCountry:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.country. Description: ISO-3166-1 alpha-2, alpha-3, numeric or full country name.'
-          example: USA
-        billingFirstName:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.BillingAddress.firstName. Description: Billing first name.'
-          example: John
-        billingHouse:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.houseNumberOrName. Description: Secondary address information e.g. house number or name.'
-          example: '1'
-        billingLastName:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.BillingAddress.lastName. Description: Billing last name.'
-          example: Doe
-        billingStPrvnc:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.stateOrProvince. Description: State or province name.'
-          example: TX
-        billingZip:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.BillingAddress.Address.postalCode. Description: The zip code or postal code.'
-          example: 99999-9999
-        cardExpiryDate:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.Card.expirationMonth + Source.Card.expirationYear. Description: Indicates expiration date on card.'
-          example: 12/24
-        cavv:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.mpiData.cavv. Description: The Cardholder Authentication Verification Value (CAVV) is a cryptographic value derived by the issuer during payment authentication that can provide evidence of the results of payment authentication during an online purchase.'
-          example: AAAABBBBBCCCCCDDDDD
-        challengeStatus:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.challengeStatus. Description: 3DS Challenge Indicator.'
-          example: '0'
-        channel3DS:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.channel. Description: Channel (e.g. Browser, APP, 3RI)'
-          example: APP
-        clientRequestID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.clientRequestId. Description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control.'
-          example: 5fcd13e2ec114c58b5216c542a4ce4d7
-        clientType:
-          type: string
-          description: 'Description: Indicates the client type for the payment facilitator.'
-          example: PFAC_SINGLE
-        currency:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.currency. Description: Currency code used for the transaction ISO 3 currency format.'
-          example: USD
-          enum:
-            - Unknown
-            - USD
-            - AFN
-            - DZD
-            - ARS
-            - AMD
-            - AWG
-            - AUD
-            - AZN
-            - BSD
-            - BHD
-            - THB
-            - PAB
-            - BBD
-            - BYR
-            - BZD
-            - BMD
-            - VEF
-            - BOB
-            - BRL
-            - BND
-            - BGN
-            - BIF
-            - CAD
-            - CVE
-            - KYD
-            - XOF
-            - XAF
-            - XPF
-            - CLP
-            - COP
-            - KMF
-            - BAM
-            - NIO
-            - CRC
-            - HRK
-            - CUP
-            - CZK
-            - GMD
-            - DKK
-            - MKD
-            - DJF
-            - STD
-            - DOP
-            - VND
-            - XCD
-            - EGP
-            - SVC
-            - ETB
-            - EUR
-            - FKP
-            - FJD
-            - HUF
-            - CDF
-            - GHS
-            - GIP
-            - HTG
-            - PYG
-            - GNF
-            - GWP
-            - GYD
-            - HKD
-            - UAH
-            - ISK
-            - INR
-            - IRR
-            - IQD
-            - JMD
-            - JOD
-            - KES
-            - PGK
-            - LAK
-            - KWD
-            - MWK
-            - ZMK
-            - AOA
-            - MMK
-            - GEL
-            - LVL
-            - LBP
-            - ALL
-            - HNL
-            - SLL
-            - LRD
-            - LYD
-            - SZL
-            - LTL
-            - LSL
-            - MGA
-            - MYR
-            - MUR
-            - MZN
-            - MXN
-            - MXV
-            - MDL
-            - MAD
-            - BOV
-            - NGN
-            - ERN
-            - NAD
-            - NPR
-            - ANG
-            - ILS
-            - RON
-            - TWD
-            - TRY
-            - NZD
-            - BTN
-            - KPW
-            - NOK
-            - PEN
-            - MRO
-            - TOP
-            - PKR
-            - MOP
-            - UYU
-            - PHP
-            - GBP
-            - BWP
-            - QAR
-            - GTQ
-            - ZAR
-            - OMR
-            - KHR
-            - MVR
-            - IDR
-            - RUB
-            - RWF
-            - SHP
-            - SAR
-            - XDR
-            - RSD
-            - SCR
-            - SGD
-            - SBD
-            - KGS
-            - SOS
-            - TJS
-            - LKR
-            - SDG
-            - SRD
-            - SEK
-            - CHF
-            - SYP
-            - BDT
-            - WST
-            - TZS
-            - KZT
-            - TTD
-            - MNT
-            - TND
-            - AED
-            - UGX
-            - COU
-            - CLF
-            - UYI
-            - USN
-            - USS
-            - UZS
-            - VUV
-            - CHE
-            - CHW
-            - KRW
-            - YER
-            - JPY
-            - CNY
-            - PLN
-            - XBA
-            - XTS
-            - XBB
-            - XBD
-            - XBC
-            - XAU
-            - XPD
-            - XPT
-            - XAG
-            - XXX
-            - XFU
-            - TMT
-            - ZWL
-            - CUC
-            - SSP
-            - XUA
-            - XSU
-            - BYN
-            - VES
-            - ZMW
-            - SLE
-            - LEK
-        currencyKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.currency. Description: Currency code used for the transaction ISO 3 currency format. (Code)'
-          example: '1'
-        custIPAddress:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Customer.ipAddress. Description: The ipAddress of the sender, from where the transaction was originated.'
-          example: ''
-        customerName:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.Card.nameOnCard. Description: Cardholder name.'
-          example: JXXXXXXXE
-        customerServiceNumber:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.customerServiceNumber. Description: The Customer Service Number of the merchant.'
-          example: '999999999'
-        customerTaxID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.customer.taxId. Description: The tax identifier of the customer.'
-          example: '9999'
-        customerVatRegNum:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.orderData.supplierVatRegistrationNumber. Description: Customer/Supplier VAT Registration Number.'
-          example: SVAT33333
-        directedRoutingNetwork:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.DirectedRouting.network. Description: Identifies the debit card processing network.'
-          example: Visa
-          enum:
-            - Unknown
-            - Amex
-            - Visa
-            - Master
-            - Discover
-            - Pulse
-            - Accel
-            - Interlink
-            - Jeanie
-            - Maestro
-            - NYCE
-            - CU24
-            - Shazam
-            - EBT
-            - AFFN
-            - Telecheck
-            - Diners
-            - PayPal
-            - ValueLink
-            - Private
-            - Debit
-            - Voyager
-            - ATH
-            - JCB
-            - StarNE
-            - StarSE
-            - StarW
-            - StarAccess
-            - FleetCor
-            - SVS
-            - WEX
-            - Incomm
-            - Interac
-            - NA
-            - Moneris
-            - VaultedCard
-            - PAVD
-            - MCSend
-            - UnionPay
-            - FraudFlex
-            - Certegy
-            - MCI
-            - PaypalVenmo
-            - Conduent
-            - FISG
-            - INMR
-            - PWMB
-            - SOLU
-            - WCHP
-            - AliPay
-            - EFunds
-            - ACS
-            - ConnectPay
-            - Buypass
-            - APM
-            - ATB
-            - ATG
-            - Alaska
-            - eFunds
-            - StarEast
-            - MaestroInternational
-            - Rupay
-            - CUP
-            - EFTPos
-            - SCBOnUs
-            - AmexOptBlue
-        directedRoutingNetworkKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.DirectedRouting.network. Description: Identifies the debit card processing network. (Code)'
-          example: '2'
-        dsTranID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.dsTransactionId. Description: DS Transaction ID.'
-          example: ABCD1234-EFGH2345-IJKL14...
-        eci3DS:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.mpiData.eci. Description: ECI / UCAF (UCAF is applicable for MasterCard only).'
-          example: ECI
-        encryptBlock:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionBlock. Description: Encryption Block.'
-          example: 99999999-9999999999
-        encryptDeviceType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.deviceType. Description: Information about the device type that is used for encryption.'
-          example: ''
-        encryptTarget:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionTarget. Description: Information about the target for encryption.'
-          example: ''
-        encryptType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionType. Description: Information about the type of encryption.'
-          example: ''
-        errorCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Error.code. Description: Error response code from the host, gateway or network.'
-          example: '999'
-        errorMessage:
-          type: string
-          description: 'Commerce Hub Data Model Name: Error.message. Description: Information specific to a property or attribute.'
-          example: ''
-        fallbackReason:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalDataCommon.directedRouting.fallbackReason. Description: Indicates the reason for processing through fallback route.'
-          example: CONNECTION_ERROR
-        idpClientRequestID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Idempotency.clientRequestId. Description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control.'
-          example: 5fcd13e2ec114c58b5216c542a4ce4d7
-        idpEntryPoint:
-          type: string
-          description: 'Commerce Hub Data Model Name: Idempotency.transactionEntryPoint. Description: The API for which the retry attempt is made.'
-          example: /payments/v1/charges
-        idpOriginalTransactionID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Idempotency.originalTransactionId. Description: This is the original transaction ID for which the retry attempt is made.'
-          example: 5fcd13e2ec114c58b5216c542a4ce4d7
-        idpTransactionID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Idempotency.transactionId. Description: This is the transaction ID for the retry attempt.'
-          example: 5fcd13e2ec114c58b5216c542a4ce4d7
-        invoiceNumber:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantInvoiceNumber. Description: Merchant invoice number (aka reference number).'
-          example: '11111111'
-        l2l3Filter:
-          type: string
-          description: Identifies whether the commercehub transaction has Level 2 data or Level 2 & 3 data'.
-          example: ''
-        merchantCity:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.city. Description: The city of the merchant where the transaction happened.'
-          example: Anytown
-        merchantCountry:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.country. Description: The country of the merchant where the transaction happened.'
-          example: USA
-        merchantCustID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.customer.merchantCustomerId. Description: Merchants identifier for a Customer.'
-          example: '999999999'
-        merchantHouse:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.houseNumberOrName. Description: The House Number or Name of the merchant where the transaction happened.'
-          example: '1111'
-        merchantID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.merchantId. A unique ID used to identify the Merchant. Description: The merchant must use the value assigned by the acquirer or the gateway when submitting a transaction. Utilized for clients that support dynamic descriptor, or support multiple stores in the same app.'
-          example: ''
-        merchantMCC:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.mcc. Description: Identifies the standard merchant category code assigned to the transaction.'
-          example: ''
-        merchantMCCKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.mcc. Description: Identifies the standard merchant category code assigned to the transaction. (Code)'
-          example: ''
-        merchantName:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.merchantName. Description: The name assigned to the processing merchant.'
-          example: ABC Store
-        merchantPostalCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.postalCode. Description: The postal/zip code assigned to the processing merchant.'
-          example: 99999-9999
-        merchantState:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.stateOrProvince. Description: The state of the merchant where the transaction happened.'
-          example: TX
-        merchantStreet:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.Address.street. Description: The street assigned to the processing merchant.'
-          example: 1 Sample Way
-        merchantTaxID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.merchantDetails.taxId. Description: The tax identifier of the merchant.'
-          example: '9999'
-        merchantVatRegNum:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.merchantDetails.vatRegistrationNumber. Description: Merchant VAT Registration Number.'
-          example: MVAT33333
-        messageCategory:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.messageCategory. Description: 3DS Message Category.'
-          example: XX
-        mobileInteraction:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.mobileInteraction. Description: Mobile method of interaction.'
-          example: Phone Number
-          enum:
-            - Unknown
-            - PHONE_NUMBER
-            - QR_CODE
-        mobileInteractionKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.mobileInteraction. Description: Mobile method of interaction. (Code)'
-          example: '1'
-        mobileWallet:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.walletType. Description: Identifies wallet type indicator (e.g. Apple Pay, Samsung Pay, Google Pay, etc.).'
-          example: ''
-        mrchInvcNum:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantInvoiceNumber. Description: Merchant invoice number (aka reference number).'
-          example: '11111111'
-        mrchOrdrID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.TransactionDetails.merchantOrderId. Description: Merchant order ID (aka customer reference number or purchase order number).'
-          example: '11111111'
-        mrchTokenType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.tokenType. Description: Specific Token Type is assigned to each merchant.'
-          example: '0000'
-        mrchTranID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantTransactionId. Description: Merchant transaction ID (aka transaction reference ID).'
-          example: ''
-        nativeTxnType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Transaction type as indicated by source.'
-          example: CHARGE
-        network:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.NetworkDetails.Network.network. Description: Name of the authorizing network associated with the transaction.'
-          example: Visa
-          enum:
-            - Unknown
-            - Amex
-            - Visa
-            - Master
-            - Discover
-            - Pulse
-            - Accel
-            - Interlink
-            - Jeanie
-            - Maestro
-            - NYCE
-            - CU24
-            - Shazam
-            - EBT
-            - AFFN
-            - Telecheck
-            - Diners
-            - PayPal
-            - ValueLink
-            - Private
-            - Debit
-            - Voyager
-            - ATH
-            - JCB
-            - StarNE
-            - StarSE
-            - StarW
-            - StarAccess
-            - FleetCor
-            - SVS
-            - WEX
-            - Incomm
-            - Interac
-            - NA
-            - Moneris
-            - VaultedCard
-            - PAVD
-            - MCSend
-            - UnionPay
-            - FraudFlex
-            - Certegy
-            - MCI
-            - PaypalVenmo
-            - Conduent
-            - FISG
-            - INMR
-            - PWMB
-            - SOLU
-            - WCHP
-            - AliPay
-            - EFunds
-            - ACS
-            - ConnectPay
-            - Buypass
-            - APM
-            - ATB
-            - ATG
-            - Alaska
-            - eFunds
-            - StarEast
-            - MaestroInternational
-            - Rupay
-            - CUP
-            - EFTPos
-            - SCBOnUs
-            - AmexOptBlue
-        networkAVSCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.BankAssociationDetails.AvsSecurityCodeResponse.Association.avsCode. Description: Bank AVS response code.'
-          example: X
-        networkCVVCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.BankAssociationDetails.AvsSecurityCodeResponse.Association.securityCodeResponse. Description: Bank security code response.'
-          example: V
-        networkKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.NetworkDetails.Network.network. Description: Name of the authorizing network associated with the transaction. (Code)'
-          example: '2'
-        networkRouted:
-          type: string
-          description: 'Commerce Hub Data Model Name: processorResponseDetails.networkRouted. Description: The field identifies which network the request was routed to.'
-          example: ''
-        orderDate:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.orderData.orderDate. Description: The date when the order was placed.'
-          example: 12-31-2000
-        orderID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.orderId. Description: Order identifier returned in the parameter orderId from a Charge transaction.'
-          example: '11111111'
-        origProcessorName:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalDataCommon.directedRouting.originalProcessor.processorName. Description: Indicates the original processor in case of Fallback.'
-          example: Fiserv
-        origProcessorPlatform:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalDataCommon.directedRouting.originalProcessor.processingPlatform. Description: Indicates the original processor in case of Fallback.'
-          example: Buypass
-        origin:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionOrigin. Description: Transaction origin based on original request.'
-          example: E-Comm
-          enum:
-            - Unknown
-            - ECOM
-            - MOTO
-            - POS
-        originKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionOrigin. Description: Transaction origin based on original request. (Code)'
-          example: '1'
-        originalRouteType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalDataCommon.directedRouting.originalRouteType. Description: Indicates the original route selection mode in case of Fallback.'
-          example: DIRECTED_ROUTE
-        paymentMethod:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posEntryMode. Description: An identifier used to indicate how the account number was entered on the transaction.'
-          example: Mobile & ECommerce
-          enum:
-            - Unknown
-            - Manual
-            - MagneticStripe
-            - OCR
-            - EMV
-            - ContactlessChip
-            - MobileECommerce
-            - Fallback
-            - BarCode
-            - NotSpecified
-            - CredentialOnFile
-            - ContactlessMagneticStripe
-            - MagneticStripeReadError
-        paymentMethodKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posEntryMode. Description: An identifier used to indicate how the account number was entered on the transaction. (Code)'
-          example: '6'
-        posConditionCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posConditionCode. Description: An identifier used to indicate the transaction condition at the Point-of-Sale (POS).'
-          example: Cardholder Not Present - E-commerce
-          enum:
-            - Unknown
-            - CARD_PRESENT
-            - CARD_PRESENT_UNSPECIFIED
-            - CARD_PRESENT_UNATTENDED
-            - CARD_PRESENT_FRAUD
-            - CARD_PRESENT_MAG_NOT_READ
-            - CARD_PRESENT_IDENTIFIED
-            - CARD_NOT_PRESENT_RECURRING
-            - CARD_NOT_PRESENT_INSTALLMENT
-            - CARD_NOT_PRESENT_DEFERRED
-            - CARD_NOT_PRESENT_F2F
-            - CARD_NOT_PRESENT_MOTO
-            - CARD_NOT_PRESENT_ECOM
-        posConditionCodeKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posConditionCode. Description: An identifier used to indicate the transaction condition at the Point-of-Sale (POS). (Code)'
-          example: '12'
-        primTranID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.primaryTransactionId. Description: The unique identifier from the original transaction passed for a reauthorization and incremental authorization.'
-          example: '634677466478466474'
-        processingCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.TransactionDetails.processingCode. Description: A required code that is used in conjunction with the message type to define the type of transaction that is by the terminal to the host.'
-          example: '000000'
-        processor:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.processor. Description: Card processor.'
-          example: fiserv
-        processorHost:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.paymentReceipt.processorResponseDetails.host. Description: Processor (e.g. Nashville, Chase Tampa, Chase Salem).'
-          example: Nashville
-        processorMerchantId:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.processorMerchantId. Description: The processor''s merchant ID or number used to identify the unique site and merchant in petro industry.'
-          example: '01234567899999'
-        processorTerminalId:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.processorTerminalId. Description: The processor''s  device or point of entry where the transaction originated assigned by the acquirer or the gateway.'
-          example: '0001'
-        reauthorizationInitiator:
-          type: string
-          description: 'Commerce Hub Data Model Name: transactionDetails:reauthorizationInitiator. Description: In case the authorization type is a RE_AUTH, this field indicates the initiator of the re-authorization request.'
-          example: ''
-        reauthorizationReason:
-          type: string
-          description: 'Commerce Hub Data Model Name: transactionDetails:reauthorizationReason. Description: In case the authorization type is a RE_AUTH, this field indicates the reason of the re-authorization request.'
-          example: ''
-        recurringTypeInd:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.recurringTypeIndicator. Description: Describes the recurrence type for the transaction.'
-          example: One Time
-          enum:
-            - OneTime
-            - Recurring
-            - Installment
-            - CardOnFile
-            - Deferred
-        recurringTypeIndKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.recurringTypeIndicator. Description: Describes the recurrence type for the transaction. (Code)'
-          example: '0'
-        refundType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction Type will help identify if a refund is processed as an Open Refund or Tagged Refund.'
-          example: ''
-        requestAmount:
-          type: number
-          description: 'Commerce Hub Data Model Name: Request.Amount.total. Description: The requested amount of the transaction.'
-          format: double
-          example: 9.99
-        respCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.responseCode. Description: Normalized transaction response code from the gateway (Commerce Hub Response).'
-          example: '000000'
-        respMsg:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.responseMessage. Description: Normalized transaction message from the gateway (Commerce Hub Response).'
-          example: APPROVAL
-        routeType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalDataCommon.directedRouting.routeType. Description: Indicates route selection mode.'
-          example: ''
-        safAttemptNumber:
-          type: string
-          description: 'Commerce Hub Data Model Name: SAF.attempt. Description: The attempt number for the Store & Forward functionality.'
-          example: '1'
-        safAttemptStatus:
-          type: string
-          description: 'Commerce Hub Data Model Name: SAF.attemptStatus. Description: The attempt status for the Store & Forward functionality.'
-          example: ''
-        safDownstreamResponse:
-          type: string
-          description: 'Commerce Hub Data Model Name: SAF.downstreamResponse. Description: The downstream system response for the attempt performed for the Store & Forward functionality.'
-          example: ''
-        safDownstreamSystem:
-          type: string
-          description: 'Commerce Hub Data Model Name: SAF.downstreamCode. Description: The downstream system where the attempt is performed for the Store & Forward functionality.'
-          example: ''
-        safMaxAttempts:
-          type: string
-          description: 'Commerce Hub Data Model Name: SAF.attempt. Description: The maximum attempts allowed for the Store & Forward functionality.'
-          example: '1'
-        safSourceSystem:
-          type: string
-          description: 'Commerce Hub Data Model Name: SAF.entryPoint. Description: The source system where the attempt is performed for the Store & Forward functionality.'
-          example: ''
-        safTxnStatus:
-          type: string
-          description: 'Commerce Hub Data Model Name: SAF.status. Description: The Store & Forward transaction status.'
-          example: ''
-        serverTransactionId3DS:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.serverTransactionId. Description: 3DS Server Transaction ID.'
-          example: ABCD1234-EFGH2345-IJKL14...
-        serviceEntitlement:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.serviceEntitlement. Description: The Service Entitlements of the processing merchant.'
-          example: '999999999'
-        serviceProvider3DS:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.serviceProvider. Description: 3DS Provider.'
-          example: VER
-        serviceProviderTransactionId:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.serviceProviderTransactionId. Description: 3DS service provider transaction id.'
-          example: APP
-        shipFromPostalCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shipperAddress.address.postalCode. Description: The Zip/Postal Code provided on the shipper address.'
-          example: '07310'
-        shipToCity:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.city. Description: The City on the shipping address.'
-          example: Berkeley Heights
-        shipToCountry:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.country. Description: The Country on the shipping address.'
-          example: US
-        shipToEmail:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.shipToEmail. Description: The Email provided on the shipping address.'
-          example: john.smith@email.com
-        shipToFirstName:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.firstName + Request.shippingAddress.lastName. Description: The Name on the shipping address.'
-          example: John
-        shipToHouseNum:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.houseNumberOrName. Description: The house/street number/name on the shipping address.'
-          example: '11'
-        shipToLastName:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.firstName + Request.shippingAddress.lastName. Description: The Name on the shipping address.'
-          example: Doe
-        shipToPhone:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.phone.phoneNumber. Description: The Phone number provided on the shipping address.'
-          example: 222-333-4444
-        shipToPostalCode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.postalCode. Description: The Zip/Postal Code on the shipping address.'
-          example: '07310'
-        shipToState:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.stateOrProvince. Description: The State/Province on the shipping address.'
-          example: NJ
-        shipToStreet:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.street. Description: The Street on the shipping address.'
-          example: Connell Drive
-        sourceType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Payment source for a transaction request.'
-          example: ''
-        statusReason3DS:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.statusReason. Description: 3DS Transaction Status Reason.'
-          example: HOLD
-        storeID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.storeId. Description: The unique ID or number used to identify the unique location, store, or site.'
-          example: '01234567899999'
-        tavv:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.mpiData.tavv. Description: Cryptographic value that is generated during the Visa transaction authentication process for a payment token transaction.'
-          example: AAAABBBBBCCCCCDDDDD
-        terminalID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.terminalId. Description: Identifies the specific device or point of entry where the transaction originated assigned by the acquirer or the gateway.'
-          example: '0001'
-        threeDSVersion:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.versionData.recommendedVersion. Description: Specific Protocol version supported by 3DS.'
-          example: 'N'
-        tokenNumber1:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[0].tokenData. Description: Token created from the tokedn source.'
-          example: 123456XXXXXXXX5555
-        tokenNumber2:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[1].tokenData. Description: Token created from the tokedn source.'
-          example: 123456XXXXXXXX5555
-        tokenNumber3:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[2].tokenData. Description: Token created from the tokedn source.'
-          example: 123456XXXXXXXX5555
-        tokenNumber4:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[3].tokenData. Description: Token created from the tokedn source.'
-          example: 123456XXXXXXXX5555
-        tokenNumber5:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[4].tokenData. Description: Token created from the tokedn source.'
-          example: 123456XXXXXXXX5555
-        tokenNumber6:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[5].tokenData. Description: Token created from the tokedn source.'
-          example: 123456XXXXXXXX5555
-        tokenProvider1:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[0].tokenSource. Description: Source for the Token Service Provider.'
-          example: ''
-        tokenProvider2:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[1].tokenSource. Description: Source for the Token Service Provider.'
-          example: ''
-        tokenProvider3:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[2].tokenSource. Description: Source for the Token Service Provider.'
-          example: ''
-        tokenProvider4:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[3].tokenSource. Description: Source for the Token Service Provider.'
-          example: ''
-        tokenProvider5:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[4].tokenSource. Description: Source for the Token Service Provider.'
-          example: ''
-        tokenProvider6:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.PaymentTokens[5].tokenSource. Description: Source for the Token Service Provider.'
-          example: ''
-        transactionDate:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.transactionTimestamp (yyyy-MM-dd). Description: Date the transaction occurred in YYYY-MM-DD format.'
-          format: date-time
-        transactionID:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.TransactionId. Description: Unique identifier for each transaction on the gateway. This value will be populated for the secondary transaction from the path.'
-          example: 5fcd13e2ec114c58b5216c542a4ce4d7
-        transactionInitiator:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.transactionDetails.transactionInitiator. Description: 3DS Ownership (e.g. Merchant Managed , Fiserv Managed).'
-          example: Merchant Managed
-        transactionTime:
-          type: integer
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.transactionTimestamp (Thh:mm:ss). Description: Time (EPOCH) the transaction occurred in Thh:mm:ss format.'
-          format: int64
-          example: 78747874878748
-        txnMode:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionMode. Description: Transaction Mode will help identify if a transaction is processed in online or offline mode.'
-          example: ''
-        txnState:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionState. Description: Final state of the transaction.'
-          example: Authorized
-          enum:
-            - Unknown
-            - AUTHORIZED
-            - CAPTURED
-            - CHECKED
-            - DECLINED
-            - VOIDED
-            - GATEWAY_ERROR
-            - VERIFIED
-        txnStateKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionState. Description: Final state of the transaction. (Code)'
-          example: '1'
-        txnType:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization.'
-          example: Purchase
-          enum:
-            - Unknown
-            - Totals
-            - Purchase
-            - PreAuthRequest
-            - PreAuthComplete
-            - Reversal
-            - Return
-            - Cancellation
-            - MailAuth
-            - Activate
-            - Recharge
-            - Verification
-            - TeleCheck
-            - StartFueling
-            - DoNotUse
-            - Fee
-            - Withdrawal
-            - Deposit
-            - Transfer
-            - Balance
-            - FraudScore
-            - GenToken
-            - Adjustment
-            - ReportAsLost
-            - CloseAccount
-            - FreezeAccount
-            - UnfreezeAccount
-            - History
-            - TimeoutReversal
-            - SetupAutoReload
-            - ReturnReversal
-            - Cashback
-            - Forced
-            - PaymentInitialization
-            - Check
-            - DirectDebitMandate
-            - TerminalRegistration
-            - FundingCredit
-            - MoneyTransferCredit
-            - ECommerceDebit
-            - BillPayDebit
-            - MoneyTransferDebit
-            - FundingDebit
-            - OTP
-            - CashAdvance
-            - QuasiCash
-            - Chargeback
-            - ChargebackReversal
-            - DeclinedAuth
-            - RapidDeposit
-            - BatchInquiry
-            - ReAuthorization
-            - AggregateBalanceInquiry
-            - SecurityCredentials
-            - AccountInformation
-            - TransactionInquiry
-            - ThreeDSDeviceDataInit
-            - ThreeDSAuthentication
-            - DCC
-            - CardholderFundsTransfer
-            - InterchangePayment
-            - PaymentToThirdParty
-            - Tip
-        txnTypeDetail:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction type detail as indicated by source.'
-          example: ''
-        txnTypeKey:
-          type: string
-          description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization. (Code)'
-          example: '2'
-        xid:
-          type: string
-          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.mpiData.xid. Description: 3-D Secure/Verified by Visa value returned by the 3DS provider.'
-          example: AAAABBBBBCCCCCDDDDD
-    CommerceHubSearchRequest:
-      required:
-        - fromDate
-        - limit
-        - toDate
-      type: object
-      properties:
-        fromDate:
-          type: string
-          description: yyyymmdd string denoting the start date for the query
-          example: '20210801'
-        toDate:
-          type: string
-          description: yyyymmdd string denoting the end date for the query
-          example: '20210807'
-        limit:
-          maximum: 1000000
-          minimum: 1
-          type: integer
-          description: The maximum number of records that will be returned
-          format: int32
-          example: 3
-          default: 10
-        fields:
-          type: array
-          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-          example:
-            - Network
-            - ApprovalCode
-            - Amount
-            - AuthCode
-          items:
-            type: string
-            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            example: '["Network","ApprovalCode","Amount","AuthCode"]'
-            enum:
-              - BYOM
-              - BYOMKey
-              - ECIndicator
-              - ECIndicatorKey
-              - AccountNumber
-              - AccountType
-              - AcsReferenceNumber3DS
-              - AcsTransactionId3DS
-              - Amount
-              - ApiKey
-              - ApiTraceID
-              - ApprovalCode
-              - ApprovalCodeKey
-              - AuthCode
-              - AuthType
-              - AuthTypeKey
-              - AuthenticationAttemptResult
-              - AuthenticationStatus3DS
-              - AuthorizationTypeIndicator
-              - BillPaymentType
-              - BillingAddress
-              - BillingCity
-              - BillingCountry
-              - BillingFirstName
-              - BillingHouse
-              - BillingLastName
-              - BillingStPrvnc
-              - BillingZip
-              - CardExpiryDate
-              - Cavv
-              - ChallengeStatus
-              - Channel3DS
-              - ClientRequestID
-              - ClientType
-              - Currency
-              - CurrencyKey
-              - CustIPAddress
-              - CustomerName
-              - CustomerServiceNumber
-              - CustomerTaxID
-              - CustomerVatRegNum
-              - DirectedRoutingNetwork
-              - DirectedRoutingNetworkKey
-              - DsTranID
-              - Eci3DS
-              - EncryptBlock
-              - EncryptDeviceType
-              - EncryptTarget
-              - EncryptType
-              - ErrorCode
-              - ErrorMessage
-              - FallbackReason
-              - IdpClientRequestID
-              - IdpEntryPoint
-              - IdpOriginalTransactionID
-              - IdpTransactionDateTime
-              - IdpTransactionID
-              - InvoiceNumber
-              - L2l3Filter
-              - MerchantCity
-              - MerchantCountry
-              - MerchantCustID
-              - MerchantHouse
-              - MerchantID
-              - MerchantMCC
-              - MerchantMCCKey
-              - MerchantName
-              - MerchantPostalCode
-              - MerchantState
-              - MerchantStreet
-              - MerchantTaxID
-              - MerchantVatRegNum
-              - MessageCategory
-              - MobileInteraction
-              - MobileInteractionKey
-              - MobileWallet
-              - MrchInvcNum
-              - MrchOrdrID
-              - MrchTokenType
-              - MrchTranID
-              - NativeTxnType
-              - Network
-              - NetworkAVSCode
-              - NetworkCVVCode
-              - NetworkKey
-              - NetworkRouted
-              - OrderAmountDetails
-              - OrderDate
-              - OrderID
-              - OrderItemDetails
-              - OrigProcessorName
-              - OrigProcessorPlatform
-              - Origin
-              - OriginKey
-              - OriginalRouteType
-              - PaymentMethod
-              - PaymentMethodKey
-              - PosConditionCode
-              - PosConditionCodeKey
-              - PrimTranID
-              - ProcessingCode
-              - Processor
-              - ProcessorHost
-              - ProcessorMerchantId
-              - ProcessorTerminalId
-              - ReauthorizationInitiator
-              - ReauthorizationReason
-              - RecurringTypeInd
-              - RecurringTypeIndKey
-              - RefundType
-              - RequestAmount
-              - RespCode
-              - RespMsg
-              - Response
-              - RouteType
-              - SafAttemptNumber
-              - SafAttemptStatus
-              - SafAttemptTimestamp
-              - SafDownstreamResponse
-              - SafDownstreamSystem
-              - SafExpiryTimestamp
-              - SafMaxAttempts
-              - SafResponseTimestamp
-              - SafSourceSystem
-              - SafTxnStatus
-              - ServerTransactionId3DS
-              - ServiceEntitlement
-              - ServiceProvider3DS
-              - ServiceProviderTransactionId
-              - ShipFromPostalCode
-              - ShipToCity
-              - ShipToCountry
-              - ShipToEmail
-              - ShipToFirstName
-              - ShipToHouseNum
-              - ShipToLastName
-              - ShipToPhone
-              - ShipToPostalCode
-              - ShipToState
-              - ShipToStreet
-              - SourceType
-              - SplitSettlementDetails
-              - StatusReason3DS
-              - StoreID
-              - Tavv
-              - TerminalID
-              - ThreeDSVersion
-              - TokenNumber1
-              - TokenNumber2
-              - TokenNumber3
-              - TokenNumber4
-              - TokenNumber5
-              - TokenNumber6
-              - TokenProvider1
-              - TokenProvider2
-              - TokenProvider3
-              - TokenProvider4
-              - TokenProvider5
-              - TokenProvider6
-              - TransactionDate
-              - TransactionDateTime
-              - TransactionID
-              - TransactionInitiator
-              - TransactionTime
-              - TxnMode
-              - TxnState
-              - TxnStateKey
-              - TxnType
-              - TxnTypeDetail
-              - TxnTypeKey
-              - Xid
-        filters:
-          $ref: '#/components/schemas/CommerceHubReportingFilters'
-      description: Request details for authorization search
     CommerceHubV2ReportingFilters:
       type: object
       properties:
@@ -18754,6 +16765,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.ApprovalStatus. Description: Final status of the transaction. (Code)'
           example: '1'
+        assocRespCode:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.paymentReceipt.processorResponseDetails.bankAssociationDetails.associationResponseCode. Description: Normalized transaction response code from the Association / Bank..'
+          example: '000000'
         authCode:
           type: string
           description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.approvalCode. Description: Authorization code from Association(s). Generally 6/7 alphanumeric code that gets printed on the receipt.'
@@ -18886,6 +16901,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.source.check.checkType. Description: Describes the check type.'
           example: PERSONAL
+        clientReference:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.TransactionDetails.ClientRequestId. Description: A client-generated reference for request tracking.'
+          example: 5fcd13e2ec114c58b5216c542a4ce4d7
         clientRequestID:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.clientRequestId. Description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control.'
@@ -19126,6 +17145,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.TransactionInteraction.Origin. Description: Transaction origin based on original request.'
           example: ''
+        originMOTOType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.transactionInteraction.motoType. Description: Breakdown of the type of MOTO transactions (Mail Order, Telephone order).'
+          example: ''
         originalRouteType:
           type: string
           description: 'Commerce Hub Data Model Name: additionalDataCommon:directedRouting:originalRouteType. Description: Indicates the original route selection mode in case of Fallback.'
@@ -19189,7 +17212,7 @@ components:
           example: 9.99
         respCode:
           type: string
-          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.responseCode. Description: Normalized transaction response code from the gateway (Commerce Hub Response).'
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.processorResponseDetails.hostResponseCode. Description: Normalized transaction response code from the gateway (Commerce Hub Response).'
           example: '000000'
         respMsg:
           type: string
@@ -19491,6 +17514,7 @@ components:
               - ApiTraceID
               - ApprovalCode
               - ApprovalCodeKey
+              - AssocRespCode
               - AuthCode
               - AuthenticationAttemptResult
               - AuthenticationStatus3DS
@@ -19524,6 +17548,7 @@ components:
               - CheckNumber
               - CheckRoutingNumber
               - CheckType
+              - ClientReference
               - ClientRequestID
               - ClientType
               - Currency
@@ -19586,6 +17611,7 @@ components:
               - OrigProcessorName
               - OrigProcessorPlatform
               - Origin
+              - OriginMOTOType
               - OriginalRouteType
               - OriginalTxnType
               - PaymentMethod
@@ -22951,6 +20977,7 @@ components:
               - MobileWallet
               - MobileWalletKey
               - MrchTranId
+              - MvvMaid
               - NativeDebitRejectCode
               - NativeECI
               - NativeExprProvider
@@ -24177,10 +22204,368 @@ components:
             - Amex116
             - Amex119
             - Amex130
-            - MastercardQ2
-            - MastercardN2
-            - MastercardN0
-            - Mastercard33
+            - MasterCardQ2
+            - MasterCardN2
+            - MasterCardN0
+            - MasterCard33
+            - Visa08
+            - Visa31
+            - Visa74
+            - VisaN6
+            - VisaN8
+            - VisaZ1
+            - Star85
+            - StarCO
+            - StarK2
+            - StarK3
+            - StarRR
+            - StarTD
+            - StarTE
+            - StarTF
+            - StarZB
+            - Accel000
+            - Accel001
+            - Accel002
+            - Accel003
+            - Accel100
+            - Accel101
+            - Accel102
+            - Accel103
+            - Accel104
+            - Accel105
+            - Accel106
+            - Accel107
+            - Accel108
+            - Accel109
+            - Accel110
+            - Accel111
+            - Accel112
+            - Accel113
+            - Accel114
+            - Accel115
+            - Accel116
+            - Accel117
+            - Accel118
+            - Accel119
+            - Accel120
+            - Accel121
+            - Accel122
+            - Accel123
+            - Accel124
+            - Accel126
+            - Accel127
+            - Accel128
+            - Accel129
+            - Accel130
+            - Accel131
+            - Accel138
+            - Accel159
+            - Accel171
+            - Accel172
+            - Accel173
+            - Accel174
+            - Accel175
+            - Accel176
+            - Accel177
+            - Accel180
+            - Accel181
+            - Accel182
+            - Accel183
+            - Accel184
+            - Accel185
+            - Accel190
+            - Accel191
+            - Accel192
+            - Accel193
+            - Accel194
+            - Accel195
+            - Accel196
+            - Accel197
+            - Accel198
+            - Accel200
+            - Accel201
+            - Accel202
+            - Accel203
+            - Accel204
+            - Accel205
+            - Accel206
+            - Accel207
+            - Accel208
+            - Accel209
+            - Accel210
+            - Accel211
+            - Accel214
+            - Accel216
+            - Accel217
+            - Accel907
+            - Accel908
+            - Accel909
+            - Accel999
+            - Accel900
+            - Accel400
+            - Accel499
+            - Accel600
+            - Accel601
+            - Accel699
+            - Accel800
+            - Accel880
+            - Accel881
+            - Accel882
+            - Accel883
+            - Accel899
+            - Pulse00
+            - Pulse01
+            - Pulse02
+            - Pulse03
+            - Pulse04
+            - Pulse05
+            - Pulse06
+            - Pulse07
+            - Pulse08
+            - Pulse09
+            - Pulse10
+            - Pulse11
+            - Pulse12
+            - Pulse13
+            - Pulse14
+            - Pulse15
+            - Pulse16
+            - Pulse17
+            - Pulse18
+            - Pulse19
+            - Pulse20
+            - Pulse21
+            - Pulse22
+            - Pulse23
+            - Pulse24
+            - Pulse25
+            - Pulse26
+            - Pulse27
+            - Pulse28
+            - Pulse29
+            - Pulse30
+            - Pulse31
+            - Pulse32
+            - Pulse33
+            - Pulse34
+            - Pulse35
+            - Pulse36
+            - Pulse37
+            - Pulse38
+            - Pulse39
+            - Pulse40
+            - Pulse41
+            - Pulse42
+            - Pulse43
+            - Pulse44
+            - Pulse45
+            - Pulse46
+            - Pulse47
+            - Pulse48
+            - Pulse49
+            - Pulse50
+            - Pulse51
+            - Pulse52
+            - Pulse53
+            - Pulse54
+            - Pulse55
+            - Pulse56
+            - Pulse57
+            - Pulse58
+            - Pulse59
+            - Pulse60
+            - Pulse61
+            - Pulse62
+            - Pulse63
+            - Pulse64
+            - Pulse65
+            - Pulse66
+            - Pulse67
+            - Pulse68
+            - Pulse69
+            - Pulse70
+            - Pulse71
+            - Pulse72
+            - Pulse73
+            - Pulse74
+            - Pulse75
+            - Pulse76
+            - Pulse77
+            - Pulse78
+            - Pulse79
+            - Pulse80
+            - Pulse81
+            - Pulse82
+            - Pulse83
+            - Pulse84
+            - Pulse85
+            - Pulse86
+            - Pulse87
+            - Pulse88
+            - Pulse89
+            - Pulse90
+            - Pulse91
+            - Pulse92
+            - Pulse93
+            - Pulse94
+            - Pulse95
+            - Pulse96
+            - Pulse97
+            - Pulse98
+            - Pulse99
+            - Pulse0Z
+            - Pulse1Z
+            - Pulse2Z
+            - Pulse3Z
+            - Pulse4Z
+            - Pulse5Z
+            - Pulse6Z
+            - Pulse7Z
+            - Pulse8Z
+            - Pulse9Z
+            - PulseN0
+            - PulseN1
+            - PulseN2
+            - PulseN3
+            - PulseN4
+            - PulseN5
+            - PulseN6
+            - PulseN7
+            - PulseN8
+            - PulseN9
+            - PulseP0
+            - PulseP1
+            - PulseP2
+            - PulseP3
+            - PulseP4
+            - PulseP5
+            - PulseP6
+            - PulseP7
+            - PulseP8
+            - PulseP9
+            - PulseR0
+            - PulseR1
+            - PulseR2
+            - PulseR3
+            - PulseR4
+            - PulseS0
+            - PulseS1
+            - PulseS2
+            - PulseS3
+            - PulseS4
+            - PulseS5
+            - PulseS6
+            - PulseS7
+            - PulseS8
+            - PulseS9
+            - PulseSA
+            - PulseSB
+            - PulseSC
+            - PulseSD
+            - PulseSE
+            - PulseSF
+            - PulseSG
+            - PulseSH
+            - PulseSI
+            - PulseSJ
+            - PulseSK
+            - PulseSL
+            - PulseSM
+            - PulseSN
+            - PulseSO
+            - PulseSP
+            - PulseSQ
+            - PulseSR
+            - PulseSS
+            - PulseST
+            - PulseSV
+            - PulseTA
+            - PulseTB
+            - PulseT3
+            - PulseT4
+            - PulseT5
+            - PulseT6
+            - PulseT7
+            - PulseT9
+            - NYCE00
+            - NYCE10
+            - NYCET7
+            - NYCE01
+            - NYCE02
+            - NYCE03
+            - NYCE04
+            - NYCE05
+            - NYCE07
+            - NYCE12
+            - NYCE13
+            - NYCE14
+            - NYCE15
+            - NYCE24
+            - NYCE25
+            - NYCE26
+            - NYCE27
+            - NYCE28
+            - NYCE29
+            - NYCE30
+            - NYCE31
+            - NYCE33
+            - NYCE34
+            - NYCE38
+            - NYCE39
+            - NYCE40
+            - NYCE41
+            - NYCE42
+            - NYCE43
+            - NYCE44
+            - NYCE51
+            - NYCE52
+            - NYCE53
+            - NYCE54
+            - NYCE55
+            - NYCE56
+            - NYCE57
+            - NYCE58
+            - NYCE59
+            - NYCE61
+            - NYCE62
+            - NYCE63
+            - NYCE65
+            - NYCE67
+            - NYCE75
+            - NYCE76
+            - NYCE81
+            - NYCE82
+            - NYCE88
+            - NYCE89
+            - NYCE90
+            - NYCE91
+            - NYCE92
+            - NYCE93
+            - NYCE94
+            - NYCE96
+            - NYCEN0
+            - NYCEN1
+            - NYCER4
+            - NYCERD
+            - NYCESA
+            - NYCESD
+            - NYCESE
+            - NYCESG
+            - NYCESK
+            - NYCESL
+            - NYCESM
+            - NYCESN
+            - NYCESO
+            - NYCESP
+            - NYCESV
+            - NYCES2
+            - NYCES3
+            - NYCES7
+            - NYCES9
+            - NYCETA
+            - NYCET4
+            - NYCET5
+            - NYCET9
         associationResponseKey:
           type: string
           description: Detailed response from the network that authorized this transaction. (Code)
@@ -25363,6 +23748,10 @@ components:
           type: string
           description: External reference ID.
           example: abcd1234-ab12-ab12-ab12-123456abcdef
+        mvvMaid:
+          type: string
+          description: Merchant Verification Value (MVV) assigned by authorizer.
+          example: ABCCDEF1234
         nativeDebitRejectCode:
           type: string
           description: Native debit reject code.
@@ -31566,13 +29955,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -31775,13 +30164,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
