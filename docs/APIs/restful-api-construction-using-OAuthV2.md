@@ -16,10 +16,14 @@ We get the token from the field : "access_token" from the response. Once we have
 ### Below are the Headers to be passed
 Variable | Type | Length | Description/Values
 --- | --- | --- | ---
-Content-Type | string | N/A | The content type. Valid Value (application/json)
+Content-Type | string | N/A | The content type. Valid Value (application/x-www-form-urlencoded)
 Api-Key | String | N/A | API Key provided to the merchant associating the requests with their Relationship Manager
 Auth-Token-Type | String | N/A | Indicates Authorization type OAuthV2.
 Client-Request-Id | String | N/A | A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+
+### As part of Body: 
+Select x-www-form-urlencoded as Body content type which is used to encode form data as Key-value pairs.
+Key is **grant_type** and Value is **client_credentials**
 
 ### Following is the Type of Authorization tab to be selected and fill following relevant details
 
