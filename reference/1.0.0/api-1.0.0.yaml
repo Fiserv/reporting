@@ -4377,6 +4377,8 @@ components:
               - EFTPos
               - SCBOnUs
               - AmexOptBlue
+              - Comdata
+              - Paypoint
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -6579,6 +6581,8 @@ components:
             - EFTPos
             - SCBOnUs
             - AmexOptBlue
+            - Comdata
+            - Paypoint
         debitNetworkIdDsc:
           type: string
           description: Debit Network like STAR, MAESTRO etc.
@@ -7020,6 +7024,7 @@ components:
             - SingtelDash
             - TouchNGo
             - WechatPay
+            - AmazonOne
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
@@ -7120,6 +7125,8 @@ components:
             - EFTPos
             - SCBOnUs
             - AmexOptBlue
+            - Comdata
+            - Paypoint
         networkKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -8416,6 +8423,8 @@ components:
             - EFTPos
             - SCBOnUs
             - AmexOptBlue
+            - Comdata
+            - Paypoint
         authNetworkKey:
           type: string
           description: Authorization network of the credit card utilized for the transaction. (Code)
@@ -8728,6 +8737,8 @@ components:
             - EFTPos
             - SCBOnUs
             - AmexOptBlue
+            - Comdata
+            - Paypoint
         debitNetworkIDKey:
           type: string
           description: Debit network description. (Code)
@@ -8836,6 +8847,14 @@ components:
           type: string
           description: This will allow the merchant to identify which shipment is in dispute in a split shipment transaction.
           example: '03'
+        nativeProductCode:
+          type: string
+          description: Merchant network native value of the credit/debit card utilized for the transaction.
+          example: '00002'
+        nativeSubProductCode:
+          type: string
+          description: Merchant network native value of the debit card utilized for the transaction.
+          example: '095'
         networkSettleAmount:
           type: number
           description: Payment network (interchange) settlement amount for the original presentment, before deduction of charges.
@@ -9048,6 +9067,8 @@ components:
               - MobileIndicator
               - MultiClearingSequenceCount
               - MultiClearingSequenceNumber
+              - NativeProductCode
+              - NativeSubProductCode
               - NetworkSettleAmount
               - NetworkSettleCurrency
               - OmniPayClientNumber
@@ -10376,6 +10397,8 @@ components:
             - EFTPos
             - SCBOnUs
             - AmexOptBlue
+            - Comdata
+            - Paypoint
         debitNetworkKey:
           type: string
           description: Identifies debit network participant. (Code)
@@ -16392,6 +16415,8 @@ components:
               - EFTPos
               - SCBOnUs
               - AmexOptBlue
+              - Comdata
+              - Paypoint
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -18565,6 +18590,8 @@ components:
             - EFTPos
             - SCBOnUs
             - AmexOptBlue
+            - Comdata
+            - Paypoint
         authNetworkKey:
           type: string
           description: Authorization network of the credit card utilized for the transaction. (Code)
@@ -18940,6 +18967,8 @@ components:
             - EFTPos
             - SCBOnUs
             - AmexOptBlue
+            - Comdata
+            - Paypoint
         debitNetworkIdKey:
           type: string
           description: Debit network description. (Code)
@@ -19619,6 +19648,7 @@ components:
             - SingtelDash
             - TouchNGo
             - WechatPay
+            - AmazonOne
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
@@ -20652,6 +20682,8 @@ components:
               - EFTPos
               - SCBOnUs
               - AmexOptBlue
+              - Comdata
+              - Paypoint
         types:
           type: array
           description: Any transactions matching with any one of the specified Transaction Types
@@ -22729,6 +22761,7 @@ components:
             - Pagobancomat
             - ChinaUnion
             - Redemption
+            - Comdata
         cardGroupKey:
           type: string
           description: The group of the card that is used in the transaction. (Code)
@@ -23669,6 +23702,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         merchandiseCodeKey:
           type: string
           description: Describes the type of fuel purchased. (Code)
@@ -23740,6 +23780,7 @@ components:
             - SingtelDash
             - TouchNGo
             - WechatPay
+            - AmazonOne
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay, etc.). (Code)
@@ -23859,6 +23900,8 @@ components:
             - EFTPos
             - SCBOnUs
             - AmexOptBlue
+            - Comdata
+            - Paypoint
         networkAuthIndicator2:
           type: string
           description: Identifies if auth was performed with PAN or NT - 2nd Try.
@@ -24325,6 +24368,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product0nProductCodeKey:
           type: string
           description: Merchandise code 2. (Code)
@@ -24585,6 +24635,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product10nProductCodeKey:
           type: string
           description: Merchandise code 12. (Code)
@@ -24845,6 +24902,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product11nProductCodeKey:
           type: string
           description: Merchandise code 13. (Code)
@@ -25105,6 +25169,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product12nProductCodeKey:
           type: string
           description: Merchandise code 14. (Code)
@@ -25365,6 +25436,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product13nProductCodeKey:
           type: string
           description: Merchandise code 15. (Code)
@@ -25625,6 +25703,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product14nProductCodeKey:
           type: string
           description: Merchandise code 16. (Code)
@@ -25885,6 +25970,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product15nProductCodeKey:
           type: string
           description: Merchandise code 17. (Code)
@@ -26145,6 +26237,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product16nProductCodeKey:
           type: string
           description: Merchandise code 18. (Code)
@@ -26405,6 +26504,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product17nProductCodeKey:
           type: string
           description: Merchandise code 19. (Code)
@@ -26665,6 +26771,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product18nProductCodeKey:
           type: string
           description: Merchandise code 20. (Code)
@@ -26925,6 +27038,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product19nProductCodeKey:
           type: string
           description: Merchandise code 21. (Code)
@@ -27185,6 +27305,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product1nProductCodeKey:
           type: string
           description: Merchandise code 3. (Code)
@@ -27445,6 +27572,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product2nProductCodeKey:
           type: string
           description: Merchandise code 4. (Code)
@@ -27705,6 +27839,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product3nProductCodeKey:
           type: string
           description: Merchandise code 5. (Code)
@@ -27965,6 +28106,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product4nProductCodeKey:
           type: string
           description: Merchandise code 6. (Code)
@@ -28225,6 +28373,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product5nProductCodeKey:
           type: string
           description: Merchandise code 7. (Code)
@@ -28485,6 +28640,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product6nProductCodeKey:
           type: string
           description: Merchandise code 8. (Code)
@@ -28745,6 +28907,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product7nProductCodeKey:
           type: string
           description: Merchandise code 9. (Code)
@@ -29005,6 +29174,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product8nProductCodeKey:
           type: string
           description: Merchandise code 10. (Code)
@@ -29265,6 +29441,13 @@ components:
             - OtherDispensedBeverage
             - GeneralSnacks
             - OtherSnacks
+            - DieselOffRoadNT
+            - DieselPremiumOffRoadNT
+            - DieselBOffRoadNT
+            - DieselBPremiumBelow20
+            - DieselBPremiumEqualAbove20
+            - DieselB75
+            - DieselB99
         product9nProductCodeKey:
           type: string
           description: Merchandise code 11. (Code)
