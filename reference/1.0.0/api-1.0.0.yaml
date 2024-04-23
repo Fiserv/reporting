@@ -3321,13 +3321,13 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
       x-group-name: Authorizations
-  /v1/users/{userid}/audit:
+  /v1/users:
     get:
       tags:
         - User Management
-      summary: Get User Audit
-      description: Fetches respective user information which includes preferences, applications and restricted access
-      operationId: getUserAudit
+      summary: Get All Users
+      description: Pulls all users in the system for the respective Admin/Client.
+      operationId: allUsersSearch
       parameters:
         - name: Api-key
           in: header
@@ -3365,20 +3365,47 @@ paths:
           required: true
           schema:
             type: string
-        - name: userid
-          in: path
-          description: Unique ID associated with the user
-          required: true
+        - name: countPerPage
+          in: header
+          description: Number of records per page
+          schema:
+            type: integer
+        - name: page
+          in: header
+          description: Page Number
+          schema:
+            type: integer
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: countPerPage
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: includeDeletedUsers
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: application
+          in: query
+          required: false
           schema:
             type: string
-            example: 1234567
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserAuditInfoDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllUserDetails'
         '400':
           description: Invalid request
           content:
@@ -3403,7 +3430,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: User Audit
+      x-proxy-name: Get All Users
       x-group-name: User Management
   /v1/users/{userid}:
     get:
@@ -3489,6 +3516,90 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: User Info
       x-group-name: User Management
+  /v1/users/{userid}/audit:
+    get:
+      tags:
+        - User Management
+      summary: Get User Audit
+      description: Fetches respective user information which includes preferences, applications and restricted access
+      operationId: getUserAudit
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: userid
+          in: path
+          description: Unique ID associated with the user
+          required: true
+          schema:
+            type: string
+            example: 1234567
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuditInfoDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: User Audit
+      x-group-name: User Management
   /v1/users/assignableDefaults:
     get:
       tags:
@@ -3570,107 +3681,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Assignable Defaults
-      x-group-name: User Management
-  /v1/users:
-    get:
-      tags:
-        - User Management
-      summary: Get All Users
-      description: Pulls all users in the system for the respective Admin/Client.
-      operationId: allUsersSearch
-      parameters:
-        - name: Api-key
-          in: header
-          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
-          required: true
-          schema:
-            type: string
-        - name: Content-Type
-          in: header
-          description: The content type. Valid value (application/json).
-          required: true
-          schema:
-            type: string
-        - name: Client-Request-Id
-          in: header
-          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
-          required: true
-          schema:
-            type: string
-        - name: Timestamp
-          in: header
-          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
-          required: true
-          schema:
-            type: string
-        - name: Auth-Token-Type
-          in: header
-          description: Indicates authorization type HMAC, JWT, or AccessToken.
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
-          required: true
-          schema:
-            type: string
-        - name: countPerPage
-          in: header
-          description: Number of records per page
-          required: false
-          schema:
-            type: integer
-        - name: page
-          in: header
-          description: Page Number
-          required: false
-          schema:
-            type: integer
-        - name: includeDeletedUsers
-          in: query
-          required: false
-          schema:
-            type: boolean
-        - name: application
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AllUserDetails'
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Get All Users
       x-group-name: User Management
   /v1/reference/bins/lookupBin/{lookupText}:
     get:
@@ -4748,6 +4758,8 @@ components:
               - ChargeType5
               - ChipConditionCode
               - ChrgTierLevel
+              - CitMitInd
+              - CitMitIndKey
               - ClientNumber
               - ConvinienceFee
               - Currency
@@ -4830,6 +4842,8 @@ components:
               - LodgingPhoneCallCharge
               - LodgingPhoneNumber
               - LodgingRestaurentRoomServCharge
+              - MPOSAcceptanceDeviceType
+              - MPOSAcceptanceDeviceTypeKey
               - MarkerID
               - MarketSpecificIndicator
               - MarketSpecificIndicatorKey
@@ -5013,6 +5027,24 @@ components:
               - VisaServiceDevelop
               - VisaTranId
               - WeeklyRentalRate
+              - WrkEvcChgPwrout
+              - WrkEvcChgRsncd
+              - WrkEvcClientid
+              - WrkEvcConType
+              - WrkEvcCrbFotprn
+              - WrkEvcDisAgent
+              - WrkEvcDisMethod
+              - WrkEvcDisPlan
+              - WrkEvcEstKmavil
+              - WrkEvcEstKmmile
+              - WrkEvcFnsChgtme
+              - WrkEvcMxmPwrdis
+              - WrkEvcSrtChgtme
+              - WrkEvcTotChgtme
+              - WrkEvcTotPlugin
+              - WrkSfdAddntalFee1
+              - WrkSfdAddntalFee2
+              - WrkSfdTotdiscAmt
         filters:
           $ref: '#/components/schemas/SettlementFilters'
       description: Request object for Settlement search
@@ -6265,6 +6297,14 @@ components:
           type: string
           description: Charge tier level.
           example: AAA
+        citMitInd:
+          type: string
+          description: Cardholder/Merchant initiated transaction Indicator.
+          example: ''
+        citMitIndKey:
+          type: string
+          description: Cardholder/Merchant initiated transaction Indicator. (Code)
+          example: ''
         clientNumber:
           type: string
           description: The internal client number associated with the original transaction.
@@ -6915,6 +6955,14 @@ components:
           description: Lodging restaurant/room service charge.
           format: double
           example: 99.99
+        mPOSAcceptanceDeviceType:
+          type: string
+          description: Mobile POS Acceptance Device Type.
+          example: ''
+        mPOSAcceptanceDeviceTypeKey:
+          type: string
+          description: Mobile POS Acceptance Device Type. (Code)
+          example: ''
         markerID:
           type: string
           description: Marker ID.
@@ -7569,6 +7617,9 @@ components:
             - MastercardOnusMobCredit
             - MastercardOnusMobSigDebit
             - MastercardMobSigDebitLocal
+            - ProsaVisa
+            - ProsaMastercard
+            - ProsaPrivateLabel
         productCodeKey:
           type: string
           description: Name of the card brand associated with the transaction. (Code)
@@ -8059,6 +8110,78 @@ components:
           description: Weekly rental rate (Diners).
           format: double
           example: 99.99
+        wrkEvcChgPwrout:
+          type: string
+          description: Charging station power output capacity represented in kW (kilowatts)
+          example: '111111'
+        wrkEvcChgRsncd:
+          type: string
+          description: Charging reason code for the transaction
+          example: '222'
+        wrkEvcClientid:
+          type: string
+          description: Identifer of the client that receives the discount
+          example: ABCDEFGHIJKLMNO
+        wrkEvcConType:
+          type: string
+          description: Visa-defined code for a specific connector type to identify the connection for the charge session
+          example: XYZ
+        wrkEvcCrbFotprn:
+          type: string
+          description: 'Carbon footprint avoidance (how much was saved from the charge) measurement for the purchase on the transaction, measured in grams of carbon dioxide equivalent (CO2e) '
+          example: '888888888888'
+        wrkEvcDisAgent:
+          type: string
+          description: Code of the party that calculates the discount
+          example: T
+        wrkEvcDisMethod:
+          type: string
+          description: Discount method applied to the transactions
+          example: B
+        wrkEvcDisPlan:
+          type: string
+          description: Identifier of the discount plan applied to the transaction
+          example: BNMK
+        wrkEvcEstKmavil:
+          type: string
+          description: Estimated mileage the car will have, after completion of the charge, once it leaves the EVC station
+          example: '0'
+        wrkEvcEstKmmile:
+          type: string
+          description: An estimate of the total distance added, in km/miles, based on the kWh added, and the type of vehicle engine charged
+          example: '0'
+        wrkEvcFnsChgtme:
+          type: string
+          description: Finish time of the charge express in the local time of the card acceptor location
+          example: '666666'
+        wrkEvcMxmPwrdis:
+          type: string
+          description: Maximum power dispensed during the specific charge session from that charging station
+          example: '232323'
+        wrkEvcSrtChgtme:
+          type: string
+          description: Start time of the charge expressed in the local time of the card acceptor location
+          example: '555555'
+        wrkEvcTotChgtme:
+          type: string
+          description: Actual time taken to charge the vehicle
+          example: '0'
+        wrkEvcTotPlugin:
+          type: string
+          description: Total time the vehicle was plugged in
+          example: '333333'
+        wrkSfdAddntalFee1:
+          type: string
+          description: Additional transaction fee 1 amount
+          example: '0.0'
+        wrkSfdAddntalFee2:
+          type: string
+          description: Additional transaction fee 2 amount
+          example: '333333.44'
+        wrkSfdTotdiscAmt:
+          type: string
+          description: Total discount amount
+          example: '0.0'
     RetrievalSummaryResponse:
       type: object
       properties:
@@ -8464,6 +8587,10 @@ components:
           type: string
           description: The unique identifier for the bin associated with the card.
           example: '123456'
+        caseManagement:
+          type: string
+          description: Case Management Status.
+          example: Closed
         centralProcessingDate:
           type: string
           description: Retrieval request central processing date.
@@ -8835,6 +8962,14 @@ components:
           type: string
           description: Identifies the standard merchant category code assigned to the transaction. (Code)
           example: '1111'
+        message:
+          type: string
+          description: Alert Message Description.
+          example: ''
+        messageKey:
+          type: string
+          description: Alert Message Description. (Code)
+          example: ''
         mobileIndicator:
           type: string
           description: Indicator that a transaction originated from the uCom gateway.
@@ -8967,6 +9102,10 @@ components:
           type: string
           description: The tracking number of the disputed transaction.
           example: '111'
+        systemCode:
+          type: string
+          description: Identifies the transaction internal system code.
+          example: SYSP
         terminalId:
           type: string
           description: Terminal ID.
@@ -9040,6 +9179,7 @@ components:
               - BackendProcessorKey
               - BatchNumber
               - BinId
+              - CaseManagement
               - CentralProcessingDate
               - Currency
               - CurrencyKey
@@ -9064,6 +9204,8 @@ components:
               - MerchSettleCurrency
               - MerchantCategory
               - MerchantCategoryKey
+              - Message
+              - MessageKey
               - MobileIndicator
               - MultiClearingSequenceCount
               - MultiClearingSequenceNumber
@@ -9093,6 +9235,7 @@ components:
               - SubmittedCurrencyCode
               - SubmittedTransactionAmount
               - SvcCd
+              - SystemCode
               - TerminalId
               - ThirdPartyProviderId
               - TrackingNumber
@@ -14899,6 +15042,32 @@ components:
             - NyceNetworkAnnualFee
             - PulseNetworkAnnualFee
             - CulianceNetworkAnnualFee
+            - ViCommercialSolutionsFee
+            - ViHighIntegrityRiskFee
+            - ViHighIntegrityRiskFeeVol
+            - McTpeMessageFormatError
+            - McNtwkAccessAuthFeeNonUs
+            - McNtwkAccesSettleFeeNonUs
+            - McMotoDomesticFee
+            - McMotoCrossBorderFee
+            - McAuthDigEnablementFeeUs
+            - McAuthDigEnablementMinUs
+            - McAuthDigEnablementMaxUs
+            - InterlinkDbtEmvFallback
+            - InterlinkDbtExcessReattempt
+            - InterlinkDbtFeeDetailReport
+            - IlkMagStripeContactlessFee
+            - InstallFeeDr
+            - AgentBankDiscount
+            - EstablishmentFee
+            - SoftwareFee
+            - MerchantAuthFee
+            - RefundVatFee
+            - AccountFundingDr
+            - InterchangePaymentChargeback
+            - MerchPriceIntchgRefundDr
+            - Purchase
+            - RefundCredit
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -15139,6 +15308,9 @@ components:
             - MastercardOnusMobCredit
             - MastercardOnusMobSigDebit
             - MastercardMobSigDebitLocal
+            - ProsaVisa
+            - ProsaMastercard
+            - ProsaPrivateLabel
         productCodeKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -16922,6 +17094,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.source.check.routingNumber. Description: Routing number endorsed on the check.'
           example: '19471508'
+        checkSystemTrace:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.source.check.checkData. Description: Check number of the check presented.'
+          example: '9999999999999999999999'
         checkType:
           type: string
           description: 'Commerce Hub Data Model Name: Request.source.check.checkType. Description: Describes the check type.'
@@ -17572,6 +17748,7 @@ components:
               - CheckAccountNumber
               - CheckNumber
               - CheckRoutingNumber
+              - CheckSystemTrace
               - CheckType
               - ClientReference
               - ClientRequestID
@@ -17859,6 +18036,7 @@ components:
               - BatchNumber
               - BinId
               - CaptureMethod
+              - CaseManagement
               - Category
               - CategoryKey
               - CentralProcessingDate
@@ -17899,6 +18077,8 @@ components:
               - MerchantProductCode
               - MerchantProductCodeKey
               - MerchantSettleAmount
+              - Message
+              - MessageKey
               - MobileIndicator
               - MobileWallet
               - MobileWalletKey
@@ -17924,8 +18104,6 @@ components:
               - PosEntryModeDescription
               - PosEntryModeDescriptionKey
               - PpolProgramData
-              - PreDisputeIndicator
-              - PreDisputeIndicatorKey
               - PreviousTransferToMerchant
               - ReasonCode
               - ReceivedDate
@@ -17934,6 +18112,9 @@ components:
               - Recurring
               - RecurringKey
               - ReferenceNumber
+              - RefundInquiryAdjustmentInd
+              - RefundInquiryAdjustmentIndKey
+              - RefundReq
               - Relevance
               - RelevanceKey
               - RequestDate
@@ -17960,6 +18141,7 @@ components:
               - TokenResponseInd
               - TokenResponseIndKey
               - TrackingNumber
+              - TranactionLinkId
               - TransactionAmount
               - TransactionDate
               - TransactionMethod
@@ -18474,6 +18656,7 @@ components:
             - CreditNotReceivedPosOnly
             - GoodsOrServicesNotDeliverableECommerceOnly
             - IncomingComplianceFiledCompliance
+            - DigitalGoods
         ReasonKey:
           type: string
           description: Descriptive reason associated with a specific chargeback. (Code)
@@ -18647,6 +18830,10 @@ components:
           type: string
           description: Capture method.
           example: eCommerce,Channel Encrypt
+        caseManagement:
+          type: string
+          description: Case Management Status.
+          example: Closed
         category:
           type: string
           description: Categorization of chargeback.
@@ -19602,6 +19789,9 @@ components:
             - MastercardOnusMobCredit
             - MastercardOnusMobSigDebit
             - MastercardMobSigDebitLocal
+            - ProsaVisa
+            - ProsaMastercard
+            - ProsaPrivateLabel
         merchantProductCodeKey:
           type: string
           description: Merchant network of the cerdit card utilized for the transaction. (Code)
@@ -19611,6 +19801,14 @@ components:
           description: The amount settled with the merchant for the original presentment (that is, the amount posted to the merchant account), before the deduction of any charges.
           format: double
           example: 999.9999
+        message:
+          type: string
+          description: Alert Message Description.
+          example: ''
+        messageKey:
+          type: string
+          description: Alert Message Description. (Code)
+          example: ''
         mobileIndicator:
           type: string
           description: Mobile indicator.
@@ -19959,14 +20157,6 @@ components:
           type: string
           description: PPOL program data from the original presentment.
           example: '101'
-        preDisputeIndicator:
-          type: string
-          description: Pre dispute indicator.
-          example: 'Yes'
-        preDisputeIndicatorKey:
-          type: string
-          description: Pre dispute indicator. (Code)
-          example: 'Y'
         previousTransferToMerchant:
           type: string
           description: Y (True) if there was a previous transfer to a merchant account when the item type is REP, TWA, TWS. For other item types it will always be N (false).
@@ -20006,6 +20196,18 @@ components:
           type: string
           description: Reference number associated with the inquiry.
           example: '24055238352400962056723'
+        refundInquiryAdjustmentInd:
+          type: string
+          description: Refund Request Adjustment Indicator.
+          example: 'Yes'
+        refundInquiryAdjustmentIndKey:
+          type: string
+          description: Refund Request Adjustment Indicator. (Code)
+          example: 'Y'
+        refundReq:
+          type: string
+          description: Refund Request ID.
+          example: 5112170001111AA12346
         relevance:
           type: string
           description: Denotes whether the chargeback should be seen by the merchant.
@@ -20456,6 +20658,10 @@ components:
           type: string
           description: The tracking number of the disputed transaction.
           example: '123456789'
+        tranactionLinkId:
+          type: string
+          description: Transaction Link ID.
+          example: YTAREQ1234567898989881
         transactionAmount:
           type: number
           description: Transaction amount that is being disputed.
@@ -30034,41 +30240,37 @@ components:
           type: string
           description: Identifies the voucher number in the transaction.
           example: 0123456789ABCDE
-    UserAuditInfoDto:
+    AllUserDetails:
       type: object
       properties:
-        userId:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Results'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Pagination:
+      type: object
+      properties:
+        rowCount:
           type: integer
-          description: Internal key that uniquely identifies the user
-          format: int64
-          example: 1234567
-        userName:
-          type: string
-          description: User login name
-          example: cl.test123
-        message:
-          type: string
-          description: User message
-          example: 'Gift Card Business Intelligence '
-        oldValue:
-          type: string
-          description: Previous access level
-          example: Read Only
-        newValue:
-          type: string
-          description: Present access level
-          example: ADMIN
-        modifiedBy:
-          type: string
-          description: User who modified this account
-          example: cl.test123
-        modifiedTimestamp:
-          type: string
-          description: User modified timestamp (in UTC)
-          format: date-time
-          example: '2021-07-15T21:09:00Z'
-        attribute:
-          type: string
+          description: Total number of records
+          format: int32
+        pageCount:
+          type: integer
+          description: Total number of pages
+          format: int32
+          example: 3
+        countPerPage:
+          type: integer
+          description: Number of records per page
+          format: int32
+          example: 3
+        page:
+          type: integer
+          description: Page Number
+          format: int32
+          example: 3
     ApplicationDto:
       type: object
       properties:
@@ -30282,6 +30484,41 @@ components:
           description: User applications access
           items:
             $ref: '#/components/schemas/ApplicationDto'
+    UserAuditInfoDto:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: Internal key that uniquely identifies the user
+          format: int64
+          example: 1234567
+        userName:
+          type: string
+          description: User login name
+          example: cl.test123
+        message:
+          type: string
+          description: User message
+          example: 'Gift Card Business Intelligence '
+        oldValue:
+          type: string
+          description: Previous access level
+          example: Read Only
+        newValue:
+          type: string
+          description: Present access level
+          example: ADMIN
+        modifiedBy:
+          type: string
+          description: User who modified this account
+          example: cl.test123
+        modifiedTimestamp:
+          type: string
+          description: User modified timestamp (in UTC)
+          format: date-time
+          example: '2021-07-15T21:09:00Z'
+        attribute:
+          type: string
     ApplicationAssignableDefaults:
       type: object
       properties:
@@ -30442,37 +30679,6 @@ components:
           description: User applications access
           items:
             $ref: '#/components/schemas/ApplicationAssignableDefaults'
-    AllUserDetails:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Results'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    Pagination:
-      type: object
-      properties:
-        rowCount:
-          type: integer
-          description: Total number of records
-          format: int32
-        pageCount:
-          type: integer
-          description: Total number of pages
-          format: int32
-          example: 3
-        countPerPage:
-          type: integer
-          description: Number of records per page
-          format: int32
-          example: 3
-        page:
-          type: integer
-          description: Page Number
-          format: int32
-          example: 3
     BinInfoResponse:
       type: object
       properties:
