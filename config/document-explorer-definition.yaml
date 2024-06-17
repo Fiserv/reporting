@@ -18,3 +18,9 @@
           link: docs/APIs/restful-api-construction-using-Basic-Auth_Ip-address.md
         - title: Process a Transaction using OAuthV2
           link: docs/APIs/restful-api-construction-using-OAuthV2.md
+- sections:
+    - title: Other documents
+      open: false
+      sections:
+        - title: Product Codes
+          link: docs/APIs/CLXDisputes.md
