@@ -1,7 +1,8 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: ClientLine Enterprise Direct
+  description: API Descriptions
+  version: '1.0'
 servers:
   - url: http://localhost:5005
     description: Generated server url
@@ -2607,8 +2608,8 @@ paths:
               CommerceHub summary by Transaction Month:
                 description: CommerceHub summary by Transaction Month
                 value:
-                  fromDate: '20210801'
-                  toDate: '20210807'
+                  fromDate: '20240304'
+                  toDate: '20240306'
                   summaryBy: TxnMonth
                   filters:
                     currency:
@@ -2714,8 +2715,8 @@ paths:
               CommerceHub Reporting Search:
                 description: CommerceHub Reporting Search
                 value:
-                  fromDate: '20210731'
-                  toDate: '20220120'
+                  fromDate: '20240304'
+                  toDate: '20240306'
                   limit: 3
                   fields:
                     - ApprovalCode
@@ -4103,6 +4104,12 @@ components:
               items:
                 type: object
                 properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
                   methodName:
                     type: string
                   fileName:
@@ -4110,44 +4117,25 @@ components:
                   lineNumber:
                     type: integer
                     format: int32
-                  className:
-                    type: string
                   nativeMethod:
                     type: boolean
+                  className:
+                    type: string
             message:
               type: string
             localizedMessage:
               type: string
-            suppressed:
-              type: array
-              items:
-                type: object
-                properties:
-                  stackTrace:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        methodName:
-                          type: string
-                        fileName:
-                          type: string
-                        lineNumber:
-                          type: integer
-                          format: int32
-                        className:
-                          type: string
-                        nativeMethod:
-                          type: boolean
-                  message:
-                    type: string
-                  localizedMessage:
-                    type: string
         stackTrace:
           type: array
           items:
             type: object
             properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
               methodName:
                 type: string
               fileName:
@@ -4155,17 +4143,15 @@ components:
               lineNumber:
                 type: integer
                 format: int32
-              className:
-                type: string
               nativeMethod:
                 type: boolean
+              className:
+                type: string
         message:
           type: string
         path:
           type: string
         requestID:
-          type: string
-        localizedMessage:
           type: string
         suppressed:
           type: array
@@ -4177,6 +4163,12 @@ components:
                 items:
                   type: object
                   properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
                     methodName:
                       type: string
                     fileName:
@@ -4184,14 +4176,16 @@ components:
                     lineNumber:
                       type: integer
                       format: int32
-                    className:
-                      type: string
                     nativeMethod:
                       type: boolean
+                    className:
+                      type: string
               message:
                 type: string
               localizedMessage:
                 type: string
+        localizedMessage:
+          type: string
     StatementPDFAPIrequest:
       required:
         - fromDate
@@ -4491,12 +4485,12 @@ components:
           type: string
           description: Search/Analysis date type. default value is settle date
           example: SettleDate
+          default: SettleDate
           enum:
             - AuthDate
             - SettleDate
             - FundedDate
             - RecordDate
-          default: SettleDate
         transactionStatus:
           type: array
           description: Transaction processing status associated with the settle transaction.
@@ -5116,6 +5110,20 @@ components:
             - NotEComm
             - InternetElectronic
             - InternetPhysical
+            - MerchantAuthenticationUsingProtectBuy
+            - CardTransactionWithDataProtection
+            - CardTransactionWithoutDataProtection
+            - Reserved
+            - InAppAuthentication
+            - Voice
+            - ChannelEncryption
+            - MasterPassTxnIdentity
+            - DgitialSecureRmPayTxn
+            - Internet
+            - ThreeDES
+            - CardTxnAuth
+            - CardTxnNoAuth
+            - RecurringTxn
         ECIIndicatorKey:
           type: string
           description: Indicates the electronic commerce indicator used for the transaction. (Code)
@@ -5650,6 +5658,7 @@ components:
             - NotApplicable
             - Chase
             - ChaseNet
+            - FiservMexico
         acquirerFeeAmount:
           type: number
           description: Acquirer fee amount.
@@ -7073,6 +7082,7 @@ components:
             - TouchNGo
             - WechatPay
             - AmazonOne
+            - Paze
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
@@ -7458,6 +7468,7 @@ components:
             - PaySecure
             - DDP
             - Base24
+            - Galaxy
         processorKey:
           type: string
           description: Identifies the settlement platform. (Code)
@@ -7620,6 +7631,7 @@ components:
             - ProsaVisa
             - ProsaMastercard
             - ProsaPrivateLabel
+            - AmexOptBlue
         productCodeKey:
           type: string
           description: Name of the card brand associated with the transaction. (Code)
@@ -7958,6 +7970,7 @@ components:
             - Manual
             - Electronic
             - Swiped
+            - MagneticStripe
         transactionModeKey:
           type: string
           description: Transaction mode associated with the transaction. Also known as capture method. (Code)
@@ -8211,12 +8224,12 @@ components:
           type: string
           description: Search/Analysis date type. default value is retrieval date
           example: RetrievalDate
+          default: RetrievalDate
           enum:
             - AuthDate
             - StatusDate
             - DueDate
             - RetrievalDate
-          default: RetrievalDate
         siteIDs:
           type: array
           description: Retrievals associated with one of the Site IDs specified
@@ -8255,199 +8268,6 @@ components:
     RetrievalObj:
       type: object
       properties:
-        Reason:
-          type: string
-          description: Descriptive reason associated with a specific retrieval.
-          example: Request for Credit
-          enum:
-            - Unknown
-            - ARequestForCopyBearingSignatureDueToInquiry
-            - AccountNumberNotOnFile
-            - AlAirlineTransactionDispute
-            - AnyCopyOfInvoiceIsSufficient
-            - ApRecurringPayment
-            - AuthorizationRequestDeclined
-            - AwAlteredAmount
-            - Axaq
-            - BillingIssue
-            - CaCashAdvanceDispute
-            - CancelledRecurringTransaction
-            - CardAcctHolderDidNotPerformPankeyEnteredTransaction
-            - CardholderCancelled
-            - CardholderDidNotMakeGuaranteedReservation
-            - CardholderDisagreesWithAmount
-            - CardholderDispute
-            - CardholderDisputeDefectiveNotAsDescribed
-            - CardholderDoesNotAgreeToAmountBilled
-            - CardholderDoesNotAgreeWithAmountBilled
-            - CardholderDoesNotRecognize
-            - CardholderDoesNotRecognizePotentialFraud
-            - CardholderDoesNotRecognizeTransaction
-            - CardholderDoesnotRecognizeTransaction
-            - CardholderInquiry
-            - CardholderInquiryRetrievalRequest
-            - CardholderRequest
-            - CardholderRequestCopyWithSignature
-            - CardholderRequestDueToDispute
-            - CardholderRequestsCopy
-            - CardholderRequestsCopyWithSignature
-            - CardholderRequestsDueToDispute
-            - CardmemberNoLongerDisputesCharge
-            - CdCreditPostedAsACardSale
-            - ChargeDetailOrRentalAgreementRequest
-            - ChargebackDisputeUnderReview
-            - ChipTransactionRequest
-            - ComplianceCase
-            - CopyMustShowSignatureOfPurchaser
-            - CorrectTransactionCurrencyCode
-            - CorrectTransactionCurrencyCodeNotProvided
-            - CounterfeitTransaction
-            - CounterfeitTransactionMagneticStripePosFraud
-            - CrCancelledReservation
-            - CrdHldrDisagreesWithAmt
-            - CrdHldrDoesntRecognizeTrans
-            - CrdHldrRqstCopyWithSig
-            - CrdHldrRqstDueToDispute
-            - CreditNotProcessed
-            - CreditPostedAsAPurchase
-            - CreditPostedAsDebit
-            - DebitPostedAsCredit
-            - DisputeAmount
-            - DisputeTransaction
-            - DpDuplicateProcessing
-            - DuplicateBilling
-            - DuplicateProcessing
-            - DuplicateTransaction
-            - EmvCounterfeit
-            - ExceedsFloorLimitNotAuthorizedAndFraudulentTransaction
-            - ExpiredCard
-            - FraudAnalysis
-            - FraudAnalysisRequest
-            - FraudCardAbsentEnvironment
-            - FraudInvestigation
-            - FraudInvestigationRetrievalRequest
-            - FraudulentProcessingOfTransaction
-            - FraudulentTransactionCardNotPresent
-            - FraudulentTransactionCardPresent
-            - FraudulentTransactionNoCardholderAuth
-            - FraudulentTransactionNoCardholderAuthorization
-            - FraudulentTransactionNoSignature
-            - GoodFaithInvestigation
-            - HealthCare
-            - HealthCareRequest
-            - HealthCareRetrievalRequest
-            - Healthcare
-            - HealthcareAutoSubstantiationRequestRetrievalRequest
-            - IcIllegibleSalesData
-            - IllegibleFulfillmentCardNumberTransactionAmount
-            - InactiveAccountNumber
-            - IncorrectTransactionAmount
-            - IncorrectTransactionCodeCreditPostedAsAPurchase
-            - IncorrectTransactionCodeUS
-            - InquiryClosedInMerchantsFavor
-            - InstallmentBilling
-            - InvalidAccountNumber
-            - InvalidCashAdvanceCharge
-            - InvalidSignature
-            - IssueResolved
-            - LatePresentment
-            - LegalProcessOrFraudRequest
-            - LegalProcessOrFraudRqst
-            - LegalProcessRequest
-            - LegalProcessSpecifiesOriginal
-            - LossPrevention
-            - MissingSignature
-            - NcNotClassified
-            - NeedSignedCopy
-            - NeedsForPersonalRecords
-            - NoAuthorization
-            - NoCardholderAuthorization
-            - NonMatchingAccountNumber
-            - NonReceiptOfMerchandise
-            - NotAGuaranteedReservation
-            - NotAsDescribedDefective
-            - OriginalLostInTransit
-            - OriginalPaperCopyRequest
-            - PaidByOtherMeans
-            - PleaseProvideSupportingDoc
-            - PossibleFraud
-            - PotentialChargeback
-            - PotentialChargebackComplianceDocument
-            - PotentialChgbckCompDoc
-            - PreviousCopyIllegible
-            - ProcessingError
-            - QualityOfGoodsOrServices
-            - RepeatRequestForCopy
-            - RepeatRequestForOriginal
-            - Representment
-            - Representments
-            - ReqPersonalNeeds
-            - RequestCertificateForAChipTransaction
-            - RequestForCopy
-            - RequestForCredit
-            - RequestForGoodFaith
-            - RequestForTransactionDocumentation
-            - RequestRelatedToChargeback
-            - RequestedRequiredInformationIllegibleOrMissing
-            - RequestedSupportingDocumentIllegible
-            - RequestedSupportingDocumentNotRemittedWithinDays
-            - RequiredForArbitration
-            - RequiredForChargeback
-            - RequiredForLegalFraudAnalysis
-            - RequiredForPaperHandwritingAnalysis
-            - RetrievalRequest
-            - RetrievalRequestDefault
-            - RgNonReceiptOfGoodsAndServices
-            - RmCardholderDisputesQualityOfGoodsOrServices
-            - RnAdditionalCreditRequested
-            - RnNonReceiptOfCredit
-            - RqstRelatedToChgbck
-            - SecondaryIdentificationNotRecordedNotCardholderS
-            - ServicesNotRendered
-            - SignatureFraudInvestigation
-            - SplitSale
-            - SupportReceived
-            - TEDocumentRequest
-            - TEFraudulentTransactions
-            - TicketsNotReceived
-            - TidNeededForCrdHldrPersonalRecords
-            - TransactionAmountDiffers
-            - TransactionCertificationIccTransaction
-            - TransactionDocumentRequest
-            - TransactionDocumentRequestForFraudAnalysis
-            - TransactionDocumentationRequest
-            - TransactionDocumentationRequestDueToCardholderDispute
-            - UaCnpTransactionInvalidProofOfDeliveryObtained
-            - UaCnpTransactionNoAvsOrCidProvided
-            - UaFraudulentTransactionNoAuthorization
-            - UaKeyedCardTransactionNoCardholderSignatureObtained
-            - UaRequestTransactionReceiptForCnpCardTransaction
-            - UaRequestTransactionReceiptForKeyedCardTransaction
-            - UaRequestTransactionReceiptForSwipedCardTransaction
-            - UaSwipedCardTransactionNoCardholderSignatureObtained
-            - UnauthorizedTransaction
-            - WrittenCardholderDemand
-            - CoveredBySellerProtectionFraud
-            - ProblemWithRemittance
-            - Other
-            - ChdRequestForCopyWithSignature
-            - TandEDocumentRequest
-            - ChdRequestDueToDispute
-            - LegalOrFraudAnalysisRequest
-            - SalesDraftsContracts
-            - ReturnPolicies
-            - ShippingInfo
-            - ProofOfDelivery
-            - Warranties
-            - CancellationPolicy
-            - PaymentsPaymentReceipt
-            - PaymentsCopyOfCashedCheck
-            - MedicalCopyOfOfficeVisitNotes
-            - NoValidFormOfIdentification
-        ReasonKey:
-          type: string
-          description: Descriptive reason associated with a specific retrieval. (Code)
-          example: '124'
         UserData2:
           type: string
           example: '072575376820'
@@ -8463,6 +8283,7 @@ components:
             - NotApplicable
             - Chase
             - ChaseNet
+            - FiservMexico
         acquirerKey:
           type: string
           description: Multi Acquirer Processor. (Code)
@@ -8575,6 +8396,7 @@ components:
             - PaySecure
             - DDP
             - Base24
+            - Galaxy
         backendProcessorKey:
           type: string
           description: Internal settlement platform. (Code)
@@ -8904,6 +8726,20 @@ components:
             - NotEComm
             - InternetElectronic
             - InternetPhysical
+            - MerchantAuthenticationUsingProtectBuy
+            - CardTransactionWithDataProtection
+            - CardTransactionWithoutDataProtection
+            - Reserved
+            - InAppAuthentication
+            - Voice
+            - ChannelEncryption
+            - MasterPassTxnIdentity
+            - DgitialSecureRmPayTxn
+            - Internet
+            - ThreeDES
+            - CardTxnAuth
+            - CardTxnNoAuth
+            - RecurringTxn
         ecIndicatorKey:
           type: string
           description: Electronic Commerce Indicator (ECI) is a value returned by Visa, MasterCard, JCB, and American Express etc. indicating the outcome of authentication attempted on transactions. (Code)
@@ -8928,6 +8764,231 @@ components:
           type: string
           description: The date on which the retrieval request was fulfilled. Empty if not yet fulfilled.
           format: date-time
+        idsReferenceID:
+          type: string
+          description: Internal dispute id associated with Case number.
+          example: '20200610710502'
+        inquiryDescription:
+          type: string
+          description: Descriptive reason associated with a specific inquiry.
+          example: Request for Credit
+          enum:
+            - Unknown
+            - ARequestForCopyBearingSignatureDueToInquiry
+            - AccountNumberNotOnFile
+            - AlAirlineTransactionDispute
+            - AnyCopyOfInvoiceIsSufficient
+            - ApRecurringPayment
+            - AuthorizationRequestDeclined
+            - AwAlteredAmount
+            - Axaq
+            - BillingIssue
+            - CaCashAdvanceDispute
+            - CancelledRecurringTransaction
+            - CardAcctHolderDidNotPerformPankeyEnteredTransaction
+            - CardholderCancelled
+            - CardholderDidNotMakeGuaranteedReservation
+            - CardholderDisagreesWithAmount
+            - CardholderDispute
+            - CardholderDisputeDefectiveNotAsDescribed
+            - CardholderDoesNotAgreeToAmountBilled
+            - CardholderDoesNotAgreeWithAmountBilled
+            - CardholderDoesNotRecognize
+            - CardholderDoesNotRecognizePotentialFraud
+            - CardholderDoesNotRecognizeTransaction
+            - CardholderDoesnotRecognizeTransaction
+            - CardholderInquiry
+            - CardholderInquiryRetrievalRequest
+            - CardholderRequest
+            - CardholderRequestCopyWithSignature
+            - CardholderRequestDueToDispute
+            - CardholderRequestsCopy
+            - CardholderRequestsCopyWithSignature
+            - CardholderRequestsDueToDispute
+            - CardmemberNoLongerDisputesCharge
+            - CdCreditPostedAsACardSale
+            - ChargeDetailOrRentalAgreementRequest
+            - ChargebackDisputeUnderReview
+            - ChipTransactionRequest
+            - ComplianceCase
+            - CopyMustShowSignatureOfPurchaser
+            - CorrectTransactionCurrencyCode
+            - CorrectTransactionCurrencyCodeNotProvided
+            - CounterfeitTransaction
+            - CounterfeitTransactionMagneticStripePosFraud
+            - CrCancelledReservation
+            - CrdHldrDisagreesWithAmt
+            - CrdHldrDoesntRecognizeTrans
+            - CrdHldrRqstCopyWithSig
+            - CrdHldrRqstDueToDispute
+            - CreditNotProcessed
+            - CreditPostedAsAPurchase
+            - CreditPostedAsDebit
+            - DebitPostedAsCredit
+            - DisputeAmount
+            - DisputeTransaction
+            - DpDuplicateProcessing
+            - DuplicateBilling
+            - DuplicateProcessing
+            - DuplicateTransaction
+            - EmvCounterfeit
+            - ExceedsFloorLimitNotAuthorizedAndFraudulentTransaction
+            - ExpiredCard
+            - FraudAnalysis
+            - FraudAnalysisRequest
+            - FraudCardAbsentEnvironment
+            - FraudInvestigation
+            - FraudInvestigationRetrievalRequest
+            - FraudulentProcessingOfTransaction
+            - FraudulentTransactionCardNotPresent
+            - FraudulentTransactionCardPresent
+            - FraudulentTransactionNoCardholderAuth
+            - FraudulentTransactionNoCardholderAuthorization
+            - FraudulentTransactionNoSignature
+            - GoodFaithInvestigation
+            - HealthCare
+            - HealthCareRequest
+            - HealthCareRetrievalRequest
+            - Healthcare
+            - HealthcareAutoSubstantiationRequestRetrievalRequest
+            - IcIllegibleSalesData
+            - IllegibleFulfillmentCardNumberTransactionAmount
+            - InactiveAccountNumber
+            - IncorrectTransactionAmount
+            - IncorrectTransactionCodeCreditPostedAsAPurchase
+            - IncorrectTransactionCodeUS
+            - InquiryClosedInMerchantsFavor
+            - InstallmentBilling
+            - InvalidAccountNumber
+            - InvalidCashAdvanceCharge
+            - InvalidSignature
+            - IssueResolved
+            - LatePresentment
+            - LegalProcessOrFraudRequest
+            - LegalProcessOrFraudRqst
+            - LegalProcessRequest
+            - LegalProcessSpecifiesOriginal
+            - LossPrevention
+            - MissingSignature
+            - NcNotClassified
+            - NeedSignedCopy
+            - NeedsForPersonalRecords
+            - NoAuthorization
+            - NoCardholderAuthorization
+            - NonMatchingAccountNumber
+            - NonReceiptOfMerchandise
+            - NotAGuaranteedReservation
+            - NotAsDescribedDefective
+            - OriginalLostInTransit
+            - OriginalPaperCopyRequest
+            - PaidByOtherMeans
+            - PleaseProvideSupportingDoc
+            - PossibleFraud
+            - PotentialChargeback
+            - PotentialChargebackComplianceDocument
+            - PotentialChgbckCompDoc
+            - PreviousCopyIllegible
+            - ProcessingError
+            - QualityOfGoodsOrServices
+            - RepeatRequestForCopy
+            - RepeatRequestForOriginal
+            - Representment
+            - Representments
+            - ReqPersonalNeeds
+            - RequestCertificateForAChipTransaction
+            - RequestForCopy
+            - RequestForCredit
+            - RequestForGoodFaith
+            - RequestForTransactionDocumentation
+            - RequestRelatedToChargeback
+            - RequestedRequiredInformationIllegibleOrMissing
+            - RequestedSupportingDocumentIllegible
+            - RequestedSupportingDocumentNotRemittedWithinDays
+            - RequiredForArbitration
+            - RequiredForChargeback
+            - RequiredForLegalFraudAnalysis
+            - RequiredForPaperHandwritingAnalysis
+            - RetrievalRequest
+            - RetrievalRequestDefault
+            - RgNonReceiptOfGoodsAndServices
+            - RmCardholderDisputesQualityOfGoodsOrServices
+            - RnAdditionalCreditRequested
+            - RnNonReceiptOfCredit
+            - RqstRelatedToChgbck
+            - SecondaryIdentificationNotRecordedNotCardholderS
+            - ServicesNotRendered
+            - SignatureFraudInvestigation
+            - SplitSale
+            - SupportReceived
+            - TEDocumentRequest
+            - TEFraudulentTransactions
+            - TicketsNotReceived
+            - TidNeededForCrdHldrPersonalRecords
+            - TransactionAmountDiffers
+            - TransactionCertificationIccTransaction
+            - TransactionDocumentRequest
+            - TransactionDocumentRequestForFraudAnalysis
+            - TransactionDocumentationRequest
+            - TransactionDocumentationRequestDueToCardholderDispute
+            - UaCnpTransactionInvalidProofOfDeliveryObtained
+            - UaCnpTransactionNoAvsOrCidProvided
+            - UaFraudulentTransactionNoAuthorization
+            - UaKeyedCardTransactionNoCardholderSignatureObtained
+            - UaRequestTransactionReceiptForCnpCardTransaction
+            - UaRequestTransactionReceiptForKeyedCardTransaction
+            - UaRequestTransactionReceiptForSwipedCardTransaction
+            - UaSwipedCardTransactionNoCardholderSignatureObtained
+            - UnauthorizedTransaction
+            - WrittenCardholderDemand
+            - CoveredBySellerProtectionFraud
+            - ProblemWithRemittance
+            - Other
+            - ChdRequestForCopyWithSignature
+            - TandEDocumentRequest
+            - ChdRequestDueToDispute
+            - LegalOrFraudAnalysisRequest
+            - SalesDraftsContracts
+            - ReturnPolicies
+            - ShippingInfo
+            - ProofOfDelivery
+            - Warranties
+            - CancellationPolicy
+            - PaymentsPaymentReceipt
+            - PaymentsCopyOfCashedCheck
+            - MedicalCopyOfOfficeVisitNotes
+            - NoValidFormOfIdentification
+        inquiryDescriptionKey:
+          type: string
+          description: Descriptive reason associated with a specific inquiry. (Code)
+          example: '124'
+        inquiryRequestType:
+          type: string
+          description: Request Type for the inquiry.
+          example: Inquiry
+          enum:
+            - Unknown
+            - Inquiry
+            - Claim
+            - PreChargeback
+            - RefundRequest
+            - TransactionDocumentationRequest
+        inquiryRequestTypeKey:
+          type: string
+          description: Request Type for the inquiry. (Code)
+          example: '1'
+        inquiryStatus:
+          type: string
+          description: Status of inquiry.
+          example: Pending
+          enum:
+            - Open
+            - Closed
+            - Expired
+            - Pending
+        inquiryStatusKey:
+          type: string
+          description: Status of inquiry. (Code)
+          example: '3'
         invoiceNumber:
           type: string
           description: Invoice number associated with the inquiry.
@@ -9041,20 +9102,6 @@ components:
           type: string
           description: The date the request was generated to the merchant.
           format: date-time
-        retrievalRequestType:
-          type: string
-          description: Request Type for the retrieval.
-          example: Inquiry
-          enum:
-            - Unknown
-            - Inquiry
-            - Claim
-            - PreChargeback
-            - RefundRequest
-        retrievalRequestTypeKey:
-          type: string
-          description: Request Type for the retrieval. (Code)
-          example: '1'
         siteID:
           type: string
           description: 'Site ID (BE) - merchant number associated with each the business location. '
@@ -9063,23 +9110,10 @@ components:
           type: string
           description: Available for PFAC (Payment Facilitator Aggregator) only. Name of the sub merchant.
           example: WWW.BESTBUY.COM
-        status:
-          type: string
-          description: Status of retrieval.
-          example: Pending
-          enum:
-            - Open
-            - Closed
-            - Expired
-            - Pending
         statusDate:
           type: string
           description: Date for an expected response to the client.
           format: date-time
-        statusKey:
-          type: string
-          description: Status of retrieval. (Code)
-          example: '3'
         storeNumber:
           type: string
           description: Discretionary number setup on the merchant master.
@@ -9165,8 +9199,6 @@ components:
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
             example: '["Reason","AccountNumber","AuthNetwork","Currency","InvoiceNumber","Status","TrackingNumber"]'
             enum:
-              - Reason
-              - ReasonKey
               - UserData2
               - AccountNumber
               - Acquirer
@@ -9196,6 +9228,13 @@ components:
               - First8
               - FulfillmentSlipNumber
               - FulfilmentDate
+              - IdsReferenceID
+              - InquiryDescription
+              - InquiryDescriptionKey
+              - InquiryRequestType
+              - InquiryRequestTypeKey
+              - InquiryStatus
+              - InquiryStatusKey
               - InvoiceNumber
               - IssuerNo
               - ItemSlipNumber
@@ -9223,13 +9262,9 @@ components:
               - ReferenceNumber
               - RentalAgreementNo
               - RequestDate
-              - RetrievalRequestType
-              - RetrievalRequestTypeKey
               - SiteID
               - SoftDescriptor
-              - Status
               - StatusDate
-              - StatusKey
               - StoreNumber
               - SubMerchantID
               - SubmittedCurrencyCode
@@ -9270,6 +9305,7 @@ components:
             - PaySecure
             - DDP
             - Base24
+            - Galaxy
       description: Various filter options for sites queries
     SitesSearchRequest:
       type: object
@@ -9466,6 +9502,7 @@ components:
             - PaySecure
             - DDP
             - Base24
+            - Galaxy
         platformKey:
           type: string
           description: Identifies the processor for the merchant. (Code)
@@ -9527,11 +9564,31 @@ components:
               - EBTStateKey
               - Accel
               - AccelKey
+              - Acceldualind
+              - AcceldualindKey
+              - Accelecommerceind
+              - AccelecommerceindKey
+              - Accelpinind
+              - AccelpinindKey
               - Active
               - Affn
               - AffnKey
+              - Affndualind
+              - AffndualindKey
+              - Affnecommerceind
+              - AffnecommerceindKey
+              - Affnpinind
+              - AffnpinindKey
+              - Anonymousprepaidind
+              - AnonymousprepaidindKey
               - Ath
               - AthKey
+              - Athdualind
+              - AthdualindKey
+              - Athecommerceind
+              - AthecommerceindKey
+              - Athpinind
+              - AthpinindKey
               - B2bProgram
               - B2bProgramKey
               - BillingCurrency
@@ -9550,6 +9607,12 @@ components:
               - CountryKey
               - Cu24
               - Cu24Key
+              - Cu24dualind
+              - Cu24dualindKey
+              - Cu24ecommerceind
+              - Cu24ecommerceindKey
+              - Cu24pinind
+              - Cu24pinindKey
               - Day
               - DebitNetwork
               - DebitNetworkKey
@@ -9557,6 +9620,12 @@ components:
               - DetailsKey
               - Ebt
               - EbtKey
+              - Ebtdualind
+              - EbtdualindKey
+              - Ebtecommerceind
+              - EbtecommerceindKey
+              - Ebtpinind
+              - EbtpinindKey
               - FastFunds
               - FastFundsKey
               - Fsa
@@ -9567,16 +9636,42 @@ components:
               - Id
               - Interac
               - InteracKey
+              - Interacdualind
+              - InteracdualindKey
+              - Interacecommerceind
+              - InteracecommerceindKey
+              - Interacpinind
+              - InteracpinindKey
               - Interlink
               - InterlinkKey
+              - Interlinkdualind
+              - InterlinkdualindKey
+              - Interlinkecommerceind
+              - InterlinkecommerceindKey
+              - Interlinkpinind
+              - InterlinkpinindKey
               - Issuer
               - IssuerKey
+              - Issuingnetwork
+              - IssuingnetworkKey
               - Jeanie
               - JeanieKey
+              - Jeaniedualind
+              - JeaniedualindKey
+              - Jeanieecommerceind
+              - JeanieecommerceindKey
+              - Jeaniepinind
+              - JeaniepinindKey
               - LargeTicket
               - Lowacct
               - Maestro
               - MaestroKey
+              - Maestrodualind
+              - MaestrodualindKey
+              - Maestroecommerceind
+              - MaestroecommerceindKey
+              - Maestropinind
+              - MaestropinindKey
               - MoneySend
               - MoneySendKey
               - MoneyTransfer
@@ -9584,6 +9679,12 @@ components:
               - Month
               - Nyce
               - NyceKey
+              - Nycedualind
+              - NycedualindKey
+              - Nyceecommerceind
+              - NyceecommerceindKey
+              - Nycepinind
+              - NycepinindKey
               - OnlineGambling
               - OnlineGamblingKey
               - OriginalCredit
@@ -9598,20 +9699,44 @@ components:
               - ProductSubTypeKey
               - Pulse
               - PulseKey
+              - Pulsedualind
+              - PulsedualindKey
+              - Pulseecommerceind
+              - PulseecommerceindKey
+              - Pulsepinind
+              - PulsepinindKey
               - Regulated
               - RegulatedKey
               - Reloadable
               - ReloadableKey
               - Shazam
               - ShazamKey
+              - Shazamdualind
+              - ShazamdualindKey
+              - Shazamecommerceind
+              - ShazamecommerceindKey
+              - Shazampinind
+              - ShazampinindKey
               - Star
               - StarKey
+              - Stardualind
+              - StardualindKey
+              - Starecommerceind
+              - StarecommerceindKey
+              - Starpinind
+              - StarpinindKey
               - TokenBin
               - TokenBinKey
               - Type
               - TypeKey
               - Visa
               - VisaKey
+              - Visadualind
+              - VisadualindKey
+              - Visaecommerceind
+              - VisaecommerceindKey
+              - Visapinind
+              - VisapinindKey
               - Year
         filters:
           $ref: '#/components/schemas/BinFilters'
@@ -9709,7 +9834,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         accelKey:
+          type: string
+          description: Identifies the routing eligibility to Accel network. (Code)
+          example: '1'
+        acceldualind:
+          type: string
+          description: Dual Indicator of ACCEL network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        acceldualindKey:
+          type: string
+          description: Dual Indicator of ACCEL network. (Code)
+          example: '0'
+        accelecommerceind:
+          type: string
+          description: Ecommerce Indicator of ACCEL network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        accelecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of ACCEL network. (Code)
+          example: '0'
+        accelpinind:
+          type: string
+          description: Identifies the routing eligibility to Accel network.
+          example: Pin & Pinless POS
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        accelpinindKey:
           type: string
           description: Identifies the routing eligibility to Accel network. (Code)
           example: '1'
@@ -9730,10 +9898,69 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         affnKey:
           type: string
           description: Identifies the routing eligibility to AFFN network. (Code)
           example: '0'
+        affndualind:
+          type: string
+          description: Dual Indicator of AFFN network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        affndualindKey:
+          type: string
+          description: Dual Indicator of AFFN network. (Code)
+          example: '0'
+        affnecommerceind:
+          type: string
+          description: Ecommerce Indicator of AFFN network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        affnecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of AFFN network. (Code)
+          example: '0'
+        affnpinind:
+          type: string
+          description: Identifies the routing eligibility to AFFN network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        affnpinindKey:
+          type: string
+          description: Identifies the routing eligibility to AFFN network. (Code)
+          example: '0'
+        anonymousprepaidind:
+          type: string
+          description: Identifies whether Anonymous Prepaid is supported. MasterCard and UnionPay Only.
+          example: 'Anonymous Prepaid (UnionPay only) '
+          enum:
+            - Unknown
+            - AnonymousProgram
+            - AnonymousProgramCompliant
+            - NonAnonymousPrograms
+            - AnonymousIndUnknown
+            - RegisteredPrepaid
+            - AnonymousPrepaid
+        anonymousprepaidindKey:
+          type: string
+          description: Identifies whether Anonymous Prepaid is supported. MasterCard and UnionPay Only. (Code)
+          example: '6'
         ath:
           type: string
           description: Identifies the routing eligibility to ATH network.
@@ -9747,7 +9974,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         athKey:
+          type: string
+          description: Identifies the routing eligibility to ATH network. (Code)
+          example: '0'
+        athdualind:
+          type: string
+          description: Dual Indicator of ATH network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        athdualindKey:
+          type: string
+          description: Dual Indicator of ATH network. (Code)
+          example: '0'
+        athecommerceind:
+          type: string
+          description: Ecommerce Indicator of ATH network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        athecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of ATH network. (Code)
+          example: '0'
+        athpinind:
+          type: string
+          description: Identifies the routing eligibility to ATH network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        athpinindKey:
           type: string
           description: Identifies the routing eligibility to ATH network. (Code)
           example: '0'
@@ -10460,7 +10730,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         cu24Key:
+          type: string
+          description: Identifies the routing eligibility to CU24 network. (Code)
+          example: '0'
+        cu24dualind:
+          type: string
+          description: Dual Indicator of CU24 network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        cu24dualindKey:
+          type: string
+          description: Dual Indicator of CU24 network. (Code)
+          example: '0'
+        cu24ecommerceind:
+          type: string
+          description: Ecommerce Indicator of CU24 network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        cu24ecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of CU24 network. (Code)
+          example: '0'
+        cu24pinind:
+          type: string
+          description: Identifies the routing eligibility to CU24 network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        cu24pinindKey:
           type: string
           description: Identifies the routing eligibility to CU24 network. (Code)
           example: '0'
@@ -10565,6 +10878,7 @@ components:
             - SignatureOnly
             - TrueCredit
             - Unknown
+            - CreditPinOnlyWithoutEBT
         detailsKey:
           type: string
           description: A detailed identification of the card type. (Code)
@@ -10582,7 +10896,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         ebtKey:
+          type: string
+          description: Identifies the routing eligibility to EBT network. (Code)
+          example: '0'
+        ebtdualind:
+          type: string
+          description: Dual Indicator of EBT network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        ebtdualindKey:
+          type: string
+          description: Dual Indicator of EBT network. (Code)
+          example: '0'
+        ebtecommerceind:
+          type: string
+          description: Ecommerce Indicator of EBT network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        ebtecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of EBT network. (Code)
+          example: '0'
+        ebtpinind:
+          type: string
+          description: Identifies the routing eligibility to EBT network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        ebtpinindKey:
           type: string
           description: Identifies the routing eligibility to EBT network. (Code)
           example: '0'
@@ -10595,6 +10952,18 @@ components:
             - DomesticCrossBorder
             - CrossBorder
             - Domestic
+            - AcceptFastFundDomMoneyTransf
+            - RejectFastFundDomMoneyTransf
+            - AcceptFastFundCBMoneyTransf
+            - RejectFastFundCBMoneyTransf
+            - AcceptFastFundDomNonMoneyTransf
+            - RejectFastFundDomNonMoneyTransf
+            - AcceptFastFundCBNonMoneyTransf
+            - RejectFastFundCBNonMoneyTransf
+            - AcceptFastFundDomGambling
+            - RejectFastFundDomGambling
+            - AcceptFastFundCBGambling
+            - RejectFastFundCBGambling
         fastFundsKey:
           type: string
           description: Determines if the Visa/MasterCard account can receive the transfer of funds within 30 minutes. (Code)
@@ -10643,7 +11012,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         interacKey:
+          type: string
+          description: Identifies the routing eligibility to Interac network. (Code)
+          example: '0'
+        interacdualind:
+          type: string
+          description: Dual Indicator of INTERAC network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        interacdualindKey:
+          type: string
+          description: Dual Indicator of INTERAC network. (Code)
+          example: '0'
+        interacecommerceind:
+          type: string
+          description: Ecommerce Indicator of INTERAC network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        interacecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of INTERAC network. (Code)
+          example: '0'
+        interacpinind:
+          type: string
+          description: Identifies the routing eligibility to Interac network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        interacpinindKey:
           type: string
           description: Identifies the routing eligibility to Interac network. (Code)
           example: '0'
@@ -10660,7 +11072,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         interlinkKey:
+          type: string
+          description: Identifies the routing eligibility to InterLink network. (Code)
+          example: '0'
+        interlinkdualind:
+          type: string
+          description: Dual Indicator of INTERLINK network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        interlinkdualindKey:
+          type: string
+          description: Dual Indicator of INTERLINK network. (Code)
+          example: '0'
+        interlinkecommerceind:
+          type: string
+          description: Ecommerce Indicator of INTERLINK network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        interlinkecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of INTERLINK network. (Code)
+          example: '0'
+        interlinkpinind:
+          type: string
+          description: Identifies the routing eligibility to InterLink network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        interlinkpinindKey:
           type: string
           description: Identifies the routing eligibility to InterLink network. (Code)
           example: '0'
@@ -10672,6 +11127,21 @@ components:
           type: string
           description: Identifies the issuing bank institution. (Code)
           example: XXX BANK
+        issuingnetwork:
+          type: string
+          description: Issuning Network For Discover card types
+          example: Mastercard
+          enum:
+            - Unknown
+            - Discover
+            - Diners
+            - JCB
+            - CUP
+            - Paypal
+        issuingnetworkKey:
+          type: string
+          description: Issuning Network For Discover card types (Code)
+          example: '3'
         jeanie:
           type: string
           description: Identifies the routing eligibility to Jeanie network.
@@ -10685,7 +11155,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         jeanieKey:
+          type: string
+          description: Identifies the routing eligibility to Jeanie network. (Code)
+          example: '0'
+        jeaniedualind:
+          type: string
+          description: Dual Indicator of JEANIE network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        jeaniedualindKey:
+          type: string
+          description: Dual Indicator of JEANIE network. (Code)
+          example: '0'
+        jeanieecommerceind:
+          type: string
+          description: Ecommerce Indicator of JEANIE network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        jeanieecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of JEANIE network. (Code)
+          example: '0'
+        jeaniepinind:
+          type: string
+          description: Identifies the routing eligibility to Jeanie network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        jeaniepinindKey:
           type: string
           description: Identifies the routing eligibility to Jeanie network. (Code)
           example: '0'
@@ -10710,7 +11223,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         maestroKey:
+          type: string
+          description: Identifies the routing eligibility to Maestro network. (Code)
+          example: '0'
+        maestrodualind:
+          type: string
+          description: Dual Indicator of MAESTRO network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        maestrodualindKey:
+          type: string
+          description: Dual Indicator of MAESTRO network. (Code)
+          example: '0'
+        maestroecommerceind:
+          type: string
+          description: Ecommerce Indicator of MAESTRO network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        maestroecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of MAESTRO network. (Code)
+          example: '0'
+        maestropinind:
+          type: string
+          description: Identifies the routing eligibility to Maestro network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        maestropinindKey:
           type: string
           description: Identifies the routing eligibility to Maestro network. (Code)
           example: '0'
@@ -10757,7 +11313,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         nyceKey:
+          type: string
+          description: Identifies the routing eligibility to NYCE network. (Code)
+          example: '1'
+        nycedualind:
+          type: string
+          description: Dual Indicator of NYCE network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        nycedualindKey:
+          type: string
+          description: Dual Indicator of NYCE network. (Code)
+          example: '0'
+        nyceecommerceind:
+          type: string
+          description: Ecommerce Indicator of NYCE network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        nyceecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of NYCE network. (Code)
+          example: '0'
+        nycepinind:
+          type: string
+          description: Identifies the routing eligibility to NYCE network.
+          example: Pin & Pinless POS
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        nycepinindKey:
           type: string
           description: Identifies the routing eligibility to NYCE network. (Code)
           example: '1'
@@ -10781,6 +11380,18 @@ components:
             - Unknown
             - AcceptOCTxn
             - RejectOCTxn
+            - AcceptNonMoneyTransfOCTDom
+            - RejectNonMoneyTransfOCTDom
+            - AcceptNonMoneyTransfOCTCB
+            - RejectNonMoneyTransfOCTCB
+            - AcceptOnlineGamblingOCTDom
+            - RejectOnlineGamblingOCTDom
+            - AcceptOnlineGamblingOCTCB
+            - RejectOnlineGamblingOCTCB
+            - AcceptMoneyTransfOCTDom
+            - RejectMoneyTransfOCTDom
+            - AcceptMoneyTransfOCTCB
+            - RejectMoneyTransfOCTCB
         originalCreditKey:
           type: string
           description: Determines if the Visa account is eligible to receive an Original Credit Transaction (OCT). (Code)
@@ -10860,7 +11471,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         pulseKey:
+          type: string
+          description: Identifies the routing eligibility to Pulse network. (Code)
+          example: '3'
+        pulsedualind:
+          type: string
+          description: Dual Indicator of PULSE network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        pulsedualindKey:
+          type: string
+          description: Dual Indicator of PULSE network. (Code)
+          example: '0'
+        pulseecommerceind:
+          type: string
+          description: Ecommerce Indicator of PULSE network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        pulseecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of PULSE network. (Code)
+          example: '0'
+        pulsepinind:
+          type: string
+          description: Identifies the routing eligibility to Pulse network.
+          example: Pin POS
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        pulsepinindKey:
           type: string
           description: Identifies the routing eligibility to Pulse network. (Code)
           example: '3'
@@ -10902,7 +11556,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         shazamKey:
+          type: string
+          description: Identifies the routing eligibility to Shazam network. (Code)
+          example: '0'
+        shazamdualind:
+          type: string
+          description: Dual Indicator of SHAZAM network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        shazamdualindKey:
+          type: string
+          description: Dual Indicator of SHAZAM network. (Code)
+          example: '0'
+        shazamecommerceind:
+          type: string
+          description: Ecommerce Indicator of SHAZAM network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        shazamecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of SHAZAM network. (Code)
+          example: '0'
+        shazampinind:
+          type: string
+          description: Identifies the routing eligibility to Shazam network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        shazampinindKey:
           type: string
           description: Identifies the routing eligibility to Shazam network. (Code)
           example: '0'
@@ -10919,7 +11616,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         starKey:
+          type: string
+          description: Identifies the routing eligibility to Star network. (Code)
+          example: '1'
+        stardualind:
+          type: string
+          description: Dual Indicator of STAR network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        stardualindKey:
+          type: string
+          description: Dual Indicator of STAR network. (Code)
+          example: '0'
+        starecommerceind:
+          type: string
+          description: Ecommerce Indicator of STAR network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        starecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of STAR network. (Code)
+          example: '0'
+        starpinind:
+          type: string
+          description: Identifies the routing eligibility to Star network.
+          example: Pin & Pinless POS
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        starpinindKey:
           type: string
           description: Identifies the routing eligibility to Star network. (Code)
           example: '1'
@@ -10957,7 +11697,50 @@ components:
             - PinlessBillPay
             - PinlessPOS
             - PinlessBillPayPinlessPOS
+            - Other
         visaKey:
+          type: string
+          description: Identifies the routing eligibility to Visa network. (Code)
+          example: '0'
+        visadualind:
+          type: string
+          description: Dual Indicator of VISA network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AccpetDualAndAcceptSingleMessage
+            - RejectDualAndAcceptSingleMessage
+        visadualindKey:
+          type: string
+          description: Dual Indicator of VISA network. (Code)
+          example: '0'
+        visaecommerceind:
+          type: string
+          description: Ecommerce Indicator of VISA network.
+          example: E-Commerce Indicator Unknown
+          enum:
+            - Unknown
+            - AcceptEcommeDebit
+            - RejectEcommeDebit
+        visaecommerceindKey:
+          type: string
+          description: Ecommerce Indicator of VISA network. (Code)
+          example: '0'
+        visapinind:
+          type: string
+          description: Identifies the routing eligibility to Visa network.
+          example: ''
+          enum:
+            - NA
+            - PinPinlessPOS
+            - PinPOSPinlessBillPay
+            - PinPOS
+            - PinPOSPinlessPOSPinlessBillPay
+            - PinlessBillPay
+            - PinlessPOS
+            - PinlessBillPayPinlessPOS
+            - Other
+        visapinindKey:
           type: string
           description: Identifies the routing eligibility to Visa network. (Code)
           example: '0'
@@ -15068,6 +15851,96 @@ components:
             - MerchPriceIntchgRefundDr
             - Purchase
             - RefundCredit
+            - MCExemptionFlagFee
+            - DCMatchingFeeEUDomCP
+            - DCMatchingFeeEUIntraCP
+            - DCMatchingFeeEUInterCP
+            - DCMatchingFeeEUDomCNP
+            - DCMatchingFeeEUIntraCNP
+            - DCMatchingFeeEUInterCNP
+            - DCMatchingFeeUSDomCP
+            - DCMatchingFeeUSInterCP
+            - DCMatchingFeeUSDomCNP
+            - DCMatchingFeeUSInterCNP
+            - DCMatchingFeeCANDomCP
+            - DCMatchingFeeCANInterCP
+            - DCMatchingFeeCANDomCNP
+            - DCMatchingFeeCANInterCNP
+            - MCIncomingPreArbFeeEU
+            - MCIncomingPreArbFeeUS
+            - MCIncomingPreArbFeeCAN
+            - V240MCacGprs
+            - IngncoMove2500Wf
+            - IngncoMove2500Gp
+            - IngncoMove2500Ip
+            - MexicoVx520Dw
+            - MexicoVx520Duo
+            - MexMove2500GDwWf
+            - MexMove2500GDwGp
+            - MexMove2500GDwIp
+            - MexicoIct220GDw
+            - MexLane3000Dw
+            - MexicoVx690WfDw
+            - MexLink2500Bt
+            - GeoPagosQPM1GtwRc
+            - GeoPgQPM1GtwRcBt
+            - MexicoIpgGtwEc
+            - MexVx6903GDwGp
+            - MexVx6903GDwWf
+            - MexPayPointGtMoto
+            - CybrsourceICS2Gtwy
+            - MexEngageV240MDw
+            - MexEngV240MDwGp
+            - ApgVerifoneRcEcmm
+            - ApgVerifoneRcCp
+            - MexLane7000Dw
+            - MexPayPointGtRec
+            - MexPayPointGtEc
+            - MexicoIpgGtwMoto
+            - MexicoVx6753G
+            - GtwFreedomPay
+            - MexicoVx675Wifi
+            - TenerumGtwRtRcEc
+            - TenerumGtwRtRc
+            - DelegoMxv254RcSrs
+            - VestaMxRcEcomm
+            - V240MCacWifi
+            - FreedomPayEcommGw
+            - FreedpayGtwayEcom
+            - MexLink25003G
+            - MexLane5000DwWifi
+            - MexLane5000DwGp
+            - MexLane5000DwIp
+            - ApplGtwRc
+            - MexEngV200TDwWf
+            - MexEngV200TDwGp
+            - MexEngV200TDwIp
+            - NapseRcCp
+            - UicRcSrsvL31A1001
+            - AdvamGtwSrsRc
+            - TwoCpusaGtwEcomm
+            - Move25003GWifi
+            - Move25003GGprs
+            - Move2500Ip
+            - AurusGtwyDwRc
+            - MexEngV200T3G
+            - MexEngV240MWifi
+            - VfPwConnRcGtwEc
+            - AurusGtwRcEcSrs
+            - SwExpressGtwMx
+            - Iso8583LeaseWf
+            - Iso8583LeaseGp
+            - Iso8583LeaseIp
+            - GoVolutionRcGtw
+            - TaxableMiscCr
+            - TaxableMiscDr
+            - PromoPymntFee
+            - AmexOptBlue
+            - McDigEnabAuthenticationFee
+            - McDigEnabAuthenticationCap
+            - McApDigEnabAuthentication
+            - InterchangeReject
+            - TaAesDukptP2pe
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -15149,6 +16022,7 @@ components:
             - PaySecure
             - DDP
             - Base24
+            - Galaxy
         processorKey:
           type: string
           description: Identifies the funding platform. (Code)
@@ -15311,6 +16185,7 @@ components:
             - ProsaVisa
             - ProsaMastercard
             - ProsaPrivateLabel
+            - AmexOptBlue
         productCodeKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -15649,6 +16524,8 @@ components:
             - Debit
             - MN_Account
             - MN_Card
+            - PAYPAL
+            - VENMO
         accountTypeKey:
           type: string
           description: Payment account type (Code)
@@ -16035,6 +16912,8 @@ components:
             - ReversalFailed
             - InProcess
             - InReview
+            - PendingReview
+            - PaymentHold
         paymentStatusKey:
           type: string
           description: The status of the payment. (Code)
@@ -17232,7 +18111,7 @@ components:
           example: '999999999'
         merchantDBA:
           type: string
-          description: 'Commerce Hub Data Model Name: Request.Merchant.Address.merchantName. Description: The merchant''s alternate name, Doing Business As (DBA).'
+          description: 'Commerce Hub Data Model Name: Request.dynamicDescriptors.merchantName. Description: The merchant''s alternate name, Doing Business As (DBA).'
           example: ABC Store
         merchantHouse:
           type: string
@@ -17489,8 +18368,8 @@ components:
           example: ''
         specialPymtInd:
           type: string
-          description: 'Commerce Hub Data Model Name: Response.transactionInteraction.specialPayment. Description: Special Payment can be used via API, HCO, VPOS, Quick Key, and Recurring. Special Payment transaction can be processed via MOTO, eCommerce, or Retail terminals.'
-          example: B
+          description: 'Description: Special Payment can be used via API, HCO, VPOS, Quick Key, and Recurring. Special Payment transaction can be processed via MOTO, eCommerce, or Retail terminals.'
+          example: ''
         splitTenderId:
           type: string
           description: 'Commerce Hub Data Model Name: Response.transactionDetails.splitTenderId. Description: A partially-authorized transaction will generate a Split Tender ID. Subsequent transactions to complete the authorization should include the Split Tender ID so that all the transactions comprising that authorization can be linked using the Split-Tender tab.'
@@ -17515,6 +18394,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.versionData3DS.recommendedVersion. Description: Specific Protocol version supported by 3DS.'
           example: 'N'
+        tokenAssuranceMethod:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.tokenAssuranceMethod. Description: Token Assurance Method will be returned back to merchants in auth response.'
+          example: XXXXXXXXXXXX
         tokenNumber1:
           type: string
           description: 'Commerce Hub Data Model Name: Request.PaymentTokens[0].tokenData. Description: Token created from the tokedn source.'
@@ -17539,6 +18422,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.PaymentTokens[5].tokenData. Description: Token created from the tokedn source.'
           example: 123456XXXXXXXX5555
+        tokenProvider:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.tokenProvider. Description: Token generated outside of Fiserv(Third party Network token) will populate in this field.'
+          example: ''
         tokenProvider1:
           type: string
           description: 'Commerce Hub Data Model Name: Request.PaymentTokens[0].tokenSource. Description: Source for the Token Service Provider.'
@@ -17562,6 +18449,14 @@ components:
         tokenProvider6:
           type: string
           description: 'Commerce Hub Data Model Name: Request.PaymentTokens[5].tokenSource. Description: Source for the Token Service Provider.'
+          example: ''
+        tokenRequestorId:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.tokenRequestorId. Description: An identifier used by merchants to request network tokens from the card networks.'
+          example: '99999999999'
+        tokenSource:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.Source.tokenSource. Description: ''TRANSARMOR'' OR ''THIRD_PARTY_NETWORK_TOKEN'' etc.'
           example: ''
         transactionID:
           type: string
@@ -17856,18 +18751,22 @@ components:
               - Tavv
               - TerminalID
               - ThreeDSVersion
+              - TokenAssuranceMethod
               - TokenNumber1
               - TokenNumber2
               - TokenNumber3
               - TokenNumber4
               - TokenNumber5
               - TokenNumber6
+              - TokenProvider
               - TokenProvider1
               - TokenProvider2
               - TokenProvider3
               - TokenProvider4
               - TokenProvider5
               - TokenProvider6
+              - TokenRequestorId
+              - TokenSource
               - TransactionDateTime
               - TransactionID
               - TransactionInitiator
@@ -17889,6 +18788,7 @@ components:
           type: string
           description: Search/Analysis date type. default value is chargeback date
           example: ChargebackDate
+          default: ChargebackDate
           enum:
             - AuthDate
             - ChargebackDate
@@ -17897,7 +18797,6 @@ components:
             - DueDate
             - RecordDate
             - RespondedDate
-          default: ChargebackDate
         siteIDs:
           type: array
           description: Chargebacks associated with one of the Site IDs specified
@@ -18064,6 +18963,7 @@ components:
               - ExternalMid
               - First6
               - First8
+              - IdsReferenceID
               - InvoiceNumber
               - ItemSlipNumber
               - Last4
@@ -18290,6 +19190,20 @@ components:
             - NotEComm
             - InternetElectronic
             - InternetPhysical
+            - MerchantAuthenticationUsingProtectBuy
+            - CardTransactionWithDataProtection
+            - CardTransactionWithoutDataProtection
+            - Reserved
+            - InAppAuthentication
+            - Voice
+            - ChannelEncryption
+            - MasterPassTxnIdentity
+            - DgitialSecureRmPayTxn
+            - Internet
+            - ThreeDES
+            - CardTxnAuth
+            - CardTxnNoAuth
+            - RecurringTxn
         ECIndicatorKey:
           type: string
           description: Electronic Commerce Indicator (ECI) is a value returned by Visa, MasterCard, JCB, and American Express etc. indicating the outcome of authentication attempted on transactions. (Code)
@@ -18673,6 +19587,7 @@ components:
             - NotApplicable
             - Chase
             - ChaseNet
+            - FiservMexico
         acquirerKey:
           type: string
           description: Multi Acquirer Processor. (Code)
@@ -18806,6 +19721,7 @@ components:
             - PaySecure
             - DDP
             - Base24
+            - Galaxy
         backendProcessorKey:
           type: string
           description: Internal settlement platform. (Code)
@@ -19404,6 +20320,10 @@ components:
           type: string
           description: First eight digits of card number.
           example: '12345678'
+        idsReferenceID:
+          type: string
+          description: Internal dispute id associated with Case number.
+          example: '20200610710502'
         invoiceNumber:
           type: string
           description: Invoice number associated with the inquiry.
@@ -19792,6 +20712,7 @@ components:
             - ProsaVisa
             - ProsaMastercard
             - ProsaPrivateLabel
+            - AmexOptBlue
         merchantProductCodeKey:
           type: string
           description: Merchant network of the cerdit card utilized for the transaction. (Code)
@@ -19847,6 +20768,7 @@ components:
             - TouchNGo
             - WechatPay
             - AmazonOne
+            - Paze
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay etc.). (Code)
@@ -21099,6 +22021,7 @@ components:
               - DCCINDKey
               - ECIIndicator
               - ECIIndicatorKey
+              - GUID
               - P2PEncryptionType
               - P2PEncryptionTypeKey
               - P2PTokenAssurance
@@ -21107,6 +22030,7 @@ components:
               - P2PTokenTypeKey
               - AccountNumber
               - Aci
+              - AcquirerInstName
               - AddendumNumber
               - AdjustmentAmount
               - AdjustmentIndicator
@@ -21135,6 +22059,7 @@ components:
               - CashAdvanceIndicatorKey
               - CashBackIndicator
               - CashBackIndicatorKey
+              - CatLevelIndicator
               - CavvDowngradeReason
               - CrossBorderIndicator
               - CshbAmount
@@ -21147,6 +22072,7 @@ components:
               - DebitFeeAmount
               - DeclineReason
               - DeclineReasonKey
+              - DirectRouteInd
               - DrdGroupRouteID
               - DrdNetwork
               - DrdNetworkList
@@ -21204,10 +22130,12 @@ components:
               - LodgingOtherSvcCharges
               - MasterCardBanknetDt
               - McPromotionCode
+              - McServiceProviderID
               - MerchandiseCode
               - MerchandiseCodeKey
               - MerchantCategory
               - MerchantCategoryKey
+              - MerchantDescriptor
               - MerchantName
               - MessageTypeIdentifier
               - MktSpecificDataInd
@@ -21462,9 +22390,11 @@ components:
               - ShipmentToCountryCode
               - ShipmentToZip
               - SiteID
+              - SmposIndicator
               - SoftPosIndicator
               - SoftPosIndicatorKey
               - SourceType
+              - SubMerchAddr
               - SubMerchantId
               - SubType
               - SubTypeKey
@@ -21489,6 +22419,7 @@ components:
               - Trckrid
               - TxnCatCode
               - TxnID
+              - TxnInitiationId
               - TxnOriginator
               - TxnStatus
               - TxnStatusKey
@@ -21821,10 +22752,28 @@ components:
             - NotEComm
             - InternetElectronic
             - InternetPhysical
+            - MerchantAuthenticationUsingProtectBuy
+            - CardTransactionWithDataProtection
+            - CardTransactionWithoutDataProtection
+            - Reserved
+            - InAppAuthentication
+            - Voice
+            - ChannelEncryption
+            - MasterPassTxnIdentity
+            - DgitialSecureRmPayTxn
+            - Internet
+            - ThreeDES
+            - CardTxnAuth
+            - CardTxnNoAuth
+            - RecurringTxn
         ECIIndicatorKey:
           type: string
           description: Indicates the electronic commerce indicator used for the transaction. (Code)
           example: '4'
+        GUID:
+          type: string
+          description: Indicates a unique identifier assigned to the authorization transaction. This is for INTERNAL consumption and use only.
+          example: abcd1234-ab12-ab12-ab12-123456abcdef
         P2PEncryptionType:
           type: string
           description: 'Point to Point Encryption: Identifies the encryption type.'
@@ -21876,6 +22825,10 @@ components:
           type: string
           description: Authorization characteristics indicators.
           example: 'Y'
+        acquirerInstName:
+          type: string
+          description: Acquirer Institution Name.
+          example: ABCDEFGHIJK0123456
         addendumNumber:
           type: string
           description: Used in conjunction to the item no to uniquely identify a record.
@@ -23012,6 +23965,10 @@ components:
           type: string
           description: Cash back transaction Indicator. (Code)
           example: '6'
+        catLevelIndicator:
+          type: string
+          description: CAT tag, type of cardholder activated terminal used by the cardholder to activate the terminal.
+          example: ABCDEFGHIJK0123456
         cavvDowngradeReason:
           type: string
           description: Identifies the Mastercard CAVV downgrade reason.
@@ -23226,7 +24183,7 @@ components:
         customerName:
           type: string
           description: Name on the Card.
-          example: JXXXXXXXE
+          example: JXXXXANNE
         dailyRentalRate:
           type: string
           description: Daily car rental rate.
@@ -23454,6 +24411,10 @@ components:
           type: string
           description: Identifies the decline reason for the transaction. (Code)
           example: '3'
+        directRouteInd:
+          type: string
+          description: Direct Route Indicator.
+          example: '0'
         drdGroupRouteID:
           type: string
           description: The id of dynamic routing group
@@ -23690,6 +24651,10 @@ components:
           type: string
           description: Identifies the MC promotion code.
           example: ZXY987
+        mcServiceProviderID:
+          type: string
+          description: MSP tag, MasterCard Service Provider ID is a unique Company ID (CID) assigned by MasterCard for each of the Payment Gateway Service Provider.
+          example: ABC123
         merchandiseCode:
           type: string
           description: Describes the type of fuel purchased.
@@ -23927,6 +24892,10 @@ components:
           type: string
           description: Identifies the standard merchant category code assigned to the transaction. (Code)
           example: Fast Food Restaurants (5814)
+        merchantDescriptor:
+          type: string
+          description: Contains the merchant name that will be presented to cardholder on statements.
+          example: ABCDEFGHIJK0123456
         merchantName:
           type: string
           description: Merchant Name
@@ -23987,6 +24956,7 @@ components:
             - TouchNGo
             - WechatPay
             - AmazonOne
+            - Paze
         mobileWalletKey:
           type: string
           description: Identifies wallet type indicator (e.g., Apple Pay, Samsung Pay, Google Pay, etc.). (Code)
@@ -24314,6 +25284,7 @@ components:
             - PaySecure
             - DDP
             - Base24
+            - Galaxy
         processorKey:
           type: string
           description: Identifies the originating platform (Switch). (Code)
@@ -29864,6 +30835,10 @@ components:
           description: An unique identifier assigned to the merchant. Also known as a MID.
           format: int64
           example: 123456789123
+        smposIndicator:
+          type: string
+          description: Software Mobile Pos tag for Card Present transactions on mPOS device.
+          example: A6
         softPosIndicator:
           type: string
           description: Soft Pos Indicator
@@ -29879,6 +30854,10 @@ components:
           type: string
           description: Indicates source type.
           example: Z
+        subMerchAddr:
+          type: string
+          description: Sub-Merchant street address.
+          example: ABCDEFGHIJK0123456
         subMerchantId:
           type: string
           description: Sub Merchant ID
@@ -30124,6 +31103,10 @@ components:
           type: string
           description: Network transaction ID.
           example: '9999999999'
+        txnInitiationId:
+          type: string
+          description: TII tag, conveys whether stored credential or credential-on-file (COF) is used for the transaction.
+          example: A1
         txnOriginator:
           type: string
           description: Originating System of the txn
