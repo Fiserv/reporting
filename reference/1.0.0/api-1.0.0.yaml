@@ -2717,6 +2717,8 @@ paths:
                 value:
                   fromDate: '20240304'
                   toDate: '20240306'
+                  fromTime: '0900'
+                  toTime: '2300'
                   limit: 3
                   fields:
                     - ApprovalCode
@@ -3209,6 +3211,8 @@ paths:
                 value:
                   fromDate: '20210801'
                   toDate: '20210807'
+                  fromTime: '0900'
+                  toTime: '2300'
                   limit: 3
               List auths with specific fields:
                 description: List auths with specific fields
@@ -3227,6 +3231,8 @@ paths:
                 value:
                   fromDate: '20210801'
                   toDate: '20210807'
+                  fromTime: '0900'
+                  toTime: '2300'
                   limit: 3
                   fields:
                     - Amount
@@ -3245,6 +3251,8 @@ paths:
                 value:
                   fromDate: '20210801'
                   toDate: '20210807'
+                  fromTime: '0900'
+                  toTime: '2300'
                   limit: 3
                   fields:
                     - ApprovalCode
@@ -3261,6 +3269,8 @@ paths:
                 value:
                   fromDate: '20210801'
                   toDate: '20210807'
+                  fromTime: '0900'
+                  toTime: '2300'
                   limit: 3
                   fields:
                     - ApprovalCode
@@ -4880,17 +4890,23 @@ components:
               - NonAugPlanCodeDesc
               - NonAugmentPlanFlag
               - NonAugmentPlanFlagKey
+              - NonCompReason
               - OdometerReading
               - OrderNumber
               - OrigPlanCodeDesc
               - OriginalPlanCode
               - OwdChargeAmt
               - PanSequenceNumber
+              - PartAuthIndicator
+              - PartAuthIndicatorDescription
+              - PartAuthIndicatorDescriptionKey
               - PayTranId
               - PaymentMethod
               - PaymentMethodKey
               - PcTaxAmount
               - PcTerminalCapability
+              - Pe5239Rate
+              - Pe5239Status
               - PerTranDifference
               - Percent
               - PinlessFlag
@@ -7255,6 +7271,10 @@ components:
           type: string
           description: Non Augment Plan Flag (Code)
           example: ''
+        nonCompReason:
+          type: string
+          description: Indicates reason Why the transaction is non compliant
+          example: Surcharge not active on this merchant
         odometerReading:
           type: string
           description: Odometer reading.
@@ -7280,6 +7300,18 @@ components:
           type: string
           description: Identifies the card sequence number.
           example: AAA
+        partAuthIndicator:
+          type: string
+          description: Code indicating if Partial Authorization is supported(0/null = not supported, 1 = Supported).
+          example: '1'
+        partAuthIndicatorDescription:
+          type: string
+          description: Code indicating if Partial Authorization is supported(0/null = not supported, 1 = Supported).
+          example: ''
+        partAuthIndicatorDescriptionKey:
+          type: string
+          description: Code indicating if Partial Authorization is supported(0/null = not supported, 1 = Supported). (Code)
+          example: Supported
         payTranId:
           type: string
           description: PaySecure Transaction ID.
@@ -7315,6 +7347,14 @@ components:
           type: string
           description: Code indicating if the card was present or not present.
           example: A99
+        pe5239Rate:
+          type: string
+          description: Indicates merchant surcharge rate
+          example: '2.4'
+        pe5239Status:
+          type: string
+          description: Indicates merchant surcharge program status
+          example: A
         perTranDifference:
           type: number
           description: Per Tran Difference
@@ -9026,11 +9066,11 @@ components:
         message:
           type: string
           description: Alert Message Description.
-          example: ''
+          example: Submission under review
         messageKey:
           type: string
           description: Alert Message Description. (Code)
-          example: ''
+          example: '1'
         mobileIndicator:
           type: string
           description: Indicator that a transaction originated from the uCom gateway.
@@ -9627,6 +9667,18 @@ components:
               - Ebtpinind
               - EbtpinindKey
               - FastFunds
+              - FastFundsCBGamblingInd
+              - FastFundsCBGamblingIndKey
+              - FastFundsCBMoneyTransfInd
+              - FastFundsCBMoneyTransfIndKey
+              - FastFundsCBNonMoneyTransfInd
+              - FastFundsCBNonMoneyTransfIndKey
+              - FastFundsDomGamblingInd
+              - FastFundsDomGamblingIndKey
+              - FastFundsDomMoneyTransfInd
+              - FastFundsDomMoneyTransfIndKey
+              - FastFundsDomNonMoneyTransfInd
+              - FastFundsDomNonMoneyTransfIndKey
               - FastFundsKey
               - Fsa
               - FsaKey
@@ -9676,7 +9728,15 @@ components:
               - MoneySendKey
               - MoneyTransfer
               - MoneyTransferKey
+              - Moneytransfoctcbind
+              - MoneytransfoctcbindKey
+              - Moneytransfoctdomind
+              - MoneytransfoctdomindKey
               - Month
+              - Nonmoneytransfoctcbind
+              - NonmoneytransfoctcbindKey
+              - Nonmoneytransfoctdomind
+              - NonmoneytransfoctdomindKey
               - Nyce
               - NyceKey
               - Nycedualind
@@ -9687,6 +9747,10 @@ components:
               - NycepinindKey
               - OnlineGambling
               - OnlineGamblingKey
+              - Onlinegamblingoctcbind
+              - OnlinegamblingoctcbindKey
+              - Onlinegamblingoctdomind
+              - OnlinegamblingoctdomindKey
               - OriginalCredit
               - OriginalCreditKey
               - PanLength
@@ -10964,6 +11028,156 @@ components:
             - RejectFastFundDomGambling
             - AcceptFastFundCBGambling
             - RejectFastFundCBGambling
+        fastFundsCBGamblingInd:
+          type: string
+          description: Indicates if fast funds is supported for cross-border gambling OCTs (Visa).
+          example: Does not participate in Fast Funds
+          enum:
+            - Unknown
+            - DomesticCrossBorder
+            - CrossBorder
+            - Domestic
+            - AcceptFastFundDomMoneyTransf
+            - RejectFastFundDomMoneyTransf
+            - AcceptFastFundCBMoneyTransf
+            - RejectFastFundCBMoneyTransf
+            - AcceptFastFundDomNonMoneyTransf
+            - RejectFastFundDomNonMoneyTransf
+            - AcceptFastFundCBNonMoneyTransf
+            - RejectFastFundCBNonMoneyTransf
+            - AcceptFastFundDomGambling
+            - RejectFastFundDomGambling
+            - AcceptFastFundCBGambling
+            - RejectFastFundCBGambling
+        fastFundsCBGamblingIndKey:
+          type: string
+          description: Indicates if fast funds is supported for cross-border gambling OCTs (Visa). (Code)
+          example: '0'
+        fastFundsCBMoneyTransfInd:
+          type: string
+          description: Indicates if fast funds is supported for cross-border money transfer OCTs (Visa).
+          example: Does not participate in Fast Funds
+          enum:
+            - Unknown
+            - DomesticCrossBorder
+            - CrossBorder
+            - Domestic
+            - AcceptFastFundDomMoneyTransf
+            - RejectFastFundDomMoneyTransf
+            - AcceptFastFundCBMoneyTransf
+            - RejectFastFundCBMoneyTransf
+            - AcceptFastFundDomNonMoneyTransf
+            - RejectFastFundDomNonMoneyTransf
+            - AcceptFastFundCBNonMoneyTransf
+            - RejectFastFundCBNonMoneyTransf
+            - AcceptFastFundDomGambling
+            - RejectFastFundDomGambling
+            - AcceptFastFundCBGambling
+            - RejectFastFundCBGambling
+        fastFundsCBMoneyTransfIndKey:
+          type: string
+          description: Indicates if fast funds is supported for cross-border money transfer OCTs (Visa). (Code)
+          example: '0'
+        fastFundsCBNonMoneyTransfInd:
+          type: string
+          description: Indicates if fast funds is supported for cross-border non-money transfer OCTs (Visa).
+          example: Does not participate in Fast Funds
+          enum:
+            - Unknown
+            - DomesticCrossBorder
+            - CrossBorder
+            - Domestic
+            - AcceptFastFundDomMoneyTransf
+            - RejectFastFundDomMoneyTransf
+            - AcceptFastFundCBMoneyTransf
+            - RejectFastFundCBMoneyTransf
+            - AcceptFastFundDomNonMoneyTransf
+            - RejectFastFundDomNonMoneyTransf
+            - AcceptFastFundCBNonMoneyTransf
+            - RejectFastFundCBNonMoneyTransf
+            - AcceptFastFundDomGambling
+            - RejectFastFundDomGambling
+            - AcceptFastFundCBGambling
+            - RejectFastFundCBGambling
+        fastFundsCBNonMoneyTransfIndKey:
+          type: string
+          description: Indicates if fast funds is supported for cross-border non-money transfer OCTs (Visa). (Code)
+          example: '0'
+        fastFundsDomGamblingInd:
+          type: string
+          description: Indicates if fast funds is supported for domestic gambling OCTs (Visa).
+          example: Does not participate in Fast Funds
+          enum:
+            - Unknown
+            - DomesticCrossBorder
+            - CrossBorder
+            - Domestic
+            - AcceptFastFundDomMoneyTransf
+            - RejectFastFundDomMoneyTransf
+            - AcceptFastFundCBMoneyTransf
+            - RejectFastFundCBMoneyTransf
+            - AcceptFastFundDomNonMoneyTransf
+            - RejectFastFundDomNonMoneyTransf
+            - AcceptFastFundCBNonMoneyTransf
+            - RejectFastFundCBNonMoneyTransf
+            - AcceptFastFundDomGambling
+            - RejectFastFundDomGambling
+            - AcceptFastFundCBGambling
+            - RejectFastFundCBGambling
+        fastFundsDomGamblingIndKey:
+          type: string
+          description: Indicates if fast funds is supported for domestic gambling OCTs (Visa). (Code)
+          example: '0'
+        fastFundsDomMoneyTransfInd:
+          type: string
+          description: Indicates if fast funds is supported for domestic money transfer OCTs (Visa).
+          example: Does not participate in Fast Funds
+          enum:
+            - Unknown
+            - DomesticCrossBorder
+            - CrossBorder
+            - Domestic
+            - AcceptFastFundDomMoneyTransf
+            - RejectFastFundDomMoneyTransf
+            - AcceptFastFundCBMoneyTransf
+            - RejectFastFundCBMoneyTransf
+            - AcceptFastFundDomNonMoneyTransf
+            - RejectFastFundDomNonMoneyTransf
+            - AcceptFastFundCBNonMoneyTransf
+            - RejectFastFundCBNonMoneyTransf
+            - AcceptFastFundDomGambling
+            - RejectFastFundDomGambling
+            - AcceptFastFundCBGambling
+            - RejectFastFundCBGambling
+        fastFundsDomMoneyTransfIndKey:
+          type: string
+          description: Indicates if fast funds is supported for domestic money transfer OCTs (Visa). (Code)
+          example: '0'
+        fastFundsDomNonMoneyTransfInd:
+          type: string
+          description: Indicates if fast funds is supported for domestic non-money transfer OCTs (Visa).
+          example: Does not participate in Fast Funds
+          enum:
+            - Unknown
+            - DomesticCrossBorder
+            - CrossBorder
+            - Domestic
+            - AcceptFastFundDomMoneyTransf
+            - RejectFastFundDomMoneyTransf
+            - AcceptFastFundCBMoneyTransf
+            - RejectFastFundCBMoneyTransf
+            - AcceptFastFundDomNonMoneyTransf
+            - RejectFastFundDomNonMoneyTransf
+            - AcceptFastFundCBNonMoneyTransf
+            - RejectFastFundCBNonMoneyTransf
+            - AcceptFastFundDomGambling
+            - RejectFastFundDomGambling
+            - AcceptFastFundCBGambling
+            - RejectFastFundCBGambling
+        fastFundsDomNonMoneyTransfIndKey:
+          type: string
+          description: Indicates if fast funds is supported for domestic non-money transfer OCTs (Visa). (Code)
+          example: '0'
         fastFundsKey:
           type: string
           description: Determines if the Visa/MasterCard account can receive the transfer of funds within 30 minutes. (Code)
@@ -11295,11 +11509,107 @@ components:
           type: string
           description: Determines if the Visa account is eligible to receive an original credit money transfer. (Code)
           example: '0'
+        moneytransfoctcbind:
+          type: string
+          description: Indicates if cross-border money transfer OCTs are supported (Visa).
+          example: Accepts cross-border transfer OCTs
+          enum:
+            - Unknown
+            - AcceptOCTxn
+            - RejectOCTxn
+            - AcceptNonMoneyTransfOCTDom
+            - RejectNonMoneyTransfOCTDom
+            - AcceptNonMoneyTransfOCTCB
+            - RejectNonMoneyTransfOCTCB
+            - AcceptOnlineGamblingOCTDom
+            - RejectOnlineGamblingOCTDom
+            - AcceptOnlineGamblingOCTCB
+            - RejectOnlineGamblingOCTCB
+            - AcceptMoneyTransfOCTDom
+            - RejectMoneyTransfOCTDom
+            - AcceptMoneyTransfOCTCB
+            - RejectMoneyTransfOCTCB
+        moneytransfoctcbindKey:
+          type: string
+          description: Indicates if cross-border money transfer OCTs are supported (Visa). (Code)
+          example: '13'
+        moneytransfoctdomind:
+          type: string
+          description: Indicates if domestic money transfer OCTs are supported (Visa).
+          example: Accepts domestic money transfer OCTs
+          enum:
+            - Unknown
+            - AcceptOCTxn
+            - RejectOCTxn
+            - AcceptNonMoneyTransfOCTDom
+            - RejectNonMoneyTransfOCTDom
+            - AcceptNonMoneyTransfOCTCB
+            - RejectNonMoneyTransfOCTCB
+            - AcceptOnlineGamblingOCTDom
+            - RejectOnlineGamblingOCTDom
+            - AcceptOnlineGamblingOCTCB
+            - RejectOnlineGamblingOCTCB
+            - AcceptMoneyTransfOCTDom
+            - RejectMoneyTransfOCTDom
+            - AcceptMoneyTransfOCTCB
+            - RejectMoneyTransfOCTCB
+        moneytransfoctdomindKey:
+          type: string
+          description: Indicates if domestic money transfer OCTs are supported (Visa). (Code)
+          example: '11'
         month:
           type: integer
           description: The month this record was last updated.
           format: int32
           example: 10
+        nonmoneytransfoctcbind:
+          type: string
+          description: Indicates if cross-border non-money transfer OCTs are supported (Visa).
+          example: ' Accepts cross-border non-money transfer OCTs'
+          enum:
+            - Unknown
+            - AcceptOCTxn
+            - RejectOCTxn
+            - AcceptNonMoneyTransfOCTDom
+            - RejectNonMoneyTransfOCTDom
+            - AcceptNonMoneyTransfOCTCB
+            - RejectNonMoneyTransfOCTCB
+            - AcceptOnlineGamblingOCTDom
+            - RejectOnlineGamblingOCTDom
+            - AcceptOnlineGamblingOCTCB
+            - RejectOnlineGamblingOCTCB
+            - AcceptMoneyTransfOCTDom
+            - RejectMoneyTransfOCTDom
+            - AcceptMoneyTransfOCTCB
+            - RejectMoneyTransfOCTCB
+        nonmoneytransfoctcbindKey:
+          type: string
+          description: Indicates if cross-border non-money transfer OCTs are supported (Visa). (Code)
+          example: '5'
+        nonmoneytransfoctdomind:
+          type: string
+          description: Indicates if domestic non-money transfer OCTs are supported (Visa).
+          example: Accepts Domestic non-money transfer OCTs
+          enum:
+            - Unknown
+            - AcceptOCTxn
+            - RejectOCTxn
+            - AcceptNonMoneyTransfOCTDom
+            - RejectNonMoneyTransfOCTDom
+            - AcceptNonMoneyTransfOCTCB
+            - RejectNonMoneyTransfOCTCB
+            - AcceptOnlineGamblingOCTDom
+            - RejectOnlineGamblingOCTDom
+            - AcceptOnlineGamblingOCTCB
+            - RejectOnlineGamblingOCTCB
+            - AcceptMoneyTransfOCTDom
+            - RejectMoneyTransfOCTDom
+            - AcceptMoneyTransfOCTCB
+            - RejectMoneyTransfOCTCB
+        nonmoneytransfoctdomindKey:
+          type: string
+          description: Indicates if domestic non-money transfer OCTs are supported (Visa). (Code)
+          example: '3'
         nyce:
           type: string
           description: Identifies the routing eligibility to NYCE network.
@@ -11372,6 +11682,54 @@ components:
           type: string
           description: Determines if the Visa account can receive a gambling or lottery payout Original Credit Transaction (OCT). (Code)
           example: '0'
+        onlinegamblingoctcbind:
+          type: string
+          description: Indicates if cross-border online gambling OCTs are supported (Visa).
+          example: Accepts cross-border online gambling OCTs
+          enum:
+            - Unknown
+            - AcceptOCTxn
+            - RejectOCTxn
+            - AcceptNonMoneyTransfOCTDom
+            - RejectNonMoneyTransfOCTDom
+            - AcceptNonMoneyTransfOCTCB
+            - RejectNonMoneyTransfOCTCB
+            - AcceptOnlineGamblingOCTDom
+            - RejectOnlineGamblingOCTDom
+            - AcceptOnlineGamblingOCTCB
+            - RejectOnlineGamblingOCTCB
+            - AcceptMoneyTransfOCTDom
+            - RejectMoneyTransfOCTDom
+            - AcceptMoneyTransfOCTCB
+            - RejectMoneyTransfOCTCB
+        onlinegamblingoctcbindKey:
+          type: string
+          description: Indicates if cross-border online gambling OCTs are supported (Visa). (Code)
+          example: '9'
+        onlinegamblingoctdomind:
+          type: string
+          description: Indicates if domestic online gambling OCTs are supported (Visa).
+          example: Accepts domestic online gambling OCTs
+          enum:
+            - Unknown
+            - AcceptOCTxn
+            - RejectOCTxn
+            - AcceptNonMoneyTransfOCTDom
+            - RejectNonMoneyTransfOCTDom
+            - AcceptNonMoneyTransfOCTCB
+            - RejectNonMoneyTransfOCTCB
+            - AcceptOnlineGamblingOCTDom
+            - RejectOnlineGamblingOCTDom
+            - AcceptOnlineGamblingOCTCB
+            - RejectOnlineGamblingOCTCB
+            - AcceptMoneyTransfOCTDom
+            - RejectMoneyTransfOCTDom
+            - AcceptMoneyTransfOCTCB
+            - RejectMoneyTransfOCTCB
+        onlinegamblingoctdomindKey:
+          type: string
+          description: Indicates if domestic online gambling OCTs are supported (Visa). (Code)
+          example: '7'
         originalCredit:
           type: string
           description: Determines if the Visa account is eligible to receive an Original Credit Transaction (OCT).
@@ -17066,6 +17424,106 @@ components:
           type: string
           description: The routing number used for the payment transaction.
           example: '123456789'
+        senderAddressId:
+          type: string
+          description: System generated unique sender address id.
+          example: 8a7f90188f94cb9c018fbe0910a40624
+        senderBirthCountry:
+          type: string
+          description: Sender Birth Country.
+          example: USA
+        senderCreatedDate:
+          type: string
+          description: Sender created date.
+          format: date-time
+        senderDOB:
+          type: string
+          description: Sender date of birth.
+          example: 02/24/1994
+        senderEmail:
+          type: string
+          description: Sender email address.
+          example: johnsmith@companyname.com
+        senderEmailType:
+          type: string
+          description: Sender email address type work/personal.
+          example: Work
+        senderExtension:
+          type: string
+          description: Sender phone number extension.
+          example: '1234'
+        senderFName:
+          type: string
+          description: Sender first name.
+          example: JXXXXXXXE
+        senderId:
+          type: string
+          description: System generated unique sender id
+          example: 8a7fc1338fddedcc018fddf4c8850003
+        senderLName:
+          type: string
+          description: Sender last name.
+          example: SXXXXXXXH
+        senderNationality:
+          type: string
+          description: Sender nationality.
+          example: USA
+        senderOccupation:
+          type: string
+          description: Sender Occupation.
+          example: Software Engineer
+        senderPhone:
+          type: string
+          description: Sender phone number.
+          example: '123456789123'
+        senderSourceAccountId:
+          type: string
+          description: Sender source account id.
+          example: 8a7f90188f94cb9c018fbe0910a40624
+        senderSourceAccountType:
+          type: string
+          description: Sender source account type bank_account/card.
+          example: 400552EDVKFH0123
+        senderTransactionId:
+          type: string
+          description: System generated unique sender transaction id.
+          example: TIDCARD_01323464673829290200101
+        senderTxnType:
+          type: string
+          description: Sender transaction purpose type.
+          example: GIFTS
+          enum:
+            - Unknown
+            - FAMILY_SUPPORT
+            - REGULAR_LABOR_TRANSFERS
+            - TRAVEL_AND_TOURISM
+            - EDUCATION
+            - HOSPITAL_AND_MEDICAL_EXPENSES
+            - EMERGENCY_NEED
+            - SAVINGS
+            - GIFTS
+            - OTHER
+            - SALARY
+            - CROWD_LENDING
+            - CRYPTO_CURRENCY
+            - REFUND_ORIGINAL_CARD
+            - REFUND_NEW_CARD
+        senderTxnTypeKey:
+          type: string
+          description: Sender transaction purpose type. (Code)
+          example: '8'
+        senderUpdatedDate:
+          type: string
+          description: Sender info updated date.
+          format: date-time
+        sendercardBrand:
+          type: string
+          description: Sender card Network name that processed the visa/mastercard transaction.
+          example: VISA
+        sendercardType:
+          type: string
+          description: Sender card type that processed the debit/credit transaction.
+          example: CREDIT
         settlementDate:
           type: string
           description: Settlement date of the transaction.
@@ -17329,6 +17787,27 @@ components:
               - RetrievalReferenceID
               - ReturnCode
               - RoutingNumber
+              - SenderAddressId
+              - SenderBirthCountry
+              - SenderCreatedDate
+              - SenderDOB
+              - SenderEmail
+              - SenderEmailType
+              - SenderExtension
+              - SenderFName
+              - SenderId
+              - SenderLName
+              - SenderNationality
+              - SenderOccupation
+              - SenderPhone
+              - SenderSourceAccountId
+              - SenderSourceAccountType
+              - SenderTransactionId
+              - SenderTxnType
+              - SenderTxnTypeKey
+              - SenderUpdatedDate
+              - SendercardBrand
+              - SendercardType
               - SettlementDate
               - SettlementStatus
               - SettlementStatusKey
@@ -17756,6 +18235,18 @@ components:
           type: string
           description: 'Last 4 of the card #, Full match'
           example: '0000'
+        fromTime:
+          maxLength: 4
+          minLength: 4
+          type: string
+          description: Any transactions matching matching after specified Time
+          example: '0000'
+        toTime:
+          maxLength: 4
+          minLength: 4
+          type: string
+          description: Any transactions matching matching before specified Time
+          example: '2300'
       description: Various filter options for authorizations queries
     CommerceHubV2SummaryRequest:
       required:
@@ -18256,11 +18747,19 @@ components:
         processor:
           type: string
           description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.processor. Description: Card processor.'
-          example: fiserv
+          example: ''
         processorHost:
           type: string
           description: 'Commerce Hub Data Model Name: Response.paymentReceipt.processorResponseDetails.host. Description: Processor (e.g. Nashville, Chase Tampa, Chase Salem).'
-          example: Nashville
+          example: ''
+        processorHostKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.paymentReceipt.processorResponseDetails.host. Description: Processor (e.g. Nashville, Chase Tampa, Chase Salem). (Code)'
+          example: ''
+        processorKey:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ProcessorResponseDetails.processor. Description: Card processor. (Code)'
+          example: ''
         processorMerchantId:
           type: string
           description: 'Commerce Hub Data Model Name: Request.MerchantDetails.processorMerchantId. Description: The processor''s merchant ID or number used to identify the unique site and merchant in petro industry.'
@@ -18392,7 +18891,7 @@ components:
           example: '0001'
         threeDSVersion:
           type: string
-          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.versionData3DS.recommendedVersion. Description: Specific Protocol version supported by 3DS.'
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.versionData.recommendedVersion. Description: Specific Protocol version supported by 3DS.'
           example: 'N'
         tokenAssuranceMethod:
           type: string
@@ -18717,6 +19216,8 @@ components:
               - ProcessingCode
               - Processor
               - ProcessorHost
+              - ProcessorHostKey
+              - ProcessorKey
               - ProcessorMerchantId
               - ProcessorTerminalId
               - ReauthorizationInitiator
@@ -20725,11 +21226,11 @@ components:
         message:
           type: string
           description: Alert Message Description.
-          example: ''
+          example: Submission under review
         messageKey:
           type: string
           description: Alert Message Description. (Code)
-          example: ''
+          example: '1'
         mobileIndicator:
           type: string
           description: Mobile indicator.
@@ -21910,6 +22411,18 @@ components:
           type: string
           description: 'Last 4 of the card #, Full match'
           example: '0000'
+        fromTime:
+          maxLength: 4
+          minLength: 4
+          type: string
+          description: Any transactions matching matching after specified Time
+          example: '0000'
+        toTime:
+          maxLength: 4
+          minLength: 4
+          type: string
+          description: Any transactions matching matching before specified Time
+          example: '2300'
       description: Various filter options for authorizations queries
     AuthorizationSummaryRequest:
       required:
@@ -22046,6 +22559,8 @@ components:
               - AuthCode
               - AuthResponseCode
               - AuthorizationTraceNumber
+              - Bai
+              - BaiKey
               - BankFiid
               - BanknetRef
               - BinID
@@ -23773,6 +24288,73 @@ components:
           type: string
           description: Identifies the authorization’s trace number.
           example: 98765ABCD
+        bai:
+          type: string
+          description: Business Application Identifier
+          example: General Person to Person Transfer
+          enum:
+            - Unknown
+            - GeneralPersontoPersonTransfer
+            - PersonToPersonTransferToCardAccount
+            - TransferToOwnDebitOrPrepaidCardAccount
+            - GeneralTransferToOwnAccount
+            - TransferToOwnStagedDigitalWalletAccount
+            - TransferToOwnCreditAccount
+            - BusinessDisbursement
+            - GeneralBusinessToBusinessTransfer
+            - GovernmentNonProfitDisbursement
+            - RapidMerchantSettlement
+            - AgentCashOut
+            - AccountToAccount
+            - AFTorOCTEligibility
+            - BusinessToBusiness
+            - MoneyTransferBankInitiated
+            - NonCardBillPayment
+            - ConsumerBillPayment
+            - CashDeposit
+            - CashIn
+            - CashOut
+            - CardBillPayment
+            - FundsDisbursement
+            - FundsTransfer
+            - GovernmentDisbursement
+            - GamblingPayout
+            - LoyaltyAndOffers
+            - MerchantDisbursement
+            - MoneyTransferMerchantInitiated
+            - MerchantPayment
+            - OnlineGamblingPayout
+            - PayrollPensionDisbursement
+            - PaymentToGovernment
+            - PersonToPerson
+            - PaymentForGoodsAndServices
+            - RequestToPay
+            - TopUpForEnhancedPrepaidLoads
+            - WalletTransfer
+            - MasterCardRebate
+            - RePowerLoadValue
+            - GamingRePay
+            - MasterCardSendIndicator
+            - CashInAtATM
+            - CashInAtPointOfSale
+            - MerchantPresentedQR
+            - MerchantPresentedQRRefund
+            - UtilityPayments
+            - GovernmentServices
+            - MobilePhoneTopUps
+            - CouponBookletPayments
+            - MasterCardATMCashPickupTransaction
+            - PurchaseRePayment
+            - Cryptocurrency
+            - HighRiskSecurities
+            - CharityDeposit
+            - LoanDisbursement
+            - LoanRepayment
+            - WithdrawalRevoke
+        baiKey:
+          type: string
+          description: Business Application Identifier (Code)
+          example: '1'
         bankFiid:
           type: string
           description: Identifies the bank FIID for a financial institution or customer.
@@ -31323,13 +31905,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -31567,13 +32149,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
