@@ -7,28 +7,30 @@ servers:
   - url: http://localhost:5005
     description: Generated server url
 tags:
-  - name: Funding
-    description: Funding details and summaries
+  - name: Disputes
+    description: Dispute details
   - name: Chargebacks
     description: Chargebacks details and summaries
-  - name: Settlement
-    description: Settlement details and summaries
-  - name: Retrievals
-    description: Search retrieval transaction details
   - name: Disbursements
     description: Disbursements details and summaries
   - name: Prepaid
     description: Prepaid Transaction & Account details and summaries.
   - name: StatementRetrieval
     description: User StatementSummary and Documents
-  - name: Reference
-    description: Reference Information & details
-  - name: CommerceHub
-    description: CommerceHub search and summary details
   - name: PayFacAdjustments
     description: PayFacAdjustments details and summaries
   - name: User Management
     description: Analyze Users Management
+  - name: Funding
+    description: Funding details and summaries
+  - name: Settlement
+    description: Settlement details and summaries
+  - name: Retrievals
+    description: Search retrieval transaction details
+  - name: Reference
+    description: Reference Information & details
+  - name: CommerceHub
+    description: CommerceHub search and summary details
   - name: Authorizations
     description: Authorizations details and summaries
 paths:
@@ -2273,6 +2275,747 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
       x-group-name: Funding
+  /v1/dispute/undo/action/{mid}/{processor}:
+    post:
+      tags:
+        - Disputes
+      summary: Undo Action
+      description: Undo Action On A Case
+      operationId: undoAction
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: mid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: processor
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UndoActionRequest'
+            examples:
+              ' Inquiry Action Example for different Mid':
+                description: ' Inquiry Action Example for different Mid'
+                value: |-
+                  {
+                    "actnID": "312",
+                    "disputeID": "666960965001",
+                    "disputeType": "CB",
+                  }
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionResponse'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Statement Keys
+      x-group-name: StatementRetrieval
+  /v1/dispute/search:
+    post:
+      tags:
+        - Disputes
+      summary: Search
+      description: Provides a list of Dispute  transactions and their attributes based on optional filter criteria.
+      operationId: search_4
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeAuditSearchRequest'
+            examples:
+              Default Search:
+                description: Default Search
+                value:
+                  fromDate: '20240501'
+                  toDate: '20240505'
+              List Dispute Audit search with specific fields:
+                description: List Dispute Audit search with specific fields
+                value:
+                  fromDate: '20240501'
+                  toDate: '20240505'
+                  limit: 3
+                  fields:
+                    - DisputeID
+                    - DisputeAmount
+                    - ActionDate
+                    - ResponseText
+                    - Status
+              List Payment Facilitator Adjustments with specific Filters:
+                description: List Payment Facilitator Adjustments with specific Filters
+                value:
+                  fromDate: '20240501'
+                  toDate: '20240505'
+                  limit: 3
+                  fields:
+                    - DisputeID
+                    - DisputeAmount
+                    - ActionDate
+                    - ResponseText
+                    - Status
+                  filters:
+                    DisputeType: CB
+                    DisputeID: '667246387024'
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DisputesAuditObj'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Search
+      x-group-name: DisputeAudit
+  /v1/dispute/inquiry/action/{mid}/{processor}:
+    post:
+      tags:
+        - Disputes
+      summary: Inquiry Action
+      description: Inquiry Action On A Case
+      operationId: inquiryAction
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: mid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: processor
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionRTRequest'
+            examples:
+              ' Inquiry Action Example for different Mid':
+                description: ' Inquiry Action Example for different Mid'
+                value:
+                  ackType: ''
+                  actionId: '303'
+                  actionType: 1RRS
+                  creditAmount: ''
+                  creditArn: ''
+                  creditDate: ''
+                  disputeID: '667246410016'
+                  disputeType: RT
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  notesText: Test Notes
+                  offerAmount: ''
+                  otherCompany: ''
+                  pendExpirationDate: ''
+                  productCode: '00002'
+                  refundId: ''
+                  shippingDeliveryAddress:
+                    address1: ''
+                    address2: ''
+                    address3: ''
+                    cityTownVillage: ''
+                    countryCode: ''
+                    stateProvincePrefecture: ''
+                    zipPostalCode: ''
+                  shippingProvider: ''
+                  subProductCode: ''
+                  sysCode: SYSP
+                  trackingNumber: ''
+                  trackingUrl: ''
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionResponse'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Statement Keys
+      x-group-name: StatementRetrieval
+  /v1/dispute/chargeback/action/{mid}/{processor}:
+    post:
+      tags:
+        - Disputes
+      summary: ChargeBack Action
+      description: Apply Actions On ChargeBack Case
+      operationId: chargebackAction
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: mid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: processor
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionCBRequest'
+            examples:
+              ' ChargeBack Action Example':
+                description: ' ChargeBack Action Example'
+                value: |-
+                  {
+                    "actionId": "302",
+                    "actionType": "1ACB",
+                    "arnCe04": "",
+                    "arnCe09": "",
+                    "arnCe13": "",
+                    "autoFileFlag": "",
+                    "avsSelection": "",
+                    "compellingSelection": "",
+                    "compellingSelections": [
+                      {
+                        "compellingTypeCode": ""
+                      }
+                    ],
+                    "creditAmount": "",
+                    "creditArn": "",
+                    "creditDate": "",
+                    "customerLoginIdCe09": "",
+                    "deviceFingerprintCe09": "",
+                    "deviceIdCe04": "",
+                    "deviceIdCe09": "",
+                    "deviceNameCe04": "",
+                    "digitalGoodsSelections": "",
+                    "disputeID": "441340058701",
+                    "disputeType": "CB",
+                    "disputedTranDetail": {
+                      "customerLoginId": "",
+                      "deliveryAddress": {
+                        "address1": "",
+                        "address2": "",
+                        "cityTownVillage": "",
+                        "countryCode": "",
+                        "stateProvincePrefecture": "",
+                        "zipPostalCode": ""
+                      },
+                      "deliveryStatus": "",
+                      "deviceFingerprint": "",
+                      "deviceId": "",
+                      "deviceType": "",
+                      "ipAddress": "",
+                      "merchandiseServicesDesc": "",
+                      "merchandiseServicesInd": "",
+                      "providedDate": "",
+                      "trackingInfo": ""
+                    },
+                    "downloadDateCe04": "",
+                    "downloadTimeCe04": "",
+                    "emailAddressCe09": "",
+                    "geographicalLocationCe04": "",
+                    "images": {
+                      "documents": [
+                        {
+                          "document": "",
+                          "documentName": ""
+                        }
+                      ]
+                    },
+                    "ipAddressCe09": "",
+                    "nonCompRebuttal": [
+                      {
+                        "rebuttalTypeCode": ""
+                      }
+                    ],
+                    "notesText": "",
+                    "otherCompany": "",
+                    "pendExpirationDate": "",
+                    "phoneNumberCe09": "",
+                    "physicalAddressCe09": "",
+                    "productCode": "00002",
+                    "purchaserEmailCe04": "",
+                    "purchaserIpAddressCe04": "",
+                    "purchaserNameCe04": "",
+                    "refundId": "",
+                    "remedySelection": "",
+                    "responseDocTypeOtherDesc": "",
+                    "shippingDeliveryAddress": {
+                      "address1": "",
+                      "address2": "",
+                      "address3": "",
+                      "cityTownVillage": "",
+                      "countryCode": "",
+                      "stateProvincePrefecture": "",
+                      "zipPostalCode": ""
+                    },
+                    "shippingProvider": "",
+                    "subProductCode": "",
+                    "sysCode": "SYSP",
+                    "trackingNumber": "",
+                    "trackingUrl": "",
+                    "tranDateCe04": "",
+                    "tranDateCe09": "",
+                    "tranDateCe13": "",
+                    "undisputedTranDetails": [
+                      {
+                        "arn": "",
+                        "customerLoginId": "",
+                        "deliveryAddress": {
+                          "address1": "",
+                          "address2": "",
+                          "cityTownVillage": "",
+                          "countryCode": "",
+                          "stateProvincePrefecture": "",
+                          "zipPostalCode": ""
+                        },
+                        "deviceFingerprint": "",
+                        "deviceId": "",
+                        "deviceType": "",
+                        "ipAddress": "",
+                        "merchandiseServicesDesc": "",
+                        "rolTranId": "",
+                        "tranAmount": "",
+                        "tranDate": "",
+                        "tranId": ""
+                      }
+                    ],
+                  }
+        required: true
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionResponse'
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Statement Keys
+      x-group-name: StatementRetrieval
+  /v1/dispute/bulk/action/{mid}/{processor}:
+    post:
+      tags:
+        - Disputes
+      summary: Bulk Action
+      description: Undo Action On A Case
+      operationId: bulkAction
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: mid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: processor
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkActionRequest'
+            examples:
+              ' Bulk Action Example for different dispute id''s':
+                description: ' Bulk Action Example for different dispute id''s'
+                value: |-
+                  {
+                    "actionID": "302",
+                    "caseData": [
+                      {
+                        "detailId": "666965602001"
+                      },
+                      {
+                        "detailId": "666965611001"
+                      },
+                      {
+                        "detailId": "666966778001"
+                      }
+                    ],
+                    "disputeType": "CB",
+                  }
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '503':
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '504':
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: Statement Keys
+      x-group-name: StatementRetrieval
   /v1/disbursement/summary:
     post:
       tags:
@@ -2417,7 +3160,7 @@ paths:
         - Disbursements
       summary: Search
       description: Provides a list of disbursements payments and their attributes based on optional filter criteria.
-      operationId: search_4
+      operationId: search_5
       parameters:
         - name: Api-key
           in: header
@@ -2668,7 +3411,7 @@ paths:
         - CommerceHub
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_5
+      operationId: search_6
       parameters:
         - name: Api-key
           in: header
@@ -2912,7 +3655,7 @@ paths:
         - Chargebacks
       summary: Search
       description: Provides a list of chargebacks and their attributes based on optional filter criteria.
-      operationId: search_6
+      operationId: search_7
       parameters:
         - name: Api-key
           in: header
@@ -3162,7 +3905,7 @@ paths:
         - Authorizations
       summary: Search
       description: Provides a list of authorization transactions (pre-settle) and their attributes based on optional filter criteria.
-      operationId: search_7
+      operationId: search_8
       parameters:
         - name: Api-key
           in: header
@@ -3789,6 +4532,599 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Lookup Bin
       x-group-name: Reference
+  /v1/dispute/{disputeType}/{disputeID}/document:
+    get:
+      tags:
+        - Disputes
+      summary: Retrieve Dispute Document
+      description: Fetches dispute case documents
+      operationId: retrieveDocument
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: disputeType
+          in: path
+          description: Dispute Type associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: CB
+        - name: disputeID
+          in: path
+          description: Dispute ID associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: 667192916001
+        - name: docLocId
+          in: query
+          description: Document name associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: sample.TIFF
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: User Audit
+      x-group-name: User Management
+  /v1/dispute/notes/{mid}/{processor}/{disputeType}/{disputeID}:
+    get:
+      tags:
+        - Disputes
+      summary: User Notes List
+      description: Fetches user notes
+      operationId: retrieveNotesList
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: disputeType
+          in: path
+          description: Dispute Type associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: CB
+        - name: disputeID
+          in: path
+          description: Dispute ID associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: 667192916001
+        - name: mid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: processor
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotesListResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: User Audit
+      x-group-name: User Management
+  /v1/dispute/notes/detail/{mid}/{processor}/{disputeType}/{disputeID}/{detailID}:
+    get:
+      tags:
+        - Disputes
+      summary: User Notes Details
+      description: Fetches user notes details
+      operationId: retrieveNoteDetails
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: disputeType
+          in: path
+          description: Dispute Type associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: CB
+        - name: disputeID
+          in: path
+          description: Dispute ID associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: 667192916001
+        - name: detailID
+          in: path
+          description: DetailsID Type associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: 123456
+        - name: mid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: processor
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotesDetailsResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: User Audit
+      x-group-name: User Management
+  /v1/dispute/messages/{mid}/{processor}/{disputeType}/{disputeID}:
+    get:
+      tags:
+        - Disputes
+      summary: Get Messages
+      description: Fetches messages
+      operationId: getDisputeIdMessage
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: disputeType
+          in: path
+          description: Dispute Type associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: CB
+        - name: disputeID
+          in: path
+          description: Dispute ID associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: 667192916001
+        - name: mid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: processor
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisputeMessageListResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: User Audit
+      x-group-name: User Management
+  /v1/dispute/getDynamicContent/{clientID}:
+    get:
+      tags:
+        - Disputes
+      summary: Get Messages
+      description: Fetches messages
+      operationId: getDynamicContent
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: clientID
+          in: path
+          description: Client ID associated with the user
+          required: true
+          schema:
+            type: string
+            example: devstudio
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DCMBaseInfo'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: User Audit
+      x-group-name: User Management
+  /v1/dispute/details/{mid}/{processor}/{disputeType}/{disputeID}:
+    get:
+      tags:
+        - Disputes
+      summary: Get Case Details
+      description: Fetches dispute case details
+      operationId: getCaseDetails
+      parameters:
+        - name: Api-key
+          in: header
+          description: API Key provided to the merchant associating the requests with the appropriate app in the Developer Portal
+          required: true
+          schema:
+            type: string
+        - name: Content-Type
+          in: header
+          description: The content type. Valid value (application/json).
+          required: true
+          schema:
+            type: string
+        - name: Client-Request-Id
+          in: header
+          description: A client-generated ID for request tracking and signature creation, unique per request. This is also used for idempotency control. Recommended 128-bit UUID format.
+          required: true
+          schema:
+            type: string
+        - name: Timestamp
+          in: header
+          description: Epoch timestamp in milliseconds in the request from a client system. Used for authorization header generation and time limit (5 minutes).
+          required: true
+          schema:
+            type: string
+        - name: Auth-Token-Type
+          in: header
+          description: Indicates authorization type HMAC, JWT, or AccessToken.
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Authorization header used to ensure the request has not been tampered with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For more information, refer to the supporting documentation on the Developer Portal.
+          required: true
+          schema:
+            type: string
+        - name: disputeType
+          in: path
+          description: Dispute Type associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: CB
+        - name: disputeID
+          in: path
+          description: Dispute ID associated with the dispute Case
+          required: true
+          schema:
+            type: string
+            example: 667192916001
+        - name: mid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: processor
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisputeResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpringDefaultError'
+      x-proxy-name: User Audit
+      x-group-name: User Management
 components:
   schemas:
     ResetPasswordResult:
@@ -4890,7 +6226,6 @@ components:
               - NonAugPlanCodeDesc
               - NonAugmentPlanFlag
               - NonAugmentPlanFlagKey
-              - NonCompReason
               - OdometerReading
               - OrderNumber
               - OrigPlanCodeDesc
@@ -4905,8 +6240,6 @@ components:
               - PaymentMethodKey
               - PcTaxAmount
               - PcTerminalCapability
-              - Pe5239Rate
-              - Pe5239Status
               - PerTranDifference
               - Percent
               - PinlessFlag
@@ -7271,10 +8604,6 @@ components:
           type: string
           description: Non Augment Plan Flag (Code)
           example: ''
-        nonCompReason:
-          type: string
-          description: Indicates reason Why the transaction is non compliant
-          example: Surcharge not active on this merchant
         odometerReading:
           type: string
           description: Odometer reading.
@@ -7347,14 +8676,6 @@ components:
           type: string
           description: Code indicating if the card was present or not present.
           example: A99
-        pe5239Rate:
-          type: string
-          description: Indicates merchant surcharge rate
-          example: '2.4'
-        pe5239Status:
-          type: string
-          description: Indicates merchant surcharge program status
-          example: A
         perTranDifference:
           type: number
           description: Per Tran Difference
@@ -16597,6 +17918,562 @@ components:
           type: string
           description: Value date.
           format: date-time
+    Access:
+      type: object
+      properties:
+        accs:
+          type: string
+          enum:
+            - Unknown
+            - SuperUser
+            - RelationshipManager
+            - Marker
+            - SubMarker
+            - Business
+            - Bank
+            - CustomBank
+            - Agent
+            - CustomAgent
+            - AssociationGroup
+            - Association
+            - CustomCorporate
+            - Lead
+            - CustomChain
+            - CustomDestination
+            - Corporate
+            - Merchant
+            - Location
+            - Group
+        hid:
+          type: string
+        pltf:
+          type: string
+          enum:
+            - Buypass
+            - North
+            - Compass
+            - Unknown
+            - Omaha
+            - South
+            - Memphis
+            - Bams
+            - TeleCheck
+            - ValueLink
+            - OmniPay
+            - UK
+            - Chase
+            - Salem
+            - Tampa
+            - PaySecure
+            - DDP
+            - Base24
+            - Galaxy
+    UndoActionRequest:
+      type: object
+      properties:
+        clientID:
+          type: string
+        access:
+          $ref: '#/components/schemas/Access'
+        sysCode:
+          type: string
+        disputeID:
+          type: string
+        disputeType:
+          type: string
+        actnID:
+          type: string
+    ActionResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        responseBody:
+          $ref: '#/components/schemas/ResponseBody'
+    Error:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    Message:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code of the call.
+          example: '404'
+        description:
+          type: string
+          description: Error description of the call.
+          example: Not Found
+    ResponseBody:
+      type: object
+      properties:
+        responseStandardArea:
+          $ref: '#/components/schemas/ResponseStandardArea'
+        chargeback:
+          $ref: '#/components/schemas/Chargeback'
+        nonCompellingRebuttal:
+          type: array
+          items:
+            $ref: '#/components/schemas/NonCompellingRebuttal'
+        documentDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Documents'
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Actions'
+    ResponseStandardArea:
+      type: object
+      properties:
+        responseStatusCode:
+          type: string
+          description: Status code of the call.
+          example: '200'
+        responseMsgText:
+          type: string
+          description: Status description of the call.
+          example: Success
+    DisputeAuditSearchRequest:
+      required:
+        - fromDate
+        - limit
+        - toDate
+      type: object
+      properties:
+        fromDate:
+          type: string
+          description: yyyymmdd string denoting the start date for the query
+          example: '20210801'
+        toDate:
+          type: string
+          description: yyyymmdd string denoting the end date for the query
+          example: '20210807'
+        limit:
+          maximum: 1000000
+          minimum: 1
+          type: integer
+          description: The maximum number of records that will be returned
+          format: int32
+          example: 3
+          default: 10
+        fields:
+          type: array
+          description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+          items:
+            type: string
+            description: Specify specific fields to be pulled back instead of the entire set (default behavior)
+            enum:
+              - ActionDate
+              - ActionStatus
+              - ActionStatusKey
+              - ActionTime
+              - AuditIntReq
+              - AuditResp
+              - DisputeAmount
+              - DisputeID
+              - DisputeType
+              - DisputeTypeKey
+              - ReasonCode
+              - ResponseText
+              - SiteID
+              - Status
+              - UserID
+        filters:
+          $ref: '#/components/schemas/DisputeFilters'
+      description: Request object for Dispute audit search
+    DisputeFilters:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: Identifies the user id who work on a case.
+          example: CL.USERID123
+        disputeType:
+          type: array
+          description: Identifies the user id who work on a case.
+          example: CB
+          items:
+            type: string
+            description: Identifies the user id who work on a case.
+            example: CB
+            enum:
+              - CB
+              - RT
+        actionStatus:
+          type: array
+          description: Status ( i.e., success/failure) of request by corporate user while trying to modify a transaction.
+          example: Success
+          items:
+            type: string
+            description: Status ( i.e., success/failure) of request by corporate user while trying to modify a transaction.
+            example: Success
+            enum:
+              - Unknown
+              - Success
+              - Failure
+        disputeID:
+          type: string
+          description: Case number associated with a specific chargeback /Inquiry.
+          example: '20200610710502'
+      description: Various filter options for Diputes audit Report queries
+    DisputesAuditObj:
+      type: object
+      properties:
+        actionDate:
+          type: string
+          description: Date of the action taken on case.
+          format: date-time
+        actionStatus:
+          type: string
+          description: Status ( i.e., success/failure) of request by corporate user while trying to modify a transaction.
+          example: Success
+          enum:
+            - Unknown
+            - Success
+            - Failure
+        actionStatusKey:
+          type: string
+          description: Status ( i.e., success/failure) of request by corporate user while trying to modify a transaction. (Code)
+          example: '1'
+        disputeAmount:
+          type: number
+          description: Dispute amount that is disputed by cardholder.
+          format: double
+          example: 999.9999
+        disputeID:
+          type: string
+          description: Case number associated with a specific chargeback.
+          example: '20200610710502'
+        disputeType:
+          type: string
+          description: Dispute Type.
+          example: Chargeback
+          enum:
+            - CB
+            - RT
+        disputeTypeKey:
+          type: string
+          description: Dispute Type. (Code)
+          example: '0'
+        reasonCode:
+          type: string
+          description: Reason code associated with a specific chargeback.
+          example: '1040'
+        responseText:
+          type: string
+          description: API response detailed message of request by corporate user while trying to modify a transaction.
+          example: SUCCESS
+        siteID:
+          type: string
+          description: 'Site ID (BE) - merchant number associated with each the business location. '
+          example: '123456'
+        status:
+          type: string
+          description: Status of chargeback.
+          example: Challenged
+        userID:
+          type: string
+          description: Identifies the user id who work on a case.
+          example: CL.USERID123
+    ActionRTRequest:
+      type: object
+      properties:
+        clientID:
+          type: string
+        access:
+          $ref: '#/components/schemas/Access'
+        disputeID:
+          type: string
+        disputeType:
+          type: string
+        actionType:
+          type: string
+        actionId:
+          type: string
+        notesText:
+          type: string
+        productCode:
+          type: string
+        subProductCode:
+          type: string
+        sysCode:
+          type: string
+        offerAmount:
+          type: string
+        refundId:
+          type: string
+        shippingProvider:
+          type: string
+        otherCompany:
+          type: string
+        trackingUrl:
+          type: string
+        trackingNumber:
+          type: string
+        ackType:
+          type: string
+        creditDate:
+          type: string
+        creditAmount:
+          type: string
+        creditArn:
+          type: string
+        pendExpirationDate:
+          type: string
+        images:
+          $ref: '#/components/schemas/Images'
+        shippingDeliveryAddress:
+          $ref: '#/components/schemas/ShippingDeliveryAddress'
+    Document:
+      type: object
+      properties:
+        documentName:
+          type: string
+        document:
+          type: string
+    Images:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+    ShippingDeliveryAddress:
+      type: object
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        address3:
+          type: string
+        cityTownVillage:
+          type: string
+        stateProvincePrefecture:
+          type: string
+        zipPostalCode:
+          type: string
+        countryCode:
+          type: string
+    ActionCBRequest:
+      type: object
+      properties:
+        clientID:
+          type: string
+        access:
+          $ref: '#/components/schemas/Access'
+        disputeID:
+          type: string
+        disputeType:
+          type: string
+        actionType:
+          type: string
+        actionId:
+          type: string
+        notesText:
+          type: string
+        productCode:
+          type: string
+        subProductCode:
+          type: string
+        sysCode:
+          type: string
+        compellingSelection:
+          type: string
+        compellingSelections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompellingSelections'
+        avsSelection:
+          type: string
+        vbvSelection:
+          type: string
+        remedySelection:
+          type: string
+        nonCompRebuttal:
+          type: array
+          items:
+            $ref: '#/components/schemas/NonCompRebuttal'
+        digitalGoodsSelections:
+          type: string
+        responseDocTypeOtherDesc:
+          type: string
+        creditDate:
+          type: string
+        creditAmount:
+          type: string
+        creditArn:
+          type: string
+        downloadDateCe04:
+          type: string
+        downloadTimeCe04:
+          type: string
+        purchaserIpAddressCe04:
+          type: string
+        geographicalLocationCe04:
+          type: string
+        deviceIdCe04:
+          type: string
+        deviceNameCe04:
+          type: string
+        purchaserNameCe04:
+          type: string
+        purchaserEmailCe04:
+          type: string
+        arnCe04:
+          type: string
+        tranDateCe04:
+          type: string
+        arnCe09:
+          type: string
+        tranDateCe09:
+          type: string
+        ipAddressCe09:
+          type: string
+        emailAddressCe09:
+          type: string
+        physicalAddressCe09:
+          type: string
+        phoneNumberCe09:
+          type: string
+        deviceIdCe09:
+          type: string
+        deviceFingerprintCe09:
+          type: string
+        customerLoginIdCe09:
+          type: string
+        arnCe13:
+          type: string
+        tranDateCe13:
+          type: string
+        autoFileFlag:
+          type: string
+        refundId:
+          type: string
+        shippingProvider:
+          type: string
+        otherCompany:
+          type: string
+        trackingUrl:
+          type: string
+        trackingNumber:
+          type: string
+        pendExpirationDate:
+          type: string
+        disputedTranDetail:
+          $ref: '#/components/schemas/DisputedTranDetail'
+        undisputedTranDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/UndisputedTranDetail'
+        images:
+          $ref: '#/components/schemas/Images'
+        shippingDeliveryAddress:
+          $ref: '#/components/schemas/ShippingDeliveryAddress'
+    CompellingSelections:
+      type: object
+      properties:
+        compellingTypeCode:
+          type: string
+    DeliveryAddress:
+      type: object
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        cityTownVillage:
+          type: string
+        stateProvincePrefecture:
+          type: string
+        zipPostalCode:
+          type: string
+        countryCode:
+          type: string
+    DisputedTranDetail:
+      type: object
+      properties:
+        merchandiseServicesDesc:
+          type: string
+        deviceId:
+          type: string
+        deviceFingerprint:
+          type: string
+        deviceType:
+          type: string
+        ipAddress:
+          type: string
+        customerLoginId:
+          type: string
+        deliveryAddress:
+          $ref: '#/components/schemas/DeliveryAddress'
+        merchandiseServicesInd:
+          type: string
+        providedDate:
+          type: string
+        deliveryStatus:
+          type: string
+        trackingInfo:
+          type: string
+    NonCompRebuttal:
+      type: object
+      properties:
+        rebuttalTypeCode:
+          type: string
+    UndisputedTranDetail:
+      type: object
+      properties:
+        merchandiseServicesDesc:
+          type: string
+        deviceId:
+          type: string
+        deviceFingerprint:
+          type: string
+        deviceType:
+          type: string
+        ipAddress:
+          type: string
+        customerLoginId:
+          type: string
+        deliveryAddress:
+          $ref: '#/components/schemas/DeliveryAddress'
+        tranAmount:
+          type: string
+        tranDate:
+          type: string
+        tranId:
+          type: string
+        arn:
+          type: string
+        rolTranId:
+          type: string
+    BulkActionRequest:
+      type: object
+      properties:
+        clientID:
+          type: string
+        access:
+          $ref: '#/components/schemas/Access'
+        sysCode:
+          type: string
+        disputeType:
+          type: string
+        actionID:
+          type: string
+        caseData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseData'
+    CaseData:
+      type: object
+      properties:
+        disputeID:
+          type: string
     DisbursementSummaryRequest:
       required:
         - fromDate
@@ -31905,13 +33782,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -32149,13 +34026,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
@@ -32372,3 +34249,366 @@ components:
           description: Length of the bin.
           format: int32
           example: 8
+    NotesListResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        responseBody:
+          $ref: '#/components/schemas/ResponseBody'
+    NotesDetailsResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        responseBody:
+          $ref: '#/components/schemas/ResponseBody'
+    DisputeMessageListResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        responseBody:
+          $ref: '#/components/schemas/ResponseBody'
+    DCMBaseInfo:
+      type: object
+      properties:
+        contentID:
+          type: string
+        title:
+          type: string
+        icon:
+          type: string
+        htmlContent:
+          type: string
+        dynamicContentType:
+          type: string
+          enum:
+            - General
+            - Contact
+            - Documents
+    Actions:
+      type: object
+      properties:
+        actionId:
+          type: string
+          description: Identifies eligible "Action IDs" for the case. Used in "ActionCB" & "ActionRT" post call.
+          example: '301'
+        actionType:
+          type: string
+          description: Action Type code associated with Action ID. Used in "ActionCB" & "ActionRT" post call.
+          example: 1DCB
+        actionDesc:
+          type: string
+          description: Description for associated "Action ID"
+          example: Dispute/Reverse Chargeback
+    Chargeback:
+      type: object
+      properties:
+        statusDesc:
+          type: string
+          description: Displays the current status of the case.
+          example: Expired
+        disputeID:
+          type: string
+          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of CB or RT in other systems.
+          example: '111111111111'
+        reasonCode:
+          type: string
+          description: Code associated with reason code description assigned by card network.
+          example: '1040'
+        reasonCodeDesc:
+          type: string
+          description: Description associated with reason code assigned by card network.
+          example: Fraud (Card Not Present)
+        encryptedCardNumber:
+          type: string
+          description: Encrypted account number used for the associated disputed transaction.
+          example: '111111111111'
+        merchantName:
+          type: string
+          description: Name assigned to processing merchant.
+          example: The Hat Store
+        siteID:
+          type: string
+          description: Back-End merchant number identifier assigned to each processing merchant. Found in cbSearch endpoint.
+          example: '111111111111'
+        mcc:
+          type: string
+          description: Merchant Category Code identifying category assigned to merchant.
+          example: '1111'
+        mccDesc:
+          type: string
+          description: Description associated with the Merchant Category Code assigned to merchant.
+          example: Merchant Category (1111)
+        jurisdictionDesc:
+          type: string
+          description: Description of card type and region of the dispute.
+          example: '1111'
+        merchantDueDate:
+          type: string
+          description: Deadline the merchant has to respond to the case.
+          example: 01/01/2024
+        tranDate:
+          type: string
+          description: Original transaction date of disputed transaction.
+          example: 01/01/2024
+        cardProductTypeDesc:
+          type: string
+          description: Merchant network of the credit card utilized for the transaction.
+          example: Visa
+        disputeAmount:
+          type: string
+          description: Chargeback amount that is disputed by cardholder.
+          example: '1.11'
+        disputeCurrencyCode:
+          type: string
+          description: Currency code used for the transaction.
+          example: '111'
+        tranType:
+          type: string
+          description: Transaction type that identifies the transactions as a sale/refund etc..
+          example: '1'
+        tranAmount:
+          type: string
+          description: Transaction amount that is being disputed.
+          example: '1.11'
+        tranCurrencyCode:
+          type: string
+          description: Currency code used for the transaction.
+          example: '111'
+        foreignAmount:
+          type: string
+          description: The amount of the sale along with the respective currency indicator.
+        foreignCurrencyCode:
+          type: string
+          description: Currency code used for the transaction.
+          example: '111'
+        requestDate:
+          type: string
+          description: Date the dispute case request was generated to the merchant.
+          example: 01/01/2024
+        tranMethod:
+          type: string
+          description: Identifies the method of payment used on the transaction.
+          example: ECOM
+        tranMethodDesc:
+          type: string
+          description: Identifies the method of payment used on the transaction.
+          example: ECOM
+        arn:
+          type: string
+          description: 23-digit Outgoing Acquirer reference number (ARN) that is used by.
+          example: '111111111111'
+        tranLocator:
+          type: string
+          description: Merchant cross-reference number used by merchants to locate a transaction in their batch.
+          example: '111111111111'
+        microfilmNumber:
+          type: string
+          description: Identifies where a copy of the transaction can be located on microfilm.
+          example: '111111111111'
+        invoiceNumber:
+          type: string
+          description: Unique number assigned to the transaction by the merchant.
+          example: '111111111111'
+        airTicketNumber:
+          type: string
+          description: Number assigned to a passenger's ticket to help the merchant identify the sale/ticket record.
+          example: '111111111111'
+        orderNumber:
+          type: string
+          description: Merchant Order Number.
+          example: '111111111111'
+        trackingNumber:
+          type: string
+          description: Tracking number of the disputed transaction.
+          example: '111111111111'
+        customData:
+          type: string
+          description: Client discretionary field.
+          example: '111111111111'
+        networkTranId:
+          type: string
+        customerServiceContact:
+          type: string
+          description: Merchant Services Customer Service phone number or email.
+          example: 1-800-123-1000
+        productCode:
+          type: string
+          description: Merchant network of the credit card utilized for the transaction.
+          example: '00002'
+        subProductCode:
+          type: string
+          description: Identifies the specific debit network. Only populated if this is a product code 0018 debit network chargeback.
+          example: '035'
+        productCodeDesc:
+          type: string
+          description: Merchant network of the credit card utilized for the transaction.
+          example: VISA
+        lockInd:
+          type: string
+          description: Identifies if the case is in a locked status.
+          example: 'N'
+        autopostInd:
+          type: string
+          description: Indicates merchant is setup as Auto Post.
+          example: 'Y'
+        preDisputeInd:
+          type: string
+          description: Identifies the financial first chargeback case as the refund request adjustment.
+          example: 'N'
+        cb1ReasonCode:
+          type: string
+          description: Code associated with reason code description assigned by card network. Only populated for First Chargeback work type disputes.
+          example: '1040'
+        cb1ReasonCodeDesc:
+          type: string
+          description: Description associated with reason code assigned by card network. Only populated for First Chargeback work type disputes.
+          example: Fraud - Card Not Present
+        cb1IssuingBankMsg:
+          type: string
+          description: Text supplied by the issuer with the incoming first chargeback.
+          example: '111111111111111'
+        cb1ReceivedDate:
+          type: string
+          description: Date when Fiserv received the first chargeback case.
+          example: 01/01/2024
+        cb1MerchantDueDate:
+          type: string
+          description: Deadline the merchant has to respond to the case. Only populates for First Chargeback work type cases.
+          example: 01/01/2024
+        cb1DispDate:
+          type: string
+          description: Date funds debited from merchants DDA if a financial first chargeback case.
+          example: 01/01/2024
+        cb2ReasonCode:
+          type: string
+          description: Code associated with reason code description assigned by card network. Only populated for Exception work type disputes.
+          example: '1040'
+        cb2ReasonCodeDesc:
+          type: string
+          description: Description associated with reason code assigned by card network. Only populated for Exception work type disputes.
+          example: Fraud - Card Not Present
+        cb2IssuingBankMsg:
+          type: string
+          description: Text supplied by the issuer with the exception case.
+          example: '111111111111111'
+        cb2ReceivedDate:
+          type: string
+          description: Date when Fiserv received the exception case.
+          example: 01/01/2024
+        cb2MerchantDueDate:
+          type: string
+          description: Deadline the merchant has to respond to the case. Only populates for Exception work type cases.
+          example: 01/01/2024
+        cb2DispDate:
+          type: string
+          description: Date funds debited from merchants DDA if a financial exception case.
+          example: 01/01/2024
+        compellingEligible:
+          type: array
+          description: 'Identifies if case is eligible for Compelling Evidence (CE) rebuttal. Provides a list of eligible Compelling Evidence categories (CE01-CE15). Used in ActionCB post call for Action ID: 301 Dispute/Reverse Chargeback.'
+          items:
+            $ref: '#/components/schemas/CompellingEligible'
+        avsEligible:
+          type: string
+          description: 'Identifies if case is eligible for "Proof of Address Verification Service" (AVS) rebuttal. Used in "ActionCB" post call for Action ID: 301 "Dispute/Reverse Chargeback".'
+          example: 'Y'
+        vbvEligible:
+          type: string
+          description: ' Identifies if case is eligible for "Proof of 3D Secure" (3DS) rebuttal (Visa - Verify by Visa, Mastercard - Secure Code, AMEX - Safe Key, Discover - Protect Buy). Used in "ActionCB" post call for Action ID: 301 "Dispute/Reverse Chargeback".'
+          example: 'Y'
+        remedyEligible:
+          type: string
+          description: 'Identifies if case is eligible for "Compelling Remedy" rebuttal. Used in "ActionCB" post call for Action ID: 301 "Dispute/Reverse Chargeback".'
+          example: 'Y'
+        autoFileEligible:
+          type: string
+          description: 'Identifies if case is eligible for "Auto File" flag to be passed. Used in "ActionCB" post call for Action ID: 301 "Dispute/Reverse Chargeback".'
+          example: 'Y'
+        declineDocLocId:
+          type: string
+          description: Document Location ID for the Issuer Decline Notes document. Use this information in the retrieve document call to retrieve this document. .
+          example: \E\CB\1111_111\\11111111111\P11_11111111111_11111.TIF
+        authCode:
+          type: string
+          description: Authorization code from association(s). Generally, 6/7 alphanumeric code that gets printed on the receipt.
+          example: '104243'
+        worktype:
+          type: string
+          description: Various stages of chargeback resolution (Code).
+          example: '8'
+        worktypeDesc:
+          type: string
+          description: Various stages of chargeback resolution (Description).
+          example: Outgoing Pre-Arbitration
+        repcmnts:
+          type: string
+          description: Provides a description of what is required to challenge the dispute.
+          example: Our records indicate that Visa 3D Secure was not utilized to authenticate this transaction.
+        notesTxt:
+          type: string
+          description: Notes entered by the user.
+          example: The cardholder purchased this item on May 20th
+        externalMerchantId:
+          type: string
+          description: Back-End merchant number identifier assigned to each processing merchant. Found in cbSearch endpoint.
+          example: '111111111111'
+        caseNumber:
+          type: string
+          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of CB or RT in other systems.
+          example: '111111111111'
+    CompellingEligible:
+      type: object
+      properties:
+        compellingTypeCode:
+          type: string
+          description: 'Identifies eligible "Compelling Evidence" (CE) rebuttal codes (CE01-CE15). Used in "ActionCB" post call for Action ID: 301 "Dispute/Reverse Chargeback".'
+          example: CE01
+        compellingTypeDesc:
+          type: string
+          description: Description associated with the "Compelling Evidence" rebuttal code (CE01-15).
+          example: Photographic or email evidence Documentation to prove cardholder is in possession of and/or using the merchandise or services
+      description: 'Identifies if case is eligible for Compelling Evidence (CE) rebuttal. Provides a list of eligible Compelling Evidence categories (CE01-CE15). Used in ActionCB post call for Action ID: 301 Dispute/Reverse Chargeback.'
+    DisputeResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+        responseBody:
+          $ref: '#/components/schemas/ResponseBody'
+    Documents:
+      type: object
+      properties:
+        docLocId:
+          type: string
+          description: Unique ID associated with the document. Used in "retrieve document" get call to locate the document.
+          example: \E\CB\1111_111\\11111111111\P11_11111111111_11111.TIF
+        documentName:
+          type: string
+          description: Name of the document.
+          example: Test
+        docTypeCode:
+          type: string
+          description: Specifies if the document is merchant supplied (MSUP) or bank/acquirer supplied (MOUT).
+          example: MSUP
+        pageCount:
+          type: string
+          description: Number of pages within document.
+          example: '2'
+        scanDtm:
+          type: string
+          description: Date and time the document was scanned in Fiserv systems.
+          example: 2024-05-23-01.11.11.111111
+    NonCompellingRebuttal:
+      type: object
+      properties:
+        rebuttalTypeCode:
+          type: string
+          description: 'Identifies eligible "non-compelling" rebuttal codes (NCE01-NCE15). Used in "ActionCB" post call for Action ID: 301 "Dispute/Reverse Chargeback".'
+          example: NCE01
+        rebuttalTypeDesc:
+          type: string
+          description: Description associated with the "Non-Compelling" rebuttal code (NCE01-15)..
+          example: Copy of a signed and/org electronically captured sales slip
