@@ -2337,7 +2337,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UndoActionRequest'
+              $ref: '#/components/schemas/UndoActionRequestDTO'
             examples:
               ' Inquiry Action Example for different Mid':
                 description: ' Inquiry Action Example for different Mid'
@@ -2391,8 +2391,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Statement Keys
-      x-group-name: StatementRetrieval
+      x-proxy-name: Undo Action
+      x-group-name: Disputes
   /v1/dispute/search:
     post:
       tags:
@@ -2522,7 +2522,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
-      x-group-name: DisputeAudit
+      x-group-name: Disputes
   /v1/dispute/inquiry/action/{mid}/{processor}:
     post:
       tags:
@@ -2585,7 +2585,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ActionRTRequest'
+              $ref: '#/components/schemas/ActionRTRequestDTO'
             examples:
               ' Inquiry Action Example for different Mid':
                 description: ' Inquiry Action Example for different Mid'
@@ -2667,8 +2667,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Statement Keys
-      x-group-name: StatementRetrieval
+      x-proxy-name: Inquiry Action
+      x-group-name: Disputes
   /v1/dispute/chargeback/action/{mid}/{processor}:
     post:
       tags:
@@ -2879,8 +2879,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Statement Keys
-      x-group-name: StatementRetrieval
+      x-proxy-name: ChargeBack Action
+      x-group-name: Disputes
   /v1/dispute/bulk/action/{mid}/{processor}:
     post:
       tags:
@@ -2943,7 +2943,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BulkActionRequest'
+              $ref: '#/components/schemas/BulkActionRequestDTO'
             examples:
               ' Bulk Action Example for different dispute id''s':
                 description: ' Bulk Action Example for different dispute id''s'
@@ -3000,8 +3000,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Statement Keys
-      x-group-name: StatementRetrieval
+      x-proxy-name: Bulk Action
+      x-group-name: Disputes
   /v1/disbursement/summary:
     post:
       tags:
@@ -4522,7 +4522,7 @@ paths:
     get:
       tags:
         - Disputes
-      summary: Retrieve Dispute Document
+      summary: Retrieve Document
       description: Fetches dispute case documents
       operationId: retrieveDocument
       parameters:
@@ -4614,13 +4614,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: User Audit
-      x-group-name: User Management
+      x-proxy-name: Retrieve Document
+      x-group-name: Disputes
   /v1/dispute/notes/{mid}/{processor}/{disputeType}/{disputeID}:
     get:
       tags:
         - Disputes
-      summary: User Notes List
+      summary: User Notes
       description: Fetches user notes
       operationId: retrieveNotesList
       parameters:
@@ -4719,13 +4719,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: User Audit
-      x-group-name: User Management
+      x-proxy-name: User Notes
+      x-group-name: Disputes
   /v1/dispute/notes/detail/{mid}/{processor}/{disputeType}/{disputeID}/{detailID}:
     get:
       tags:
         - Disputes
-      summary: User Notes Details
+      summary: User Note Details
       description: Fetches user notes details
       operationId: retrieveNoteDetails
       parameters:
@@ -4831,8 +4831,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: User Audit
-      x-group-name: User Management
+      x-proxy-name: User Note Details
+      x-group-name: Disputes
   /v1/dispute/messages/{mid}/{processor}/{disputeType}/{disputeID}:
     get:
       tags:
@@ -4936,13 +4936,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: User Audit
-      x-group-name: User Management
+      x-proxy-name: Get Messages
+      x-group-name: Disputes
   /v1/dispute/getDynamicContent/{clientID}:
     get:
       tags:
         - Disputes
-      summary: Get Messages
+      summary: Get Dynamic Content
       description: Fetches messages
       operationId: getDynamicContent
       parameters:
@@ -5020,8 +5020,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: User Audit
-      x-group-name: User Management
+      x-proxy-name: Get Dynamic Content
+      x-group-name: Disputes
   /v1/dispute/details/{mid}/{processor}/{disputeType}/{disputeID}:
     get:
       tags:
@@ -5125,8 +5125,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: User Audit
-      x-group-name: User Management
+      x-proxy-name: Get Case Details
+      x-group-name: Disputes
 components:
   schemas:
     ResetPasswordResult:
@@ -5833,12 +5833,12 @@ components:
           type: string
           description: Search/Analysis date type. default value is settle date
           example: SettleDate
+          default: SettleDate
           enum:
             - AuthDate
             - SettleDate
             - FundedDate
             - RecordDate
-          default: SettleDate
         transactionStatus:
           type: array
           description: Transaction processing status associated with the settle transaction.
@@ -9587,12 +9587,12 @@ components:
           type: string
           description: Search/Analysis date type. default value is retrieval date
           example: RetrievalDate
+          default: RetrievalDate
           enum:
             - AuthDate
             - StatusDate
             - DueDate
             - RetrievalDate
-          default: RetrievalDate
         siteIDs:
           type: array
           description: Retrievals associated with one of the Site IDs specified
@@ -17920,71 +17920,21 @@ components:
           type: string
           description: Value date.
           format: date-time
-    Access:
+    UndoActionRequestDTO:
       type: object
       properties:
-        accs:
-          type: string
-          enum:
-            - Unknown
-            - SuperUser
-            - RelationshipManager
-            - Marker
-            - SubMarker
-            - Business
-            - Bank
-            - CustomBank
-            - Agent
-            - CustomAgent
-            - AssociationGroup
-            - Association
-            - CustomCorporate
-            - Lead
-            - CustomChain
-            - CustomDestination
-            - Corporate
-            - Merchant
-            - Location
-            - Group
-        hid:
-          type: string
-        pltf:
-          type: string
-          enum:
-            - Buypass
-            - North
-            - Compass
-            - Unknown
-            - Omaha
-            - South
-            - Memphis
-            - Bams
-            - TeleCheck
-            - ValueLink
-            - OmniPay
-            - UK
-            - Chase
-            - Salem
-            - Tampa
-            - PaySecure
-            - DDP
-            - Base24
-            - Galaxy
-    UndoActionRequest:
-      type: object
-      properties:
-        clientID:
-          type: string
-        access:
-          $ref: '#/components/schemas/Access'
-        sysCode:
-          type: string
         disputeID:
           type: string
+          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of "CB" or "RT" in other systems.
+          example: '111111111111'
         disputeType:
           type: string
+          description: Type of dispute (Chargeback or Retrieval).
+          example: CB
         actnID:
           type: string
+          description: Identifier for the specific action requested. Always enter "312" for Undo.
+          example: '312'
     ActionResponse:
       type: object
       properties:
@@ -18182,53 +18132,83 @@ components:
           type: string
           description: Identifies the user id who work on a case.
           example: CL.USERID123
-    ActionRTRequest:
+    ActionRTRequestDTO:
       type: object
       properties:
-        clientID:
-          type: string
-        access:
-          $ref: '#/components/schemas/Access'
         disputeID:
           type: string
+          description: Unique case number used to identify the specific dispute Retrieval case. May have a prefix of RT in other systems.
+          example: '111111111111'
         disputeType:
           type: string
+          description: Type of dispute retrieval.
+          example: RT
         actionType:
           type: string
+          description: Action Type code associated with requested Action ID.
+          example: 1RRS
         actionId:
           type: string
+          description: Identifier for the specific action requested.
+          example: '303'
         notesText:
           type: string
+          description: Enter Notes to supply as part of the rebuttal.
+          example: The cardholder purchased this item on May 20th
         productCode:
           type: string
+          description: Card brand/network for the disputed transaction.
+          example: '00001'
         subProductCode:
           type: string
-        sysCode:
-          type: string
+          description: Required field only if product code "0018" debit is selected.
+          example: '60'
         offerAmount:
           type: string
+          description: Offer amount agreed to credit to the cardholder. Only supplied for "PayPal Network" disputes.
+          example: '50.0'
         refundId:
           type: string
+          description: ID associated with the refund. Only supplied for "PayPal Network" disputes.
+          example: '111111111111111111'
         shippingProvider:
           type: string
+          description: Shipping provider associated with the transaction. Only supplied for "PayPal Network" disputes.
+          example: FedEx
         otherCompany:
           type: string
+          description: Indicate the name of the Shipping provider. Only supplied for "PayPal Network" disputes.
+          example: FedEx
         trackingUrl:
           type: string
+          description: URL associated with tracking. Only supplied for "PayPal Network" disputes.
+          example: www.fedex.com
         trackingNumber:
           type: string
+          description: Tracking number associated with the shipped merchandise. Only supplied for "PayPal Network" disputes.
+          example: '111111111111111111111'
         ackType:
           type: string
+          description: Acknowledgement Type always equals Received. Used for "PayPal" network only.
+          example: Received
         creditDate:
           type: string
+          description: Date the credit was issued. Only supplied for "Credit Issued" action.
+          example: 01/01/2024
         creditAmount:
           type: string
+          description: Credit transaction amount. Only supplied for "Credit Issued" action.
+          example: '50.0'
         creditArn:
           type: string
+          description: 23-digit Outgoing Acquirer reference number (ARN) that is used by the Acquirer, Network, and Issuer to identify the transaction. Only supplied for "Credit Issued" action.
+          example: '111111111111111111111'
         pendExpirationDate:
           type: string
+          description: Pending expiration date.
+          example: 01/01/2024
         images:
-          $ref: '#/components/schemas/Images'
+          $ref: '#/components/schemas/ImagesDTO'
         shippingDeliveryAddress:
           $ref: '#/components/schemas/ShippingDeliveryAddress'
     Document:
@@ -18236,9 +18216,13 @@ components:
       properties:
         documentName:
           type: string
+          description: 'Specify a name of the document uploaded. If left blank, name will default to: "Merchant Response".'
+          example: Invoice
         document:
           type: string
-    Images:
+          description: 'Document uploaded with the response. Acceptable image types: TIFF, BMP, GIF, JPEG, PNG, PDF. Multiple documents may be uploaded, total image size must be 5MB or less. Format: Base64.'
+          example: Base64 string
+    ImagesDTO:
       type: object
       properties:
         documents:
@@ -18267,106 +18251,188 @@ components:
       properties:
         disputeID:
           type: string
-          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of CB in other systems.
+          description: Unique case number used to identify the specific dispute chargeback case. May have a prefix of CB in other systems.
           example: '111111111111'
         disputeType:
           type: string
-          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of CB in other systems.
-          example: '111111111111'
+          description: Type of dispute Chargeback.
+          example: CB
         actionType:
           type: string
+          description: Action Type code associated with requested Action ID.
+          example: 1DCB
         actionId:
           type: string
+          description: Identifier for the specific action requested.
+          example: '301'
         notesText:
           type: string
+          description: Enter Notes to supply as part of the rebuttal.
+          example: The cardholder purchased this item on May 20th
         productCode:
           type: string
+          description: Card brand/network for the disputed transaction.
+          example: '00001'
         subProductCode:
           type: string
-        sysCode:
-          type: string
+          description: Required field only if product code "0018" debit is selected.
+          example: '60'
         compellingSelection:
           type: string
+          description: Indicates "Compelling Evidence" (CE) rebuttal.
+          example: 'Y'
         compellingSelections:
           type: array
           items:
             $ref: '#/components/schemas/CompellingSelections'
         avsSelection:
           type: string
+          description: Indicates "Proof of Address Verification Service (AVS)" rebuttal.
+          example: 'Y'
         vbvSelection:
           type: string
+          description: Indicates "Verified by Visa/3D Secure" rebuttal.
+          example: 'Y'
         remedySelection:
           type: string
+          description: Indicates "Compelling Remedy" rebuttal.
+          example: 'Y'
         nonCompRebuttal:
           type: array
           items:
             $ref: '#/components/schemas/NonCompRebuttal'
         digitalGoodsSelections:
           type: string
+          description: Indicate which 2 of the 6 possible data elements you are providing as part of your Compelling Evidence (CE04) rebuttal. This field requires 6 characters and is entered based on your selections. Only supplied for Compelling Evidence (CE04).
+          example: Y,Y,N,N,N,N
         responseDocTypeOtherDesc:
           type: string
+          description: Indicates "non-compelling" rebuttal
+          example: Document Name
         creditDate:
           type: string
+          description: Date credit was issued. Only supplied for "Credit Issued" action.
+          example: 01/01/2024
         creditAmount:
           type: string
+          description: Credit transaction amount. Only supplied for "Credit Issued" action.
+          example: '50.0'
         creditArn:
           type: string
+          description: 23-digit Outgoing Acquirer reference number (ARN) that is used by the Acquirer, Network, and Issuer to identify the transaction. Only supplied for "Credit Issued" action..
+          example: '''111111111111111111111'
         downloadDateCe04:
           type: string
+          description: Date cardholder downloaded the purchased item. Only supplied for Compelling Evidence (CE04).
+          example: 01/01/2024
         downloadTimeCe04:
           type: string
+          description: Time cardholder downloaded the purchased item. Only supplied for Compelling Evidence (CE04).
+          example: '09:45'
         purchaserIpAddressCe04:
           type: string
+          description: IP address associated with transaction.  Only supplied for Compelling Evidence (CE04). Purchaser IP Address & Geo Location must be supplied together. Must provide 2 of these 6 combinations.
+          example: 111.111.1.11
         geographicalLocationCe04:
           type: string
+          description: Location associated with transaction. Only supplied for Compelling Evidence (CE04). Purchaser IP Address & Geo Location must be supplied together. Must provide 2 of these 6 combinations.
+          example: Hagerstown
         deviceIdCe04:
           type: string
+          description: Device ID that completed the download. Only supplied for Compelling Evidence (CE04). Device ID & Device Name must be supplied together. Must provide 2 of these 6 combinations.
+          example: '1111111111111110000'
         deviceNameCe04:
           type: string
+          description: Name of the device used. Only supplied for Compelling Evidence (CE04). Enter at least 2 of these 7 fields. Device ID & Device Name must be supplied together. Must provide 2 of these 6 combinations.
+          example: Iphone
         purchaserNameCe04:
           type: string
+          description: Cardholder first and last name. Only supplied for Compelling Evidence (CE04). Enter at least 2 of these 7 fields. Purchaser Name & Email must be supplied together. Must provide 2 of these 6 combinations.
+          example: John Doe
         purchaserEmailCe04:
           type: string
+          description: Cardholder email address. Only supplied for Compelling Evidence (CE04). Enter at least 2 of these 7 fields. Purchaser Name & Email must be supplied together. Must provide 2 of these 6 combinations.
+          example: john.doe@gmail.com
         arnCe04:
           type: string
+          description: 23-digit Outgoing Acquirer reference number (ARN) that is used by the Acquirer, Network, and Issuer to identify the transaction. Only supplied for Compelling Evidence (CE04). ARN & Tran Date must be supplied together. Must provide 2 of these 6 combinations.
+          example: '1111111111111111111111'
         tranDateCe04:
           type: string
+          description: Transaction Date. Only supplied for Compelling Evidence (CE04). ARN & Tran Date must be supplied together. Must provide 2 of these 6 combinations.
+          example: 01/01/2024
         arnCe09:
           type: string
+          description: 23-digit Outgoing Acquirer reference number (ARN) that is used by the Acquirer, Network, and Issuer to identify the transaction. Only supplied for Compelling Evidence (CE09).
+          example: '1111111111111111111111'
         tranDateCe09:
           type: string
+          description: Transaction Date. Only supplied for Compelling Evidence (CE09).
+          example: 01/01/2024
         ipAddressCe09:
           type: string
+          description: IP address associated with transaction. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields.
+          example: 11.111.1.11
         emailAddressCe09:
           type: string
+          description: Email address associated with transaction. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields.
+          example: john.doe@gmail.com
         physicalAddressCe09:
           type: string
+          description: Physical address associated with transaction. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields.
+          example: 111 John Lane
         phoneNumberCe09:
           type: string
+          description: Phone number associated with the transaction. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields.
+          example: 555-111-0000
         deviceIdCe09:
           type: string
+          description: Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. .
+          example: '11111111111111'
         deviceFingerprintCe09:
           type: string
+          description: 'Unique identifier of the cardholder’s device that is derived from a combination of at least two hardware and software attributes such as the operating system and its version or device model, etc. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. '
+          example: '11111111111111'
         customerLoginIdCe09:
           type: string
+          description: Must be a unique identifier that the cardholder used to authenticate on the merchant's e-commerce site or application at the time of the transaction, and must be a value that the cardholder recognizes. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. .
+          example: '11111111111111'
         arnCe13:
           type: string
+          description: 23-digit Outgoing Acquirer reference number (ARN) that is used by the Acquirer, Network, and Issuer to identify the transaction. Only supplied for Compelling Evidence (CE13).
+          example: '1111111111111110'
         tranDateCe13:
           type: string
+          description: Transaction Date. Only supplied for Compelling Evidence (CE13).
+          example: 01/01/2024
         autoFileFlag:
           type: string
+          description: 'Only required for merchants setup as "Auto Post". Indicate if you want to or do not want to pursue filing if the issuer does not accept this response. '
+          example: 'Y'
         refundId:
           type: string
+          description: ID associated with the refund. Only supplied for "PayPal Network" disputes.
+          example: '11111111111111111'
         shippingProvider:
           type: string
+          description: Shipping provider associated with the transaction. Only supplied for "PayPal Network" disputes.
+          example: FedEx
         otherCompany:
           type: string
+          description: Indicate the name of the Shipping provider. Only supplied for "PayPal Network" disputes.
+          example: FedEx
         trackingUrl:
           type: string
+          description: URL associated with tracking. Only supplied for "PayPal Network" disputes.
+          example: www.fedex.com
         trackingNumber:
           type: string
+          description: Tracking number associated with the shipped merchandise. Only supplied for "PayPal Network" disputes.
+          example: '111111111111111111111'
         pendExpirationDate:
           type: string
+          description: Pending expiration date.
+          example: 01/01/2024
         disputedTranDetail:
           $ref: '#/components/schemas/DisputedTranDetail'
         undisputedTranDetails:
@@ -18382,98 +18448,147 @@ components:
       properties:
         compellingTypeCode:
           type: string
+          description: Indicate if the response is Compelling Evidence (CE) category 1-15. Only supplied for Compelling Evidence.
+          example: CE01
     DeliveryAddress:
       type: object
       properties:
         address1:
           type: string
+          description: 'Address 1 line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes. For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: 111 Test Street
         address2:
           type: string
+          description: 'Address 1 line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes. For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: Apt 101
         cityTownVillage:
           type: string
+          description: 'City line of Cardholders full shipping address.Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: Hagerstown
         stateProvincePrefecture:
           type: string
+          description: 'State line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: MD
         zipPostalCode:
           type: string
+          description: 'Zip/Postal Code line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: '21740'
         countryCode:
           type: string
+          description: 'Country code line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: USA
     DisputedTranDetail:
       type: object
       properties:
         merchandiseServicesDesc:
           type: string
+          description: Description of merchandise or services that was provided. Only supplied for "Compelling Remedy".
+          example: The merchandise shipped was 3 pairs of shoes.
         deviceId:
           type: string
+          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: '11111111111111111111111111'
         deviceFingerprint:
           type: string
+          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: '11111111111111111111111111'
         deviceType:
           type: string
+          description: Device used by cardholder to complete transaction. Only supplied for "Compelling Remedy".
+          example: Apple Iphone
         ipAddress:
           type: string
+          description: 'Cardholder''s public IP address and must be IPV4 or IPV6 format. Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: 111.111.1.11
         customerLoginId:
           type: string
+          description: 'Must be a unique identifier that the cardholder used to authenticate on the merchant''s e-commerce site or application at the time of the transaction, and must be a value that the cardholder recognizes. Only supplied for "Compelling Remedy". Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: '1111111111111111111111111111'
         deliveryAddress:
           $ref: '#/components/schemas/DeliveryAddress'
         merchandiseServicesInd:
           type: string
+          description: Indicates if the transaction was for merchandise or services. Only supplied for "Compelling Remedy".
+          example: M
         providedDate:
           type: string
+          description: Date service was provided or merchandise was delivered/picked up. Only supplied for "Compelling Remedy".
+          example: Apple Iphone
         deliveryStatus:
           type: string
+          description: Shipping status of merchandise. Only supplied for "Compelling Remedy".
+          example: D
         trackingInfo:
           type: string
-    ImagesDTO:
-      type: object
-      properties:
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Document'
+          description: Tracking number associated with the shipped merchandise. Only supplied for "Compelling Remedy".
+          example: '11111111111111111111111'
     NonCompRebuttal:
       type: object
       properties:
         rebuttalTypeCode:
           type: string
+          description: Indicate if the response is Non-Compelling Evidence (NCE) category 1-15.
+          example: NCE01
     UndisputedTranDetail:
       type: object
       properties:
         merchandiseServicesDesc:
           type: string
+          description: Description of merchandise or services that was provided. Only supplied for "Compelling Remedy".
+          example: The merchandise shipped was 3 pairs of shoes.
         deviceId:
           type: string
+          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: '11111111111111111111111111'
         deviceFingerprint:
           type: string
+          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: '11111111111111111111111111'
         deviceType:
           type: string
+          description: Device used by cardholder to complete transaction. Only supplied for "Compelling Remedy".
+          example: Apple Iphone
         ipAddress:
           type: string
+          description: 'Cardholder''s public IP address and must be IPV4 or IPV6 format. Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: 111.111.1.11
         customerLoginId:
           type: string
+          description: 'Must be a unique identifier that the cardholder used to authenticate on the merchant''s e-commerce site or application at the time of the transaction, and must be a value that the cardholder recognizes. Only supplied for "Compelling Remedy". Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: '1111111111111111111111111111'
         deliveryAddress:
           $ref: '#/components/schemas/DeliveryAddress'
         tranAmount:
           type: string
+          description: Device used by cardholder to complete transaction. Only supplied for "Compelling Remedy".
+          example: Apple Iphone
         tranDate:
           type: string
+          description: Transaction amount.
+          example: '50.0'
         tranId:
           type: string
+          description: Unique transaction identifier. Only supplied for "Compelling Remedy".
+          example: '11111111111111111111111111'
         arn:
           type: string
+          description: 23-digit Outgoing Acquirer reference number (ARN) that is used by the Acquirer, Network, and Issuer to identify the transaction. Only supplied for "Compelling Remedy".
+          example: '11111111111111111111111111'
         rolTranId:
           type: string
-    BulkActionRequest:
+          description: Visa ROL transaction ID. Only supplied for "Compelling Remedy".
+          example: '11111111111111111111111111'
+    BulkActionRequestDTO:
       type: object
       properties:
-        clientID:
-          type: string
-        access:
-          $ref: '#/components/schemas/Access'
-        sysCode:
-          type: string
         disputeType:
           type: string
+          description: Type of dispute (Chargeback or Retrieval).
+          example: CB
         actionID:
           type: string
+          description: 'Identifier for the specific action requested. Only specific Action IDs allow bulk action: 302, 321, 304, 308, 322, 323.'
+          example: '302'
         caseData:
           type: array
           items:
@@ -18483,6 +18598,8 @@ components:
       properties:
         disputeID:
           type: string
+          description: 'Provide the specific "dispute ID" to include in the request. A separate "disputeId" field is required for each case included in the "bulk action" call. '
+          example: '11111111111111'
     DisbursementSummaryRequest:
       required:
         - fromDate
@@ -21175,6 +21292,7 @@ components:
           type: string
           description: Search/Analysis date type. default value is chargeback date
           example: ChargebackDate
+          default: ChargebackDate
           enum:
             - AuthDate
             - ChargebackDate
@@ -21183,7 +21301,6 @@ components:
             - DueDate
             - RecordDate
             - RespondedDate
-          default: ChargebackDate
         siteIDs:
           type: array
           description: Chargebacks associated with one of the Site IDs specified
