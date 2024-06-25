@@ -2321,14 +2321,18 @@ paths:
             type: string
         - name: mid
           in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
+            example: 222222222222
         - name: processor
           in: path
+          description: MID's corresponding Platform
           required: true
           schema:
             type: string
+            example: North
       requestBody:
         content:
           application/json:
@@ -2337,12 +2341,10 @@ paths:
             examples:
               ' Inquiry Action Example for different Mid':
                 description: ' Inquiry Action Example for different Mid'
-                value: |-
-                  {
-                    "actnID": "312",
-                    "disputeID": "666960965001",
-                    "disputeType": "CB",
-                  }
+                value:
+                  actnID: '312'
+                  disputeID: '666960965001'
+                  disputeType: CB
         required: true
       responses:
         '200':
@@ -2567,14 +2569,18 @@ paths:
             type: string
         - name: mid
           in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
+            example: 222222222222
         - name: processor
           in: path
+          description: MID's corresponding Platform
           required: true
           schema:
             type: string
+            example: North
       requestBody:
         content:
           application/json:
@@ -2709,139 +2715,124 @@ paths:
             type: string
         - name: mid
           in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
+            example: 222222222222
         - name: processor
           in: path
+          description: MID's corresponding Platform
           required: true
           schema:
             type: string
+            example: North
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ActionCBRequest'
+              $ref: '#/components/schemas/ActionCBRequestDTO'
             examples:
               ' ChargeBack Action Example':
                 description: ' ChargeBack Action Example'
-                value: |-
-                  {
-                    "actionId": "302",
-                    "actionType": "1ACB",
-                    "arnCe04": "",
-                    "arnCe09": "",
-                    "arnCe13": "",
-                    "autoFileFlag": "",
-                    "avsSelection": "",
-                    "compellingSelection": "",
-                    "compellingSelections": [
-                      {
-                        "compellingTypeCode": ""
-                      }
-                    ],
-                    "creditAmount": "",
-                    "creditArn": "",
-                    "creditDate": "",
-                    "customerLoginIdCe09": "",
-                    "deviceFingerprintCe09": "",
-                    "deviceIdCe04": "",
-                    "deviceIdCe09": "",
-                    "deviceNameCe04": "",
-                    "digitalGoodsSelections": "",
-                    "disputeID": "441340058701",
-                    "disputeType": "CB",
-                    "disputedTranDetail": {
-                      "customerLoginId": "",
-                      "deliveryAddress": {
-                        "address1": "",
-                        "address2": "",
-                        "cityTownVillage": "",
-                        "countryCode": "",
-                        "stateProvincePrefecture": "",
-                        "zipPostalCode": ""
-                      },
-                      "deliveryStatus": "",
-                      "deviceFingerprint": "",
-                      "deviceId": "",
-                      "deviceType": "",
-                      "ipAddress": "",
-                      "merchandiseServicesDesc": "",
-                      "merchandiseServicesInd": "",
-                      "providedDate": "",
-                      "trackingInfo": ""
-                    },
-                    "downloadDateCe04": "",
-                    "downloadTimeCe04": "",
-                    "emailAddressCe09": "",
-                    "geographicalLocationCe04": "",
-                    "images": {
-                      "documents": [
-                        {
-                          "document": "",
-                          "documentName": ""
-                        }
-                      ]
-                    },
-                    "ipAddressCe09": "",
-                    "nonCompRebuttal": [
-                      {
-                        "rebuttalTypeCode": ""
-                      }
-                    ],
-                    "notesText": "",
-                    "otherCompany": "",
-                    "pendExpirationDate": "",
-                    "phoneNumberCe09": "",
-                    "physicalAddressCe09": "",
-                    "productCode": "00002",
-                    "purchaserEmailCe04": "",
-                    "purchaserIpAddressCe04": "",
-                    "purchaserNameCe04": "",
-                    "refundId": "",
-                    "remedySelection": "",
-                    "responseDocTypeOtherDesc": "",
-                    "shippingDeliveryAddress": {
-                      "address1": "",
-                      "address2": "",
-                      "address3": "",
-                      "cityTownVillage": "",
-                      "countryCode": "",
-                      "stateProvincePrefecture": "",
-                      "zipPostalCode": ""
-                    },
-                    "shippingProvider": "",
-                    "subProductCode": "",
-                    "sysCode": "SYSP",
-                    "trackingNumber": "",
-                    "trackingUrl": "",
-                    "tranDateCe04": "",
-                    "tranDateCe09": "",
-                    "tranDateCe13": "",
-                    "undisputedTranDetails": [
-                      {
-                        "arn": "",
-                        "customerLoginId": "",
-                        "deliveryAddress": {
-                          "address1": "",
-                          "address2": "",
-                          "cityTownVillage": "",
-                          "countryCode": "",
-                          "stateProvincePrefecture": "",
-                          "zipPostalCode": ""
-                        },
-                        "deviceFingerprint": "",
-                        "deviceId": "",
-                        "deviceType": "",
-                        "ipAddress": "",
-                        "merchandiseServicesDesc": "",
-                        "rolTranId": "",
-                        "tranAmount": "",
-                        "tranDate": "",
-                        "tranId": ""
-                      }
-                    ],
-                  }
+                value:
+                  actionId: '302'
+                  actionType: 1ACB
+                  arnCe04: ''
+                  arnCe09: ''
+                  arnCe13: ''
+                  autoFileFlag: ''
+                  avsSelection: ''
+                  compellingSelection: ''
+                  compellingSelections:
+                    - compellingTypeCode: ''
+                  creditAmount: ''
+                  creditArn: ''
+                  creditDate: ''
+                  customerLoginIdCe09: ''
+                  deviceFingerprintCe09: ''
+                  deviceIdCe04: ''
+                  deviceIdCe09: ''
+                  deviceNameCe04: ''
+                  digitalGoodsSelections: ''
+                  disputeID: '441340058701'
+                  disputeType: CB
+                  disputedTranDetail:
+                    customerLoginId: ''
+                    deliveryAddress:
+                      address1: ''
+                      address2: ''
+                      cityTownVillage: ''
+                      countryCode: ''
+                      stateProvincePrefecture: ''
+                      zipPostalCode: ''
+                    deliveryStatus: ''
+                    deviceFingerprint: ''
+                    deviceId: ''
+                    deviceType: ''
+                    ipAddress: ''
+                    merchandiseServicesDesc: ''
+                    merchandiseServicesInd: ''
+                    providedDate: ''
+                    trackingInfo: ''
+                  downloadDateCe04: ''
+                  downloadTimeCe04: ''
+                  emailAddressCe09: ''
+                  geographicalLocationCe04: ''
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  ipAddressCe09: ''
+                  nonCompRebuttal:
+                    - rebuttalTypeCode: ''
+                  notesText: ''
+                  otherCompany: ''
+                  pendExpirationDate: ''
+                  phoneNumberCe09: ''
+                  physicalAddressCe09: ''
+                  productCode: '00002'
+                  purchaserEmailCe04: ''
+                  purchaserIpAddressCe04: ''
+                  purchaserNameCe04: ''
+                  refundId: ''
+                  remedySelection: ''
+                  responseDocTypeOtherDesc: ''
+                  shippingDeliveryAddress:
+                    address1: ''
+                    address2: ''
+                    address3: ''
+                    cityTownVillage: ''
+                    countryCode: ''
+                    stateProvincePrefecture: ''
+                    zipPostalCode: ''
+                  shippingProvider: ''
+                  subProductCode: ''
+                  sysCode: SYSP
+                  trackingNumber: ''
+                  trackingUrl: ''
+                  tranDateCe04: ''
+                  tranDateCe09: ''
+                  tranDateCe13: ''
+                  undisputedTranDetails:
+                    - arn: ''
+                      customerLoginId: ''
+                      deliveryAddress:
+                        address1: ''
+                        address2: ''
+                        cityTownVillage: ''
+                        countryCode: ''
+                        stateProvincePrefecture: ''
+                        zipPostalCode: ''
+                      deviceFingerprint: ''
+                      deviceId: ''
+                      deviceType: ''
+                      ipAddress: ''
+                      merchandiseServicesDesc: ''
+                      rolTranId: ''
+                      tranAmount: ''
+                      tranDate: ''
+                      tranId: ''
         required: true
       responses:
         '200':
@@ -2936,14 +2927,18 @@ paths:
             type: string
         - name: mid
           in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
+            example: 222222222222
         - name: processor
           in: path
+          description: MID's corresponding Platform
           required: true
           schema:
             type: string
+            example: North
       requestBody:
         content:
           application/json:
@@ -2952,22 +2947,13 @@ paths:
             examples:
               ' Bulk Action Example for different dispute id''s':
                 description: ' Bulk Action Example for different dispute id''s'
-                value: |-
-                  {
-                    "actionID": "302",
-                    "caseData": [
-                      {
-                        "detailId": "666965602001"
-                      },
-                      {
-                        "detailId": "666965611001"
-                      },
-                      {
-                        "detailId": "666966778001"
-                      }
-                    ],
-                    "disputeType": "CB",
-                  }
+                value:
+                  actionID: '302'
+                  caseData:
+                    - detailId: '666965602001'
+                    - detailId: '666965611001'
+                    - detailId: '666966778001'
+                  disputeType: CB
         required: true
       responses:
         '200':
@@ -4674,6 +4660,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: mid
+          in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
+          required: true
+          schema:
+            type: string
+            example: 222222222222
+        - name: processor
+          in: path
+          description: MID's corresponding Platform
+          required: true
+          schema:
+            type: string
+            example: North
         - name: disputeType
           in: path
           description: Dispute Type associated with the dispute Case
@@ -4688,16 +4688,6 @@ paths:
           schema:
             type: string
             example: 667192916001
-        - name: mid
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: processor
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Success
@@ -4775,6 +4765,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: mid
+          in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
+          required: true
+          schema:
+            type: string
+            example: 222222222222
+        - name: processor
+          in: path
+          description: MID's corresponding Platform
+          required: true
+          schema:
+            type: string
+            example: North
         - name: disputeType
           in: path
           description: Dispute Type associated with the dispute Case
@@ -4796,16 +4800,6 @@ paths:
           schema:
             type: string
             example: 123456
-        - name: mid
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: processor
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Success
@@ -4883,6 +4877,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: mid
+          in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
+          required: true
+          schema:
+            type: string
+            example: 222222222222
+        - name: processor
+          in: path
+          description: MID's corresponding Platform
+          required: true
+          schema:
+            type: string
+            example: North
         - name: disputeType
           in: path
           description: Dispute Type associated with the dispute Case
@@ -4897,16 +4905,6 @@ paths:
           schema:
             type: string
             example: 667192916001
-        - name: mid
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: processor
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Success
@@ -5068,6 +5066,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: mid
+          in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
+          required: true
+          schema:
+            type: string
+            example: 222222222222
+        - name: processor
+          in: path
+          description: MID's corresponding Platform
+          required: true
+          schema:
+            type: string
+            example: North
         - name: disputeType
           in: path
           description: Dispute Type associated with the dispute Case
@@ -5082,16 +5094,6 @@ paths:
           schema:
             type: string
             example: 667192916001
-        - name: mid
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: processor
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Success
@@ -5831,12 +5833,12 @@ components:
           type: string
           description: Search/Analysis date type. default value is settle date
           example: SettleDate
-          default: SettleDate
           enum:
             - AuthDate
             - SettleDate
             - FundedDate
             - RecordDate
+          default: SettleDate
         transactionStatus:
           type: array
           description: Transaction processing status associated with the settle transaction.
@@ -9585,12 +9587,12 @@ components:
           type: string
           description: Search/Analysis date type. default value is retrieval date
           example: RetrievalDate
-          default: RetrievalDate
           enum:
             - AuthDate
             - StatusDate
             - DueDate
             - RetrievalDate
+          default: RetrievalDate
         siteIDs:
           type: array
           description: Retrievals associated with one of the Site IDs specified
@@ -18260,17 +18262,17 @@ components:
           type: string
         countryCode:
           type: string
-    ActionCBRequest:
+    ActionCBRequestDTO:
       type: object
       properties:
-        clientID:
-          type: string
-        access:
-          $ref: '#/components/schemas/Access'
         disputeID:
           type: string
+          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of CB in other systems.
+          example: '111111111111'
         disputeType:
           type: string
+          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of CB in other systems.
+          example: '111111111111'
         actionType:
           type: string
         actionId:
@@ -18372,7 +18374,7 @@ components:
           items:
             $ref: '#/components/schemas/UndisputedTranDetail'
         images:
-          $ref: '#/components/schemas/Images'
+          $ref: '#/components/schemas/ImagesDTO'
         shippingDeliveryAddress:
           $ref: '#/components/schemas/ShippingDeliveryAddress'
     CompellingSelections:
@@ -18420,6 +18422,13 @@ components:
           type: string
         trackingInfo:
           type: string
+    ImagesDTO:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
     NonCompRebuttal:
       type: object
       properties:
@@ -21166,7 +21175,6 @@ components:
           type: string
           description: Search/Analysis date type. default value is chargeback date
           example: ChargebackDate
-          default: ChargebackDate
           enum:
             - AuthDate
             - ChargebackDate
@@ -21175,6 +21183,7 @@ components:
             - DueDate
             - RecordDate
             - RespondedDate
+          default: ChargebackDate
         siteIDs:
           type: array
           description: Chargebacks associated with one of the Site IDs specified
