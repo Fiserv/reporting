@@ -2275,7 +2275,7 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Search
       x-group-name: Funding
-  /v1/dispute/undo/action/{mid}/{processor}:
+  /v1/dispute/undo/action/{siteID}/{backEndProcessor}:
     post:
       tags:
         - Disputes
@@ -2319,14 +2319,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: mid
+        - name: siteID
           in: path
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
-            example: 222222222222
-        - name: processor
+            example: 111111111885
+        - name: backEndProcessor
           in: path
           description: MID's corresponding Platform
           required: true
@@ -2339,11 +2339,11 @@ paths:
             schema:
               $ref: '#/components/schemas/UndoActionRequestDTO'
             examples:
-              ' Inquiry Action Example for different Mid':
-                description: ' Inquiry Action Example for different Mid'
+              ' Undo Action Example for different Mid':
+                description: ' Undo Action Example for different Mid'
                 value:
                   actnID: '312'
-                  disputeID: '666960965001'
+                  disputeID: '111111111111'
                   disputeType: CB
         required: true
       responses:
@@ -2397,8 +2397,8 @@ paths:
     post:
       tags:
         - Disputes
-      summary: Search
-      description: Provides a list of Dispute  transactions and their attributes based on optional filter criteria.
+      summary: Audit Search
+      description: Provides an audit trail of actions taken on cases through the Dispute APIs.
       operationId: search_4
       parameters:
         - name: Api-key
@@ -2425,7 +2425,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: Auth-Token-Type
+        - name: 'Auth-Token-: Provides an audit trail of actions taken on cases through the Dispute APIsType'
           in: header
           description: Indicates authorization type HMAC, JWT, or AccessToken.
           required: true
@@ -2448,8 +2448,8 @@ paths:
                 value:
                   fromDate: '20240501'
                   toDate: '20240505'
-              List Dispute Audit search with specific fields:
-                description: List Dispute Audit search with specific fields
+              Dispute Audit search with specific fields:
+                description: Dispute Audit search with specific fields
                 value:
                   fromDate: '20240501'
                   toDate: '20240505'
@@ -2460,8 +2460,8 @@ paths:
                     - ActionDate
                     - ResponseText
                     - Status
-              List Payment Facilitator Adjustments with specific Filters:
-                description: List Payment Facilitator Adjustments with specific Filters
+              Dispute Audit with specific Filters:
+                description: Dispute Audit with specific Filters
                 value:
                   fromDate: '20240501'
                   toDate: '20240505'
@@ -2521,14 +2521,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: Search
+      x-proxy-name: Audit Search
       x-group-name: Disputes
-  /v1/dispute/inquiry/action/{mid}/{processor}:
+  /v1/dispute/inquiry/action/{siteID}/{backEndProcessor}:
     post:
       tags:
         - Disputes
       summary: Inquiry Action
-      description: Inquiry Action On A Case
+      description: Perform actions on inquiry case
       operationId: inquiryAction
       parameters:
         - name: Api-key
@@ -2567,14 +2567,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: mid
+        - name: siteID
           in: path
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
-            example: 222222222222
-        - name: processor
+            example: 111111111885
+        - name: backEndProcessor
           in: path
           description: MID's corresponding Platform
           required: true
@@ -2596,7 +2596,7 @@ paths:
                   creditAmount: ''
                   creditArn: ''
                   creditDate: ''
-                  disputeID: '667246410016'
+                  disputeID: '111111111111'
                   disputeType: RT
                   images:
                     documents:
@@ -2669,12 +2669,12 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Inquiry Action
       x-group-name: Disputes
-  /v1/dispute/chargeback/action/{mid}/{processor}:
+  /v1/dispute/chargeback/action/{siteID}/{backEndProcessor}:
     post:
       tags:
         - Disputes
-      summary: ChargeBack Action
-      description: Apply Actions On ChargeBack Case
+      summary: Chargeback Action
+      description: Perform actions on chargeback case
       operationId: chargebackAction
       parameters:
         - name: Api-key
@@ -2713,14 +2713,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: mid
+        - name: siteID
           in: path
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
-            example: 222222222222
-        - name: processor
+            example: 111111111885
+        - name: backEndProcessor
           in: path
           description: MID's corresponding Platform
           required: true
@@ -2733,8 +2733,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ActionCBRequestDTO'
             examples:
-              ' ChargeBack Action Example':
-                description: ' ChargeBack Action Example'
+              ' Chargeback Action Example':
+                description: ' Chargeback Action Example'
                 value:
                   actionId: '302'
                   actionType: 1ACB
@@ -2755,7 +2755,7 @@ paths:
                   deviceIdCe09: ''
                   deviceNameCe04: ''
                   digitalGoodsSelections: ''
-                  disputeID: '441340058701'
+                  disputeID: '111111111111'
                   disputeType: CB
                   disputedTranDetail:
                     customerLoginId: ''
@@ -2879,14 +2879,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpringDefaultError'
-      x-proxy-name: ChargeBack Action
+      x-proxy-name: Chargeback Action
       x-group-name: Disputes
-  /v1/dispute/bulk/action/{mid}/{processor}:
+  /v1/dispute/bulk/action/{siteID}/{backEndProcessor}:
     post:
       tags:
         - Disputes
       summary: Bulk Action
-      description: Undo Action On A Case
+      description: Perform specific bulk actions on up to 50 dispute (chargeback and inquiry) cases at a time
       operationId: bulkAction
       parameters:
         - name: Api-key
@@ -2925,16 +2925,16 @@ paths:
           required: true
           schema:
             type: string
-        - name: mid
+        - name: siteID
           in: path
-          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
+          description: Back-End merchant number identifier assigned to each processing merchant. Found in /chargeback/search or /retrieval/search endpoint.
           required: true
           schema:
             type: string
-            example: 222222222222
-        - name: processor
+            example: 111111111885
+        - name: backEndProcessor
           in: path
-          description: MID's corresponding Platform
+          description: 'Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive. '
           required: true
           schema:
             type: string
@@ -2950,9 +2950,9 @@ paths:
                 value:
                   actionID: '302'
                   caseData:
-                    - detailId: '666965602001'
-                    - detailId: '666965611001'
-                    - detailId: '666966778001'
+                    - disputeID: '666666666666'
+                    - disputeID: '555555555555'
+                    - disputeID: '444444444444'
                   disputeType: CB
         required: true
       responses:
@@ -4575,7 +4575,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 667192916001
+            example: 111111111111
         - name: docLocId
           in: query
           description: Document name associated with the dispute Case
@@ -4616,7 +4616,7 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Retrieve Document
       x-group-name: Disputes
-  /v1/dispute/notes/{mid}/{processor}/{disputeType}/{disputeID}:
+  /v1/dispute/notes/{siteID}/{backEndProcessor}/{disputeType}/{disputeID}:
     get:
       tags:
         - Disputes
@@ -4660,14 +4660,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: mid
+        - name: siteID
           in: path
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
-            example: 222222222222
-        - name: processor
+            example: 111111111885
+        - name: backEndProcessor
           in: path
           description: MID's corresponding Platform
           required: true
@@ -4687,7 +4687,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 667192916001
+            example: 111111111111
       responses:
         '200':
           description: Success
@@ -4721,7 +4721,7 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: User Notes
       x-group-name: Disputes
-  /v1/dispute/notes/detail/{mid}/{processor}/{disputeType}/{disputeID}/{detailID}:
+  /v1/dispute/notes/detail/{siteID}/{backEndProcessor}/{disputeType}/{disputeID}/{detailID}:
     get:
       tags:
         - Disputes
@@ -4765,14 +4765,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: mid
+        - name: siteID
           in: path
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
-            example: 222222222222
-        - name: processor
+            example: 111111111885
+        - name: backEndProcessor
           in: path
           description: MID's corresponding Platform
           required: true
@@ -4792,7 +4792,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 667192916001
+            example: 111111111111
         - name: detailID
           in: path
           description: DetailsID Type associated with the dispute Case
@@ -4833,12 +4833,12 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: User Note Details
       x-group-name: Disputes
-  /v1/dispute/messages/{mid}/{processor}/{disputeType}/{disputeID}:
+  /v1/dispute/messages/{siteID}/{backEndProcessor}/{disputeType}/{disputeID}:
     get:
       tags:
         - Disputes
       summary: Get Messages
-      description: Fetches messages
+      description: Retrieve list of messages for a specific dispute (chargeback and inquiry) case
       operationId: getDisputeIdMessage
       parameters:
         - name: Api-key
@@ -4877,14 +4877,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: mid
+        - name: siteID
           in: path
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
-            example: 222222222222
-        - name: processor
+            example: 111111111885
+        - name: backEndProcessor
           in: path
           description: MID's corresponding Platform
           required: true
@@ -4904,7 +4904,7 @@ paths:
           required: true
           schema:
             type: string
-            example: 667192916001
+            example: 111111111111
       responses:
         '200':
           description: Success
@@ -5022,12 +5022,12 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Get Dynamic Content
       x-group-name: Disputes
-  /v1/dispute/details/{mid}/{processor}/{disputeType}/{disputeID}:
+  /v1/dispute/details/{siteID}/{backEndProcessor}/{disputeType}/{disputeID}:
     get:
       tags:
         - Disputes
       summary: Get Case Details
-      description: Fetches dispute case details
+      description: Retrieve dispute (chargeback and Inquiry) case information needed for subsequent calls.Retrieve dispute (chargeback and Inquiry) case information needed for subsequent calls.
       operationId: getCaseDetails
       parameters:
         - name: Api-key
@@ -5066,14 +5066,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: mid
+        - name: siteID
           in: path
           description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
           required: true
           schema:
             type: string
-            example: 222222222222
-        - name: processor
+            example: 111111111885
+        - name: backEndProcessor
           in: path
           description: MID's corresponding Platform
           required: true
@@ -5082,18 +5082,18 @@ paths:
             example: North
         - name: disputeType
           in: path
-          description: Dispute Type associated with the dispute Case
+          description: 'Type of dispute: Chargeback (CB) Or Inquiry (RT).'
           required: true
           schema:
             type: string
             example: CB
         - name: disputeID
           in: path
-          description: Dispute ID associated with the dispute Case
+          description: "Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of â€œCBâ€\x9D or â€œRTâ€\x9D in other systems."
           required: true
           schema:
             type: string
-            example: 667192916001
+            example: 111111111111
       responses:
         '200':
           description: Success
@@ -11658,7 +11658,7 @@ components:
           example: '2'
         cardClass:
           type: string
-          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions – to collect addenda or not.  Visa, MasterCard and Discover only.
+          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions â€“ to collect addenda or not.  Visa, MasterCard and Discover only.
           example: Consumer
           enum:
             - Unknown
@@ -11668,7 +11668,7 @@ components:
             - Purchase
         cardClassKey:
           type: string
-          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions – to collect addenda or not.  Visa, MasterCard and Discover only. (Code)
+          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions â€“ to collect addenda or not.  Visa, MasterCard and Discover only. (Code)
           example: '2'
         cardSubType:
           type: string
@@ -13852,7 +13852,7 @@ components:
           example: 999.99
         cardClass:
           type: string
-          description: Merchant defined identifier assigned to the promotion. Value passed in this field can only be interpreted by the merchant. A value of ‘0’ indicates the card does not belong to any card class.
+          description: Merchant defined identifier assigned to the promotion. Value passed in this field can only be interpreted by the merchant. A value of â€˜0â€™ indicates the card does not belong to any card class.
           example: N/A
         cardCostAmt:
           type: number
@@ -13910,7 +13910,7 @@ components:
           example: 999.99
         escheatTxn:
           type: string
-          description: Y = Escheatable N or ‘0’ = Non-escheatable (default).
+          description: Y = Escheatable N or â€˜0â€™ = Non-escheatable (default).
           example: '0'
         excessiveActivityInterval:
           type: integer
@@ -13970,7 +13970,7 @@ components:
           example: GYFT ID
         linkedDiscountAmt:
           type: number
-          description: Discount applied to the redemption’s requested amount.
+          description: Discount applied to the redemptionâ€™s requested amount.
           format: double
           example: 999.99
         linkedLoyaltyAcct:
@@ -13988,7 +13988,7 @@ components:
           example: '1'
         loyaltyReqAcct:
           type: string
-          description: Embossed card number of the card presented in the transaction request.  Expected to be either a Perka card or a merchant’s “proxy” card.
+          description: "Embossed card number of the card presented in the transaction request.  Expected to be either a Perka card or a merchantâ€™s â€œproxyâ€\x9D card."
           example: '9999999'
         loyaltyReqConsort:
           type: integer
@@ -14293,11 +14293,11 @@ components:
           example: 999.99
         user1:
           type: string
-          description: Generic field used at merchant’s discretion.
+          description: Generic field used at merchantâ€™s discretion.
           example: USER1
         user2:
           type: string
-          description: Generic field used at merchant’s discretion.
+          description: Generic field used at merchantâ€™s discretion.
           example: USER2
         userID:
           type: string
@@ -17921,6 +17921,10 @@ components:
           description: Value date.
           format: date-time
     UndoActionRequestDTO:
+      required:
+        - actnID
+        - disputeID
+        - disputeType
       type: object
       properties:
         disputeID:
@@ -18141,7 +18145,7 @@ components:
           example: '111111111111'
         disputeType:
           type: string
-          description: Type of dispute retrieval.
+          description: 'Type of dispute: Chargeback (CB) Or Inquiry (RT).'
           example: RT
         actionType:
           type: string
@@ -18153,7 +18157,7 @@ components:
           example: '303'
         notesText:
           type: string
-          description: Enter Notes to supply as part of the rebuttal.
+          description: 'Enter Notes to supply as part of the rebuttal.1000 character limit, and only these special characters all allowed: < > & " ! # $ % '' ( ) * + , - . / : ; = ? @ [ \ ] ^ _ ` { | } ~'
           example: The cardholder purchased this item on May 20th
         productCode:
           type: string
@@ -18234,19 +18238,39 @@ components:
       properties:
         address1:
           type: string
+          description: 'Address 1 line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes. For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: 111 Test Street
         address2:
           type: string
+          description: 'Address 2 line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes. For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: Apt 101
         address3:
           type: string
+          description: 'Address 2 line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes. For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: Next to walmart
         cityTownVillage:
           type: string
+          description: 'City line of Cardholders full shipping address.Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: Hagerstown
         stateProvincePrefecture:
           type: string
+          description: 'State line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: MD
         zipPostalCode:
           type: string
+          description: 'Zip/Postal Code line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: '21740'
         countryCode:
           type: string
+          description: 'Country code line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
+          example: USA
     ActionCBRequestDTO:
+      required:
+        - actionId
+        - actionType
+        - disputeID
+        - disputeType
+        - subProductCode
       type: object
       properties:
         disputeID:
@@ -18255,7 +18279,7 @@ components:
           example: '111111111111'
         disputeType:
           type: string
-          description: Type of dispute Chargeback.
+          description: 'Type of dispute: Chargeback (CB) or Inquiry (RT).'
           example: CB
         actionType:
           type: string
@@ -18267,7 +18291,7 @@ components:
           example: '301'
         notesText:
           type: string
-          description: Enter Notes to supply as part of the rebuttal.
+          description: 'Enter Notes to supply as part of the rebuttal.1000 character limit, and only these special characters all allowed: < > & " ! # $ % '' ( ) * + , - . / : ; = ? @ [ \ ] ^ _ ` { | } ~'
           example: The cardholder purchased this item on May 20th
         productCode:
           type: string
@@ -18351,7 +18375,7 @@ components:
           example: John Doe
         purchaserEmailCe04:
           type: string
-          description: Cardholder email address. Only supplied for Compelling Evidence (CE04). Enter at least 2 of these 7 fields. Purchaser Name & Email must be supplied together. Must provide 2 of these 6 combinations.
+          description: Cardholder email address. Only supplied for Compelling Evidence (CE04). Purchaser Name & Email must be supplied together. Must provide 2 of these 6 combinations.
           example: john.doe@gmail.com
         arnCe04:
           type: string
@@ -18387,11 +18411,11 @@ components:
           example: 555-111-0000
         deviceIdCe09:
           type: string
-          description: Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. .
+          description: Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. .
           example: '11111111111111'
         deviceFingerprintCe09:
           type: string
-          description: 'Unique identifier of the cardholder’s device that is derived from a combination of at least two hardware and software attributes such as the operating system and its version or device model, etc. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. '
+          description: 'Unique identifier of the cardholderâ€™s device that is derived from a combination of at least two hardware and software attributes such as the operating system and its version or device model, etc. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. '
           example: '11111111111111'
         customerLoginIdCe09:
           type: string
@@ -18486,11 +18510,11 @@ components:
           example: The merchandise shipped was 3 pairs of shoes.
         deviceId:
           type: string
-          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          description: 'Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
           example: '11111111111111111111111111'
         deviceFingerprint:
           type: string
-          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          description: 'Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
           example: '11111111111111111111111111'
         deviceType:
           type: string
@@ -18538,11 +18562,11 @@ components:
           example: The merchandise shipped was 3 pairs of shoes.
         deviceId:
           type: string
-          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          description: 'Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
           example: '11111111111111111111111111'
         deviceFingerprint:
           type: string
-          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          description: 'Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
           example: '11111111111111111111111111'
         deviceType:
           type: string
@@ -18579,6 +18603,9 @@ components:
           description: Visa ROL transaction ID. Only supplied for "Compelling Remedy".
           example: '11111111111111111111111111'
     BulkActionRequestDTO:
+      required:
+        - actionID
+        - disputeType
       type: object
       properties:
         disputeType:
@@ -18594,11 +18621,13 @@ components:
           items:
             $ref: '#/components/schemas/CaseData'
     CaseData:
+      required:
+        - disputeID
       type: object
       properties:
         disputeID:
           type: string
-          description: 'Provide the specific "dispute ID" to include in the request. A separate "disputeId" field is required for each case included in the "bulk action" call. '
+          description: Provide the specific "disputeID" to include in the request. A separate "disputeID" field is required for each case included in the "bulk action" call. All cases must belong to the same outlet/location level siteID and up to 50 cases can be submitted at once.
           example: '11111111111111'
     DisbursementSummaryRequest:
       required:
@@ -19229,6 +19258,7 @@ components:
             - ECHECK
             - PAYPAL
             - COINBASE
+            - VISAPLUS
         paymentChannelKey:
           type: string
           description: Funding source type. (Code)
@@ -25590,6 +25620,7 @@ components:
             - ReversalNotAccepted
             - UnacceptableTranFee
             - NetworkDecline
+            - FuelPrice
         assocRespCodeKey:
           type: string
           description: Identifies the initial association response code for the transaction. (Code)
@@ -26289,7 +26320,7 @@ components:
           example: 9Z
         authorizationTraceNumber:
           type: string
-          description: Identifies the authorization’s trace number.
+          description: Identifies the authorizationâ€™s trace number.
           example: 98765ABCD
         bai:
           type: string
@@ -26516,11 +26547,11 @@ components:
           example: '003140252999074'
         cardNetworkCVCError:
           type: string
-          description: Identifies Banknet® interchange data returned by MasterCard, indicating an invalid card validation code.
+          description: Identifies BanknetÂ® interchange data returned by MasterCard, indicating an invalid card validation code.
           example: 9AZ
         cardNetworkDataError:
           type: string
-          description: Identifies a MasterCard Banknet® data error (track, POS, or MasterCard transaction category code error) for the transaction.
+          description: Identifies a MasterCard BanknetÂ® data error (track, POS, or MasterCard transaction category code error) for the transaction.
           example: 9AZ
         cashAdvanceIndicator:
           type: string
@@ -26992,6 +27023,7 @@ components:
             - ReversalNotAccepted
             - UnacceptableTranFee
             - NetworkDecline
+            - FuelPrice
         declineReasonKey:
           type: string
           description: Identifies the decline reason for the transaction. (Code)
@@ -27491,7 +27523,7 @@ components:
           example: 99ZZ
         mktSpecificDataInd:
           type: string
-          description: Identifies the data’s market type.
+          description: Identifies the dataâ€™s market type.
           example: Bill payment
           enum:
             - Unknown
@@ -27505,7 +27537,7 @@ components:
             - Transit
         mktSpecificDataIndKey:
           type: string
-          description: Identifies the data’s market type. (Code)
+          description: Identifies the dataâ€™s market type. (Code)
           example: '2'
         mobileWallet:
           type: string
@@ -33258,7 +33290,7 @@ components:
           example: '9'
         purchaseCode:
           type: string
-          description: Identifies the merchant’s purchase order number.
+          description: Identifies the merchantâ€™s purchase order number.
           example: 99999999ABCDEFGH
         quantity:
           type: number
@@ -34364,7 +34396,7 @@ components:
           example: NA
         cardClass:
           type: string
-          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions – to collect addenda or not. Visa, MasterCard and Discover only.
+          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions â€“ to collect addenda or not. Visa, MasterCard and Discover only.
           example: Consumer
         cardSubType:
           type: string
@@ -34677,14 +34709,6 @@ components:
           type: string
           description: Notes entered by the user.
           example: The cardholder purchased this item on May 20th
-        externalMerchantId:
-          type: string
-          description: Back-End merchant number identifier assigned to each processing merchant. Found in cbSearch endpoint.
-          example: '111111111111'
-        caseNumber:
-          type: string
-          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of CB or RT in other systems.
-          example: '111111111111'
     CompellingEligible:
       type: object
       properties:
