@@ -1,4 +1,4 @@
-# Debit Product Codes
+# Product Codes
 Product Code | Product Code Description
 --- | --- | 
 00001 | MASTERCARD
@@ -13,6 +13,7 @@ Product Code | Product Code Description
 00018 | DEBIT
 00035 | WEX
 00036 | FLEETCOR
+00056 | STAR
 
 
 # Debit Sub-Product Codes
