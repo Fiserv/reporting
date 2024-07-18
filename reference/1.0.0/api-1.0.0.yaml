@@ -2576,7 +2576,7 @@ paths:
             example: 111111111885
         - name: backEndProcessor
           in: path
-          description: MID's corresponding Platform
+          description: Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive.
           required: true
           schema:
             type: string
@@ -2722,7 +2722,7 @@ paths:
             example: 111111111885
         - name: backEndProcessor
           in: path
-          description: MID's corresponding Platform
+          description: Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive.
           required: true
           schema:
             type: string
@@ -2934,7 +2934,7 @@ paths:
             example: 111111111885
         - name: backEndProcessor
           in: path
-          description: 'Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive. '
+          description: Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive.
           required: true
           schema:
             type: string
@@ -4669,7 +4669,7 @@ paths:
             example: 111111111885
         - name: backEndProcessor
           in: path
-          description: MID's corresponding Platform
+          description: Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive.
           required: true
           schema:
             type: string
@@ -4774,7 +4774,7 @@ paths:
             example: 111111111885
         - name: backEndProcessor
           in: path
-          description: MID's corresponding Platform
+          description: Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive.
           required: true
           schema:
             type: string
@@ -4806,7 +4806,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotesDetailsResponse'
+                $ref: '#/components/schemas/NoteDetailsResponse'
         '400':
           description: Invalid request
           content:
@@ -4886,7 +4886,7 @@ paths:
             example: 111111111885
         - name: backEndProcessor
           in: path
-          description: MID's corresponding Platform
+          description: Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive.
           required: true
           schema:
             type: string
@@ -5075,7 +5075,7 @@ paths:
             example: 111111111885
         - name: backEndProcessor
           in: path
-          description: MID's corresponding Platform
+          description: Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive.
           required: true
           schema:
             type: string
@@ -5089,7 +5089,7 @@ paths:
             example: CB
         - name: disputeID
           in: path
-          description: "Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of â€œCBâ€\x9D or â€œRTâ€\x9D in other systems."
+          description: Unique case number used to identify the specific dispute (chargeback or inquiry) case. May have a prefix of “CB” or “RT” in other systems.
           required: true
           schema:
             type: string
@@ -11658,7 +11658,7 @@ components:
           example: '2'
         cardClass:
           type: string
-          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions â€“ to collect addenda or not.  Visa, MasterCard and Discover only.
+          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions – to collect addenda or not.  Visa, MasterCard and Discover only.
           example: Consumer
           enum:
             - Unknown
@@ -11668,7 +11668,7 @@ components:
             - Purchase
         cardClassKey:
           type: string
-          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions â€“ to collect addenda or not.  Visa, MasterCard and Discover only. (Code)
+          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions – to collect addenda or not.  Visa, MasterCard and Discover only. (Code)
           example: '2'
         cardSubType:
           type: string
@@ -13852,7 +13852,7 @@ components:
           example: 999.99
         cardClass:
           type: string
-          description: Merchant defined identifier assigned to the promotion. Value passed in this field can only be interpreted by the merchant. A value of â€˜0â€™ indicates the card does not belong to any card class.
+          description: Merchant defined identifier assigned to the promotion. Value passed in this field can only be interpreted by the merchant. A value of ‘0’ indicates the card does not belong to any card class.
           example: N/A
         cardCostAmt:
           type: number
@@ -13910,7 +13910,7 @@ components:
           example: 999.99
         escheatTxn:
           type: string
-          description: Y = Escheatable N or â€˜0â€™ = Non-escheatable (default).
+          description: Y = Escheatable N or ‘0’ = Non-escheatable (default).
           example: '0'
         excessiveActivityInterval:
           type: integer
@@ -13970,7 +13970,7 @@ components:
           example: GYFT ID
         linkedDiscountAmt:
           type: number
-          description: Discount applied to the redemptionâ€™s requested amount.
+          description: Discount applied to the redemption’s requested amount.
           format: double
           example: 999.99
         linkedLoyaltyAcct:
@@ -13988,7 +13988,7 @@ components:
           example: '1'
         loyaltyReqAcct:
           type: string
-          description: "Embossed card number of the card presented in the transaction request.  Expected to be either a Perka card or a merchantâ€™s â€œproxyâ€\x9D card."
+          description: Embossed card number of the card presented in the transaction request.  Expected to be either a Perka card or a merchant’s “proxy” card.
           example: '9999999'
         loyaltyReqConsort:
           type: integer
@@ -14293,11 +14293,11 @@ components:
           example: 999.99
         user1:
           type: string
-          description: Generic field used at merchantâ€™s discretion.
+          description: Generic field used at merchant’s discretion.
           example: USER1
         user2:
           type: string
-          description: Generic field used at merchantâ€™s discretion.
+          description: Generic field used at merchant’s discretion.
           example: USER2
         userID:
           type: string
@@ -17945,7 +17945,12 @@ components:
         error:
           $ref: '#/components/schemas/Error'
         responseBody:
-          $ref: '#/components/schemas/ResponseBody'
+          $ref: '#/components/schemas/ActionResponseBody'
+    ActionResponseBody:
+      type: object
+      properties:
+        responseStandardArea:
+          $ref: '#/components/schemas/ResponseStandardArea'
     Error:
       type: object
       properties:
@@ -17964,25 +17969,6 @@ components:
           type: string
           description: Error description of the call.
           example: Not Found
-    ResponseBody:
-      type: object
-      properties:
-        responseStandardArea:
-          $ref: '#/components/schemas/ResponseStandardArea'
-        chargeback:
-          $ref: '#/components/schemas/Chargeback'
-        nonCompellingRebuttal:
-          type: array
-          items:
-            $ref: '#/components/schemas/NonCompellingRebuttal'
-        documentDetails:
-          type: array
-          items:
-            $ref: '#/components/schemas/Documents'
-        actions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Actions'
     ResponseStandardArea:
       type: object
       properties:
@@ -18411,11 +18397,11 @@ components:
           example: 555-111-0000
         deviceIdCe09:
           type: string
-          description: Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. .
+          description: Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. .
           example: '11111111111111'
         deviceFingerprintCe09:
           type: string
-          description: 'Unique identifier of the cardholderâ€™s device that is derived from a combination of at least two hardware and software attributes such as the operating system and its version or device model, etc. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. '
+          description: 'Unique identifier of the cardholder’s device that is derived from a combination of at least two hardware and software attributes such as the operating system and its version or device model, etc. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. '
           example: '11111111111111'
         customerLoginIdCe09:
           type: string
@@ -18510,11 +18496,11 @@ components:
           example: The merchandise shipped was 3 pairs of shoes.
         deviceId:
           type: string
-          description: 'Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
           example: '11111111111111111111111111'
         deviceFingerprint:
           type: string
-          description: 'Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
           example: '11111111111111111111111111'
         deviceType:
           type: string
@@ -18562,11 +18548,11 @@ components:
           example: The merchandise shipped was 3 pairs of shoes.
         deviceId:
           type: string
-          description: 'Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
           example: '11111111111111111111111111'
         deviceFingerprint:
           type: string
-          description: 'Unique identifier of the cardholderâ€™s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
+          description: 'Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for "Compelling Remedy". Enter the same one of these 3 fields: deviceID, deviceFingerprint, ipAddress for "disputedTranDetail" and  both "undisputedTranDetail".'
           example: '11111111111111111111111111'
         deviceType:
           type: string
@@ -26320,7 +26306,7 @@ components:
           example: 9Z
         authorizationTraceNumber:
           type: string
-          description: Identifies the authorizationâ€™s trace number.
+          description: Identifies the authorization’s trace number.
           example: 98765ABCD
         bai:
           type: string
@@ -26547,11 +26533,11 @@ components:
           example: '003140252999074'
         cardNetworkCVCError:
           type: string
-          description: Identifies BanknetÂ® interchange data returned by MasterCard, indicating an invalid card validation code.
+          description: Identifies Banknet® interchange data returned by MasterCard, indicating an invalid card validation code.
           example: 9AZ
         cardNetworkDataError:
           type: string
-          description: Identifies a MasterCard BanknetÂ® data error (track, POS, or MasterCard transaction category code error) for the transaction.
+          description: Identifies a MasterCard Banknet® data error (track, POS, or MasterCard transaction category code error) for the transaction.
           example: 9AZ
         cashAdvanceIndicator:
           type: string
@@ -27523,7 +27509,7 @@ components:
           example: 99ZZ
         mktSpecificDataInd:
           type: string
-          description: Identifies the dataâ€™s market type.
+          description: Identifies the data’s market type.
           example: Bill payment
           enum:
             - Unknown
@@ -27537,7 +27523,7 @@ components:
             - Transit
         mktSpecificDataIndKey:
           type: string
-          description: Identifies the dataâ€™s market type. (Code)
+          description: Identifies the data’s market type. (Code)
           example: '2'
         mobileWallet:
           type: string
@@ -33290,7 +33276,7 @@ components:
           example: '9'
         purchaseCode:
           type: string
-          description: Identifies the merchantâ€™s purchase order number.
+          description: Identifies the merchant’s purchase order number.
           example: 99999999ABCDEFGH
         quantity:
           type: number
@@ -34396,7 +34382,7 @@ components:
           example: NA
         cardClass:
           type: string
-          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions â€“ to collect addenda or not. Visa, MasterCard and Discover only.
+          description: Categorizes the BIN as a Business card, Corporate T&E card, Purchase card or Consumer card. Assists the POS device with prompting decisions – to collect addenda or not. Visa, MasterCard and Discover only.
           example: Consumer
         cardSubType:
           type: string
@@ -34413,21 +34399,82 @@ components:
         error:
           $ref: '#/components/schemas/Error'
         responseBody:
-          $ref: '#/components/schemas/ResponseBody'
-    NotesDetailsResponse:
+          $ref: '#/components/schemas/NotesResponseBody'
+    NotesResponseBody:
+      type: object
+      properties:
+        responseStandardArea:
+          $ref: '#/components/schemas/ResponseStandardArea'
+        userNotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserNotes'
+    UserNotes:
+      type: object
+      properties:
+        noteTimestamp:
+          type: string
+          description: Time notes were entered in our system
+          example: 12.26 PM
+        userID:
+          type: string
+          description: Specific User ID that entered the notes in our system.
+          example: cl.devstudio
+        detailId:
+          type: string
+          description: Detail ID associated with the note record. Used in "NotesDetails" get call to retrieve detail note record.
+          example: 2024-05-28-12.26.01.11111
+    NoteDetailResponseBody:
+      type: object
+      properties:
+        responseStandardArea:
+          $ref: '#/components/schemas/ResponseStandardArea'
+        noteTxt:
+          type: string
+          description: This is the detailed notes entered by the user in our system
+          example: This is a test note.
+        userID:
+          type: string
+          description: This is the user ID that entered the notes
+          example: cl.devstudio
+    NoteDetailsResponse:
       type: object
       properties:
         error:
           $ref: '#/components/schemas/Error'
         responseBody:
-          $ref: '#/components/schemas/ResponseBody'
+          $ref: '#/components/schemas/NoteDetailResponseBody'
     DisputeMessageListResponse:
       type: object
       properties:
         error:
           $ref: '#/components/schemas/Error'
         responseBody:
-          $ref: '#/components/schemas/ResponseBody'
+          $ref: '#/components/schemas/DisputeMessageResponseBody'
+    DisputeMessageResponseBody:
+      type: object
+      properties:
+        responseStandardArea:
+          $ref: '#/components/schemas/ResponseStandardArea'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Messages'
+    Messages:
+      type: object
+      properties:
+        messageDate:
+          type: string
+        messageTime:
+          type: string
+        message:
+          type: string
+        description:
+          type: string
+        messageViewedUserID:
+          type: string
+        messageViewedDate:
+          type: string
     DCMBaseInfo:
       type: object
       properties:
@@ -34762,3 +34809,22 @@ components:
           type: string
           description: Description associated with the "Non-Compelling" rebuttal code (NCE01-15)..
           example: Copy of a signed and/org electronically captured sales slip
+    ResponseBody:
+      type: object
+      properties:
+        responseStandardArea:
+          $ref: '#/components/schemas/ResponseStandardArea'
+        chargeback:
+          $ref: '#/components/schemas/Chargeback'
+        nonCompellingRebuttal:
+          type: array
+          items:
+            $ref: '#/components/schemas/NonCompellingRebuttal'
+        documentDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Documents'
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Actions'
