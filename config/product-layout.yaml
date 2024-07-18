@@ -45,7 +45,7 @@ featuredFeatures:
       - relatedDoc:
         title: Getting Started
         description: Reporting information is available across the value chain. Our APIs provide you with the ability to pull information across these various stages.
-        link: "/docs/getting-started.md"
+        link: "docs/getting-started.md"
       - relatedDoc: 
         title: Generate Reports 
         description: Our robust reporting API provides you with the ability to integrate your systems directly with the financial and non-financial reporting APIs
@@ -70,7 +70,7 @@ featuredFeatures:
       - relatedDoc:
         title: Getting Started
         description: Reporting information is available across the value chain. Our APIs provide you with the ability to pull information across these various stages.
-        link: "/docs/getting-started.md"
+        link: "docs/getting-started.md"
       - relatedDoc: 
         title: Build Your Merchant Portal
         description: You can build your own integrated merchant portal experience utilizing the APIs available here
@@ -97,7 +97,7 @@ featuredFeatures:
       - relatedDoc:
         title: Getting Started
         description: Reporting information is available across the value chain. Our APIs provide you with the ability to pull information across these various stages.
-        link: "/docs/getting-started.md"
+        link: "docs/getting-started.md"
       - relatedDoc1: 
         title: Data Feeds
         description: If traditional restful APIs do not satisfy your requirements and you would rather get data feeds, we have multiple ways to get your data to you easily and in a timely manner.
