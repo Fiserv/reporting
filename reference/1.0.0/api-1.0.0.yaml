@@ -4514,7 +4514,7 @@ paths:
                 $ref: '#/components/schemas/SpringDefaultError'
       x-proxy-name: Lookup Bin
       x-group-name: Reference
-  /v1/dispute/{disputeType}/{disputeID}/document:
+  /v1/dispute/{siteID}/{backEndProcessor}/{disputeType}/{disputeID}/document:
     get:
       tags:
         - Disputes
@@ -4558,6 +4558,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: siteID
+          in: path
+          description: Corresponding identifier of the MIDLevel. Generally its the Outlet ID for Location level or the Corporate ID for the Corporation level
+          required: true
+          schema:
+            type: string
+            example: 111111111885
+        - name: backEndProcessor
+          in: path
+          description: Internal settlement platform. Found in /chargeback/search or /retrieval/search endpoint and is case sensitive.
+          required: true
+          schema:
+            type: string
+            example: North
         - name: disputeType
           in: path
           description: Dispute Type associated with the dispute Case
@@ -5261,6 +5275,24 @@ components:
             - DISABLED
             - IDLE_LOCKED
             - LOCKED
+    Hierarchy:
+      type: object
+      properties:
+        sysId:
+          type: string
+        affiliateName:
+          type: string
+        hierarchyLevel:
+          $ref: '#/components/schemas/HierarchyLevel'
+        platform:
+          $ref: '#/components/schemas/Platform'
+    HierarchyLevel:
+      type: object
+      properties:
+        value:
+          type: string
+        display:
+          type: string
     NamedReferenceDto:
       type: object
       properties:
@@ -5273,6 +5305,13 @@ components:
           type: string
           description: Channel Name
           example: First Data Services
+    Platform:
+      type: object
+      properties:
+        value:
+          type: string
+        display:
+          type: string
     SaveUserApplication:
       type: object
       properties:
@@ -5388,6 +5427,22 @@ components:
           description: User applications access
           items:
             $ref: '#/components/schemas/SaveUserApplication'
+        dataAccesses:
+          uniqueItems: true
+          type: array
+          description: User Data access Detail
+          items:
+            $ref: '#/components/schemas/UserDataAccess'
+    UserDataAccess:
+      type: object
+      properties:
+        id:
+          type: object
+        accessType:
+          type: string
+        hierarchy:
+          $ref: '#/components/schemas/Hierarchy'
+      description: User Data access Detail
     UserPhoneDto:
       type: object
       properties:
@@ -17618,6 +17673,182 @@ components:
             - McApDigEnabAuthentication
             - InterchangeReject
             - TaAesDukptP2pe
+            - CloverSaasPlanFeeDr
+            - CloverAppUsageFeeDr
+            - CloverMobileDataFeeDr
+            - CloverSaasPlanFeeCr
+            - CloverAppUsageFeeCr
+            - CloverMobileDataFeeCr
+            - MerchPurchaseFeeCpcr
+            - MerchPurchaseFeeCnpcr
+            - MerchPurchaseFeeCpdr
+            - MerchPurchaseFeeCnpdr
+            - MerchPurchaseFeeRefCpcr
+            - MerchPurchaseFeeRefCnpcr
+            - MerchPurchaseFeeRefCpdr
+            - MerchPurhcaseFeeRefCnpdr
+            - PerTranFeeCp
+            - PerTranFeeCnp
+            - PerTranFeeDebitCnp
+            - PerTranFeeDebitCp
+            - MsfCpcr
+            - MsfCnpcr
+            - MsfCpdr
+            - MsfCnpdr
+            - MsfCpcrRefund
+            - MsfCnpcrRefund
+            - MsfCpdrRefund
+            - MsfCnpdrRefund
+            - AssessmentFeeDomCnpcr
+            - AssessmentFeeDomCpcr
+            - AssessmentFeeDomCnpdr
+            - AssessmentFeeDomCpdr
+            - AssessmentFeeRefDomCnpcr
+            - AssessmentFeeRefDomCpcr
+            - AssessmentFeeRefDomCnpdr
+            - AssessmentFeeRefDomCpdr
+            - AssessmentFeeIntraCnpcr
+            - AssessmentFeeIntraCpcr
+            - AssessmentFeeIntraCnpdr
+            - AssessmentFeeIntraCpdr
+            - AssessmentFeeRefIntraCnpcr
+            - AssessmentFeeRefIntraCpcr
+            - AssessmentFeeRefIntraCnpdr
+            - AssessmentFeeRefIntraCpdr
+            - AssessmentFeeIntlCnpcr
+            - AssessmentFeeIntlCpcr
+            - AssessmentFeeIntlCnpdr
+            - AssessmentFeeIntlCpdr
+            - AssessmentFeeRefIntlCnpcr
+            - AssessmentFeeRefIntlCpcr
+            - AssessmentFeeRefIntlCnpdr
+            - AssessmentFeeRefIntlCpdr
+            - McPreauthDomesticFee
+            - McPreauthCrossBorderFee
+            - Diners
+            - McDafDsrpNotokNcofDrFee
+            - McDafDsrpNotokNcofCrFee
+            - McDafDsrpNotokcofDrFee
+            - McDafDsrpNotokcofCrFee
+            - McDafNoauthDrFee
+            - McDafNoauthCrFee
+            - MCNoAuthenticationFee
+            - IntrlnkDbtFeeDetailReport
+            - DiscountFeesContra
+            - InterchangeFeesContra
+            - AssessmentFeesContra
+            - TransactionFeesContra
+            - CreditFeeContra
+            - IvrTranFeeContra
+            - ProcessingFeesContra
+            - DiscountFeesContractual
+            - InterchangeFeesContractual
+            - AssessmentFeesContractual
+            - TransactionFeesContractual
+            - CreditFeeContractual
+            - IvrTranFeeContractual
+            - ProcessingFeesContractual
+            - AuraPerTranFee
+            - ExchangeReporting1
+            - ExchangeReporting2
+            - ExchangeReporting3
+            - ExchangeReporting4
+            - ExchangeReporting5
+            - ExchangeReporting6
+            - ExchangeReporting7
+            - ExchangeReporting8
+            - ExchangeReporting9
+            - ExchangeReporting10
+            - ExchangeReporting11
+            - ExchangeReporting12
+            - ExchangeReporting13
+            - ExchangeReporting14
+            - ExchangeReporting15
+            - ExchangeReporting16
+            - ExchangeReporting17
+            - ExchangeReporting18
+            - ExchangeReporting19
+            - ExchangeReporting20
+            - ExchangeFee1
+            - ExchangeFee2
+            - ExchangeFee3
+            - ExchangeFee4
+            - ExchangeFee5
+            - ExchangeFee6
+            - ExchangeFee7
+            - ExchangeFee8
+            - ExchangeFee9
+            - ExchangeFee10
+            - ExchangeFee11
+            - ExchangeFee12
+            - ExchangeFee13
+            - ExchangeFee14
+            - ExchangeFee15
+            - ExchangeFee16
+            - ExchangeFee17
+            - ExchangeFee18
+            - ExchangeFee19
+            - ExchangeFee20
+            - ExchangeFee21
+            - ExchangeFee22
+            - ExchangeFee23
+            - ExchangeFee24
+            - ExchangeFee25
+            - ExchangeFee26
+            - ExchangeFee27
+            - ExchangeFee28
+            - ExchangeFee29
+            - ExchangeFee30
+            - ExchangeFee31
+            - ExchangeFee32
+            - ExchangeFee33
+            - ExchangeFee34
+            - ExchangeFee35
+            - ExchangeFee36
+            - ExchangeFee37
+            - ExchangeFee38
+            - ExchangeFee39
+            - ExchangeFee40
+            - ExchangeFee41
+            - ExchangeFee42
+            - ExchangeFee43
+            - ExchangeFee44
+            - ExchangeFee45
+            - ExchangeFee46
+            - ExchangeFee47
+            - ExchangeFee48
+            - ExchangeFee49
+            - ExchangeFee50
+            - ExchangeFee51
+            - ExchangeFee52
+            - ExchangeFee53
+            - ExchangeFee54
+            - ExchangeFee55
+            - ExchangeFee56
+            - ExchangeFee57
+            - ExchangeFee58
+            - ExchangeFee59
+            - ExchangeFee60
+            - ExchangeFee61
+            - ExchangeFee62
+            - ExchangeFee63
+            - ExchangeFee64
+            - ExchangeFee65
+            - ExchangeFee66
+            - ExchangeFee67
+            - ExchangeFee68
+            - ExchangeFee69
+            - ExchangeFee70
+            - ExchangeFee71
+            - ExchangeFee72
+            - ExchangeFee73
+            - ExchangeFee74
+            - ExchangeFee75
+            - ExchangeFee76
+            - ExchangeFee77
+            - ExchangeFee78
+            - ExchangeFee79
+            - DinersMsf
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -18313,7 +18544,7 @@ components:
           example: Y,Y,N,N,N,N
         responseDocTypeOtherDesc:
           type: string
-          description: Indicates "non-compelling" rebuttal
+          description: Enter the name of the "other" type of document provided. Only supplied for Non-Compelling Evidence (NCE30)
           example: Document Name
         creditDate:
           type: string
@@ -34066,6 +34297,12 @@ components:
           description: User applications access
           items:
             $ref: '#/components/schemas/ApplicationDto'
+        dataAccesses:
+          uniqueItems: true
+          type: array
+          description: User Data access Detail
+          items:
+            $ref: '#/components/schemas/UserDataAccess'
     UserAuditInfoDto:
       type: object
       properties:
