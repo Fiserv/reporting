@@ -2583,40 +2583,97 @@ paths:
             schema:
               $ref: '#/components/schemas/ActionRTRequestDTO'
             examples:
-              ' Inquiry Action Example for different Mid':
-                description: ' Inquiry Action Example for different Mid'
+              Action Id 303 retrieval response:
+                description: Action Id 303 retrieval response
                 value:
-                  ackType: ''
                   actionId: '303'
                   actionType: 1RRS
-                  creditAmount: ''
-                  creditArn: ''
-                  creditDate: ''
-                  disputeID: '111111111111'
+                  disputeID: '11111111111'
+                  disputeType: RT
+                  images:
+                    documents:
+                      - document: Base64
+                        documentName: ''
+                  notesText: ''
+                  productCode: '00018'
+                  subProductCode: '010'
+              Action Id 303 retrieval response-1:
+                description: Action Id 303 retrieval response-1
+                value:
+                  actionId: '303'
+                  actionType: 1RRS
+                  disputeID: '11111111111'
+                  disputeType: RT
+                  images:
+                    documents:
+                      - document: Base64
+                        documentName: ''
+                  notesText: ''
+                  productCode: '00018'
+                  subProductCode: '010'
+              Action Id 304 unable to fulfill:
+                description: Action Id 304 unable to fulfill
+                value:
+                  actionId: '304'
+                  actionType: 1UFL
+                  disputeID: '151876679'
+                  disputeType: RT
+                  productCode: '00003'
+                  subProductCode: ''
+              Action Id 307 retrieval response with signature:
+                description: Action Id 307 retrieval response with signature
+                value:
+                  actionId: '307'
+                  actionType: 1RSG
+                  disputeID: '151887353'
+                  disputeType: RT
+                  images:
+                    documents:
+                      - document: Base64
+                        documentName: ''
+                  notesText: ''
+                  productCode: '00003'
+                  subProductCode: ''
+              Action Id 308 unable to locate:
+                description: Action Id 308 unable to locate
+                value:
+                  actionId: '308'
+                  actionType: 1ULR
+                  disputeID: '151876638'
+                  disputeType: RT
+                  productCode: '00003'
+                  subProductCode: ''
+              Action Id 309 credit issued:
+                description: Action Id 309 credit issued
+                value:
+                  actionId: '309'
+                  actionType: 1ECR
+                  creditAmount: '5'
+                  creditArn: '1111111111111111'
+                  creditDate: 01/01/24
+                  disputeID: '111111111'
                   disputeType: RT
                   images:
                     documents:
                       - document: ''
                         documentName: ''
-                  notesText: Test Notes
-                  offerAmount: ''
-                  otherCompany: ''
-                  pendExpirationDate: ''
-                  productCode: '00002'
-                  refundId: ''
-                  shippingDeliveryAddress:
-                    address1: ''
-                    address2: ''
-                    address3: ''
-                    cityTownVillage: ''
-                    countryCode: ''
-                    stateProvincePrefecture: ''
-                    zipPostalCode: ''
-                  shippingProvider: ''
+                  notesText: ''
+                  productCode: '00003'
                   subProductCode: ''
-                  sysCode: SYSP
-                  trackingNumber: ''
-                  trackingUrl: ''
+              Action Id 310 retrieval response with imprint:
+                description: Action Id 310 retrieval response with imprint
+                value:
+                  actionId: '310'
+                  actionType: 1RIS
+                  disputeID: '111111111'
+                  disputeType: RT
+                  images:
+                    documents:
+                      - document: Base 64
+                        documentName: ''
+                  notesText: ''
+                  productCode: '00003'
+                  subProductCode: ''
         required: true
       responses:
         '200':
@@ -2729,22 +2786,111 @@ paths:
             schema:
               $ref: '#/components/schemas/ActionCBRequestDTO'
             examples:
-              ' Chargeback Action Example':
-                description: ' Chargeback Action Example'
+              Action Id 301 AVS:
+                description: Action Id 301 AVS
                 value:
-                  actionId: '302'
-                  actionType: 1ACB
+                  actionId: '301'
+                  actionType: 1DCB
+                  autoFileFlag: ''
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  notesText: This is a test of AVS rebuttal type
+                  productCode: '00002'
+                  avsSelection: 'Y'
+              Action Id 301 compelling evidence CE04:
+                description: Action Id 301 compelling evidence CE04
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
                   arnCe04: ''
                   arnCe09: ''
                   arnCe13: ''
                   autoFileFlag: ''
-                  avsSelection: ''
-                  compellingSelection: ''
+                  compellingSelection: 'Y'
                   compellingSelections:
-                    - compellingTypeCode: ''
-                  creditAmount: ''
-                  creditArn: ''
-                  creditDate: ''
+                    - compellingTypeCode: CE04
+                  customerLoginIdCe09: ''
+                  deviceFingerprintCe09: ''
+                  deviceIdCe04: Test
+                  deviceIdCe09: ''
+                  deviceNameCe04: Test
+                  digitalGoodsSelections: Y,Y,N,N,N,N
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  downloadDateCe04: 01/01/24
+                  downloadTimeCe04: '10:01'
+                  emailAddressCe09: ''
+                  geographicalLocationCe04: Hagerstown
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  ipAddressCe09: ''
+                  notesText: This is a test of CE04
+                  phoneNumberCe09: ''
+                  physicalAddressCe09: ''
+                  productCode: '00002'
+                  purchaserEmailCe04: ''
+                  purchaserIpAddressCe04: 111.22.333
+                  purchaserNameCe04: ''
+                  tranDateCe04: ''
+                  tranDateCe09: ''
+                  tranDateCe13: ''
+              Action Id 301 compelling evidence CE09:
+                description: Action Id 301 compelling evidence CE09
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  arnCe04: ''
+                  arnCe09: '1111111111111'
+                  arnCe13: ''
+                  autoFileFlag: ''
+                  compellingSelection: 'Y'
+                  compellingSelections:
+                    - compellingTypeCode: CE09
+                  customerLoginIdCe09: ''
+                  deviceFingerprintCe09: ''
+                  deviceIdCe04: ''
+                  deviceIdCe09: ''
+                  deviceNameCe04: ''
+                  digitalGoodsSelections: ''
+                  disputeID: '242464282601'
+                  disputeType: CB
+                  downloadDateCe04: ''
+                  downloadTimeCe04: ''
+                  emailAddressCe09: test@test.com
+                  geographicalLocationCe04: ''
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  ipAddressCe09: 111.22.33
+                  notesText: ''
+                  phoneNumberCe09: '5554446789'
+                  physicalAddressCe09: ''
+                  productCode: '00002'
+                  purchaserEmailCe04: ''
+                  purchaserIpAddressCe04: ''
+                  purchaserNameCe04: ''
+                  tranDateCe04: ''
+                  tranDateCe09: 01/01/24
+                  tranDateCe13: ''
+              Action Id 301 compelling evidence CE13:
+                description: Action Id 301 compelling evidence CE13
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  arnCe04: ''
+                  arnCe09: ''
+                  arnCe13: '11111111111'
+                  autoFileFlag: ''
+                  compellingSelection: 'Y'
+                  compellingSelections:
+                    - compellingTypeCode: CE13
                   customerLoginIdCe09: ''
                   deviceFingerprintCe09: ''
                   deviceIdCe04: ''
@@ -2753,24 +2899,6 @@ paths:
                   digitalGoodsSelections: ''
                   disputeID: '111111111111'
                   disputeType: CB
-                  disputedTranDetail:
-                    customerLoginId: ''
-                    deliveryAddress:
-                      address1: ''
-                      address2: ''
-                      cityTownVillage: ''
-                      countryCode: ''
-                      stateProvincePrefecture: ''
-                      zipPostalCode: ''
-                    deliveryStatus: ''
-                    deviceFingerprint: ''
-                    deviceId: ''
-                    deviceType: ''
-                    ipAddress: ''
-                    merchandiseServicesDesc: ''
-                    merchandiseServicesInd: ''
-                    providedDate: ''
-                    trackingInfo: ''
                   downloadDateCe04: ''
                   downloadTimeCe04: ''
                   emailAddressCe09: ''
@@ -2780,39 +2908,54 @@ paths:
                       - document: ''
                         documentName: ''
                   ipAddressCe09: ''
-                  nonCompRebuttal:
-                    - rebuttalTypeCode: ''
-                  notesText: ''
-                  otherCompany: ''
-                  pendExpirationDate: ''
+                  notesText: This is a test
                   phoneNumberCe09: ''
                   physicalAddressCe09: ''
                   productCode: '00002'
                   purchaserEmailCe04: ''
                   purchaserIpAddressCe04: ''
                   purchaserNameCe04: ''
-                  refundId: ''
-                  remedySelection: ''
-                  responseDocTypeOtherDesc: ''
-                  shippingDeliveryAddress:
-                    address1: ''
-                    address2: ''
-                    address3: ''
-                    cityTownVillage: ''
-                    countryCode: ''
-                    stateProvincePrefecture: ''
-                    zipPostalCode: ''
-                  shippingProvider: ''
-                  subProductCode: ''
-                  sysCode: SYSP
-                  trackingNumber: ''
-                  trackingUrl: ''
                   tranDateCe04: ''
                   tranDateCe09: ''
-                  tranDateCe13: ''
+                  tranDateCe13: 01/01/24
+              Action Id 301 compelling evidence remedy:
+                description: Action Id 301 compelling evidence remedy
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  autoFileFlag: ''
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  disputedTranDetail:
+                    customerLoginId: rtest101
+                    deliveryAddress:
+                      address1: ''
+                      address2: ''
+                      cityTownVillage: ''
+                      countryCode: ''
+                      stateProvincePrefecture: ''
+                      zipPostalCode: ''
+                    deliveryStatus: ''
+                    deviceFingerprint: ''
+                    deviceId: '13456789873456'
+                    deviceType: ''
+                    ipAddress: ''
+                    merchandiseServicesDesc: The shopper purchased an antique cat sofa and it was delivered to their address on May 1st signed by R.Test
+                    merchandiseServicesInd: M
+                    providedDate: ''
+                    trackingInfo: ''
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  notesText: ''
+                  productCode: '00002'
+                  remedySelection: 'Y'
+                  subProductCode: ''
+                  trackingNumber: ''
                   undisputedTranDetails:
-                    - arn: ''
-                      customerLoginId: ''
+                    - arn: '111111111111111111'
+                      customerLoginId: asmith01
                       deliveryAddress:
                         address1: ''
                         address2: ''
@@ -2821,14 +2964,110 @@ paths:
                         stateProvincePrefecture: ''
                         zipPostalCode: ''
                       deviceFingerprint: ''
-                      deviceId: ''
+                      deviceId: '131313131313'
                       deviceType: ''
                       ipAddress: ''
-                      merchandiseServicesDesc: ''
+                      merchandiseServicesDesc: This is a test
                       rolTranId: ''
-                      tranAmount: ''
-                      tranDate: ''
+                      tranAmount: '50'
+                      tranDate: 01/01/24
                       tranId: ''
+                    - arn: ''
+                      customerLoginId: odesk023
+                      deliveryAddress:
+                        address1: ''
+                        address2: ''
+                        cityTownVillage: ''
+                        countryCode: ''
+                        stateProvincePrefecture: ''
+                        zipPostalCode: ''
+                      deviceFingerprint: ''
+                      deviceId: '245654367899'
+                      deviceType: ''
+                      ipAddress: ''
+                      merchandiseServicesDesc: This is a test
+                      rolTranId: ''
+                      tranAmount: '500'
+                      tranDate: 03/25/24
+                      tranId: '14534676'
+              Action Id 301 non compelling all others:
+                description: Action Id 301 non compelling all others
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  autoFileFlag: ''
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: Test
+                  nonCompRebuttal:
+                    - rebuttalTypeCode: NCE01
+                  notesText: ''
+                  productCode: '00002'
+                  responseDocTypeOtherDesc: ''
+                  subProductCode: ''
+              Action Id 301 non compelling NCE30:
+                description: Action Id 301 non compelling NCE30
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  autoFileFlag: ''
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: Test
+                  nonCompRebuttal:
+                    - rebuttalTypeCode: NCE30
+                  notesText: ''
+                  productCode: '00002'
+                  responseDocTypeOtherDesc: Proof of 2 txns
+                  subProductCode: ''
+              Action Id 301 VBV:
+                description: Action Id 301 VBV
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  autoFileFlag: ''
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  notesText: This is a test of vbv rebuttal type
+                  productCode: '00002'
+                  vbvSelection: 'Y'
+              Action Id 302 accept:
+                description: Action Id 302 accept
+                value:
+                  actionId: '302'
+                  actionType: 1ACB
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  productCode: '00002'
+                  subProductCode: ''
+              Action Id 309 credit issued:
+                description: Action Id 309 credit issued
+                value:
+                  actionId: '309'
+                  actionType: 1ECR
+                  autoFileFlag: ''
+                  creditAmount: '2.00'
+                  creditArn: '11111111111111111111111'
+                  creditDate: 5/21/2024
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  notesText: ''
+                  productCode: '00002'
+                  subProductCode: ''
         required: true
       responses:
         '200':
@@ -3442,8 +3681,6 @@ paths:
                 value:
                   fromDate: '20240304'
                   toDate: '20240306'
-                  fromTime: '0900'
-                  toTime: '2300'
                   limit: 3
                   fields:
                     - ApprovalCode
@@ -3453,6 +3690,8 @@ paths:
                     - PaymentMethod
                     - Network
                   filters:
+                    fromTime: '0900'
+                    toTime: '2300'
                     approvalCodes:
                       - Approved
         required: true
@@ -3936,8 +4175,6 @@ paths:
                 value:
                   fromDate: '20210801'
                   toDate: '20210807'
-                  fromTime: '0900'
-                  toTime: '2300'
                   limit: 3
               List auths with specific fields:
                 description: List auths with specific fields
@@ -3956,8 +4193,6 @@ paths:
                 value:
                   fromDate: '20210801'
                   toDate: '20210807'
-                  fromTime: '0900'
-                  toTime: '2300'
                   limit: 3
                   fields:
                     - Amount
@@ -3969,6 +4204,8 @@ paths:
                     - First6
                     - Last4
                   filters:
+                    fromTime: '0900'
+                    toTime: '2300'
                     authCode: I7B1Q1
                     last4: '0000'
               List declined auths:
@@ -3987,6 +4224,8 @@ paths:
                     - PaymentMethod
                     - Network
                   filters:
+                    fromTime: '0900'
+                    toTime: '2300'
                     approvalCodes:
                       - Declined
               List approved auths for a specific store:
@@ -3994,8 +4233,6 @@ paths:
                 value:
                   fromDate: '20210801'
                   toDate: '20210807'
-                  fromTime: '0900'
-                  toTime: '2300'
                   limit: 3
                   fields:
                     - ApprovalCode
@@ -4005,6 +4242,8 @@ paths:
                     - PaymentMethod
                     - Network
                   filters:
+                    fromTime: '0900'
+                    toTime: '2300'
                     siteIDs:
                       - '1111111'
                     approvalCodes:
@@ -17673,6 +17912,122 @@ components:
             - McApDigEnabAuthentication
             - InterchangeReject
             - TaAesDukptP2pe
+            - DiscountFeesContra
+            - InterchangeFeesContra
+            - TransactionFeesContra
+            - CreditFeeContra
+            - IvrTranFeeContra
+            - DiscountFeesContractual
+            - ProcessingFeeContractual
+            - AuraPerTranFee
+            - AssessmentFeesContra
+            - ProcessingFeesContra
+            - InterchangeFeesContractual
+            - AssesmentFeesContractual
+            - TranscationFeesContractual
+            - IvrTranFeeContractual
+            - CreditFeeContractual
+            - SwitchFee
+            - NetworkFee
+            - ExchangeFee80
+            - ExchangeFee81
+            - ExchangeFee82
+            - ExchangeFee83
+            - ExchangeFee84
+            - ExchangeFee85
+            - ExchangeFee86
+            - ExchangeFee87
+            - ExchangeFee88
+            - ExchangeFee89
+            - ExchangeFee90
+            - ExchangeFee91
+            - ExchangeFee92
+            - ExchangeFee93
+            - ExchangeFee94
+            - ExchangeFee95
+            - ExchangeFee96
+            - ExchangeFee97
+            - ExchangeFee98
+            - ExchangeFee99
+            - ExchangeFee100
+            - ExchangeFee101
+            - ExchangeFee102
+            - ExchangeFee103
+            - ExchangeFee104
+            - ExchangeFee105
+            - ExchangeFee106
+            - ExchangeFee107
+            - ExchangeFee108
+            - ExchangeFee109
+            - ExchangeFee110
+            - ExchangeFee111
+            - ExchangeFee112
+            - ExchangeFee113
+            - ExchangeFee114
+            - ExchangeFee115
+            - ExchangeFee116
+            - ExchangeFee117
+            - ExchangeFee118
+            - ExchangeFee119
+            - ExchangeFee120
+            - ExchangeFee121
+            - ExchangeFee122
+            - ExchangeFee123
+            - ExchangeFee124
+            - ExchangeFee125
+            - ExchangeFee126
+            - ExchangeFee127
+            - ExchangeFee128
+            - ExchangeFee129
+            - ExchangeFee130
+            - ExchangeFee131
+            - ExchangeFee132
+            - ExchangeFee133
+            - ExchangeFee134
+            - ExchangeFee135
+            - ExchangeFee136
+            - ExchangeFee137
+            - ExchangeFee138
+            - ExchangeFee139
+            - ExchangeFee140
+            - ExchangeFee141
+            - ExchangeFee142
+            - ExchangeFee143
+            - ExchangeFee144
+            - ExchangeFee145
+            - ExchangeFee146
+            - ExchangeFee147
+            - ExchangeFee148
+            - ExchangeFee149
+            - ExchangeFee150
+            - ExchangeFee151
+            - ExchangeFee152
+            - ExchangeFee153
+            - ExchangeFee154
+            - ExchangeFee155
+            - ExchangeFee156
+            - ExchangeFee157
+            - ExchangeFee158
+            - ExchangeFee159
+            - ExchangeFee160
+            - ExchangeFee161
+            - ExchangeFee162
+            - ExchangeFee163
+            - ExchangeFee164
+            - ExchangeFee165
+            - ExchangeFee166
+            - ExchangeFee167
+            - ExchangeFee168
+            - ExchangeFee169
+            - ExchangeFee170
+            - ExchangeFee171
+            - ExchangeFee172
+            - ExchangeFee173
+            - ExchangeFee174
+            - ExchangeFee175
+            - ExchangeFee176
+            - ExchangeFee177
+            - ExchangeFee178
             - CloverSaasPlanFeeDr
             - CloverAppUsageFeeDr
             - CloverMobileDataFeeDr
@@ -17734,21 +18089,9 @@ components:
             - McDafNoauthCrFee
             - MCNoAuthenticationFee
             - IntrlnkDbtFeeDetailReport
-            - DiscountFeesContra
-            - InterchangeFeesContra
-            - AssessmentFeesContra
-            - TransactionFeesContra
-            - CreditFeeContra
-            - IvrTranFeeContra
-            - ProcessingFeesContra
-            - DiscountFeesContractual
-            - InterchangeFeesContractual
             - AssessmentFeesContractual
             - TransactionFeesContractual
-            - CreditFeeContractual
-            - IvrTranFeeContractual
             - ProcessingFeesContractual
-            - AuraPerTranFee
             - ExchangeReporting1
             - ExchangeReporting2
             - ExchangeReporting3
@@ -20562,6 +20905,36 @@ components:
           description: 'Commerce Hub Data Model Name: Response.PaymentReceipt.ApprovedAmount.total. Description: The approved amount of the transaction.'
           format: double
           example: 9.99
+        amountConvFee:
+          type: number
+          description: 'Commerce Hub Data Model Name: Request.amountComponents.convenienceFee. Description: The convenience fee charged on the Order'
+          format: double
+          example: 9.99
+        amountDuty:
+          type: number
+          description: 'Commerce Hub Data Model Name: Request.amountComponents.dutyAmount. Description: The duty charged on the Order'
+          format: double
+          example: 9.99
+        amountFreight:
+          type: number
+          description: 'Commerce Hub Data Model Name: Request.amountComponents.freightAmount. Description: The freight amount charged on the Order'
+          format: double
+          example: 9.99
+        amountGross:
+          type: number
+          description: 'Commerce Hub Data Model Name: Request.amountComponents.grossAmount. Description: The gross amount of the Order'
+          format: double
+          example: 9.99
+        amountNet:
+          type: number
+          description: 'Commerce Hub Data Model Name: Request.amountComponents.netAmount. Description: The net amount of the Order'
+          format: double
+          example: 9.99
+        amountSubTotal:
+          type: number
+          description: 'Commerce Hub Data Model Name: Request.amountComponents.subTotal. Description: The sub total of the Order'
+          format: double
+          example: 9.99
         apiTraceID:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.apiTraceId. Description: Request identifier in API that can be used to request logs from the support team.'
@@ -21352,6 +21725,12 @@ components:
               - AcsReferenceNumber3DS
               - AcsTransactionId3DS
               - Amount
+              - AmountConvFee
+              - AmountDuty
+              - AmountFreight
+              - AmountGross
+              - AmountNet
+              - AmountSubTotal
               - ApiTraceID
               - ApprovalCode
               - ApprovalCodeKey
@@ -24892,6 +25271,7 @@ components:
               - MasterCardBanknetDt
               - McPromotionCode
               - McServiceProviderID
+              - McrIndicator
               - MerchandiseCode
               - MerchandiseCodeKey
               - MerchantCategory
@@ -27485,6 +27865,10 @@ components:
           type: string
           description: MSP tag, MasterCard Service Provider ID is a unique Company ID (CID) assigned by MasterCard for each of the Payment Gateway Service Provider.
           example: ABC123
+        mcrIndicator:
+          type: string
+          description: MERCHANT CHOICE ROUTER IND.
+          example: '0000'
         merchandiseCode:
           type: string
           description: Describes the type of fuel purchased.
@@ -34153,13 +34537,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -34403,13 +34787,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isRequired:
-          type: boolean
-          description: Determines if respective attribute is required to provision the application for user
-          example: true
         isReferencedValue:
           type: boolean
           description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
+          example: true
+        isRequired:
+          type: boolean
+          description: Determines if respective attribute is required to provision the application for user
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
