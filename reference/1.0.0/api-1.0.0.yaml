@@ -562,6 +562,20 @@ paths:
                         - attibutes:
                             - id: 7
                               name: CLR_Entitlements_FeeReporting
+                  dataAccesses:
+                    - id: 1
+                      accessType: Hierarchy
+                      hierarchy:
+                        sysId: '1234567890'
+                        affiliateName: Mock Merchant 1
+                        externalMid: null
+                        hierarchyLevel:
+                          value: '90'
+                          display: Corporate
+                        platform:
+                          value: FDN
+                          display: North
+                      consortium: null
               Save Existing User with Single Application:
                 description: Save Existing User with Single Application
                 value:
@@ -592,6 +606,20 @@ paths:
                         - attibutes:
                             - id: 7
                               name: CLR_Entitlements_FeeReporting
+                  dataAccesses:
+                    - id: 1
+                      accessType: Hierarchy
+                      hierarchy:
+                        sysId: '1234567890'
+                        affiliateName: Mock Merchant 1
+                        externalMid: null
+                        hierarchyLevel:
+                          value: '90'
+                          display: Corporate
+                        platform:
+                          value: FDN
+                          display: North
+                      consortium: null
                   federated: true
                   clientDefinedIdentifier: testingnow
                   mfaEnabled: true
@@ -2597,26 +2625,12 @@ paths:
                   notesText: ''
                   productCode: '00018'
                   subProductCode: '010'
-              Action Id 303 retrieval response-1:
-                description: Action Id 303 retrieval response-1
-                value:
-                  actionId: '303'
-                  actionType: 1RRS
-                  disputeID: '11111111111'
-                  disputeType: RT
-                  images:
-                    documents:
-                      - document: Base64
-                        documentName: ''
-                  notesText: ''
-                  productCode: '00018'
-                  subProductCode: '010'
               Action Id 304 unable to fulfill:
                 description: Action Id 304 unable to fulfill
                 value:
                   actionId: '304'
                   actionType: 1UFL
-                  disputeID: '151876679'
+                  disputeID: '1111111111111'
                   disputeType: RT
                   productCode: '00003'
                   subProductCode: ''
@@ -2625,7 +2639,7 @@ paths:
                 value:
                   actionId: '307'
                   actionType: 1RSG
-                  disputeID: '151887353'
+                  disputeID: '1111111111111'
                   disputeType: RT
                   images:
                     documents:
@@ -2639,7 +2653,7 @@ paths:
                 value:
                   actionId: '308'
                   actionType: 1ULR
-                  disputeID: '151876638'
+                  disputeID: '1111111111111'
                   disputeType: RT
                   productCode: '00003'
                   subProductCode: ''
@@ -2801,6 +2815,45 @@ paths:
                   notesText: This is a test of AVS rebuttal type
                   productCode: '00002'
                   avsSelection: 'Y'
+              Action Id 301 Compelling Evidence - All Others:
+                description: Action Id 301 Compelling Evidence - All Others
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  arnCe04: ''
+                  arnCe09: ''
+                  arnCe13: ''
+                  autoFileFlag: ''
+                  compellingSelection: 'Y'
+                  compellingSelections:
+                    - compellingTypeCode: CE01
+                  customerLoginIdCe09: ''
+                  deviceFingerprintCe09: ''
+                  deviceIdCe04: ''
+                  deviceIdCe09: ''
+                  deviceNameCe04: ''
+                  digitalGoodsSelections: ''
+                  disputeID: '111111111111'
+                  disputeType: CB
+                  downloadDateCe04: ''
+                  downloadTimeCe04: ''
+                  emailAddressCe09: ''
+                  geographicalLocationCe04: ''
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  ipAddressCe09: ''
+                  notesText: Test
+                  phoneNumberCe09: ''
+                  physicalAddressCe09: ''
+                  productCode: '00002'
+                  purchaserEmailCe04: ''
+                  purchaserIpAddressCe04: ''
+                  purchaserNameCe04: ''
+                  tranDateCe04: ''
+                  tranDateCe09: ''
+                  tranDateCe13: ''
               Action Id 301 compelling evidence CE04:
                 description: Action Id 301 compelling evidence CE04
                 value:
@@ -2858,7 +2911,7 @@ paths:
                   deviceIdCe09: ''
                   deviceNameCe04: ''
                   digitalGoodsSelections: ''
-                  disputeID: '242464282601'
+                  disputeID: '1111111111111'
                   disputeType: CB
                   downloadDateCe04: ''
                   downloadTimeCe04: ''
@@ -2918,8 +2971,8 @@ paths:
                   tranDateCe04: ''
                   tranDateCe09: ''
                   tranDateCe13: 01/01/24
-              Action Id 301 compelling evidence remedy:
-                description: Action Id 301 compelling evidence remedy
+              Action Id 301 compelling remedy:
+                description: Action Id 301 compelling remedy
                 value:
                   actionId: '301'
                   actionType: 1DCB
@@ -5514,12 +5567,22 @@ components:
             - DISABLED
             - IDLE_LOCKED
             - LOCKED
+    Consortium:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
     Hierarchy:
       type: object
       properties:
         sysId:
           type: string
         affiliateName:
+          type: string
+        externalMid:
           type: string
         hierarchyLevel:
           $ref: '#/components/schemas/HierarchyLevel'
@@ -5667,7 +5730,6 @@ components:
           items:
             $ref: '#/components/schemas/SaveUserApplication'
         dataAccesses:
-          uniqueItems: true
           type: array
           description: User Data access Detail
           items:
@@ -5676,11 +5738,14 @@ components:
       type: object
       properties:
         id:
-          type: object
+          type: integer
+          format: int64
         accessType:
           type: string
         hierarchy:
           $ref: '#/components/schemas/Hierarchy'
+        consortium:
+          $ref: '#/components/schemas/Consortium'
       description: User Data access Detail
     UserPhoneDto:
       type: object
@@ -6094,6 +6159,7 @@ components:
               - InterchangePayment
               - PaymentToThirdParty
               - Tip
+              - IncrementalAuth
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -6397,6 +6463,10 @@ components:
               - Currency
               - CurrencyKey
               - CustRefNr
+              - CustomField1
+              - CustomField2
+              - CustomField3
+              - CustomField4
               - CustomTracking
               - Cvc2Result
               - Cvv2Result
@@ -6444,11 +6514,19 @@ components:
               - GlobalTranId
               - HealthCareInd
               - ICFeePerTranRate
+              - ICFeePerTranRate1
               - IcCardConditonCode
               - IcFeeAmount
               - IcFeeCapInd
               - IcFeeID
               - IcFeePerTranAmount
+              - IcFeePerTranAmount1
+              - IcFeePerTranAmount2
+              - IcFeePerTranAmount3
+              - IcNetwork1
+              - IcNetwork1Key
+              - IcProcessedTransactionAmount1
+              - IcplanCodeDesc1
               - IfFeeAmount
               - InfrastructureFeeCapInd
               - InfrastructureFeeID
@@ -7582,6 +7660,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         authCurrencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -8158,6 +8296,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         currencyKey:
           type: string
           description: Processing currency code used for the transaction. (Code)
@@ -8166,6 +8364,22 @@ components:
           type: string
           description: Customer Reference Number
           example: '9999999999999'
+        customField1:
+          type: string
+          description: Custom Field 1.
+          example: AA99BB99CC99
+        customField2:
+          type: string
+          description: Custom Field 2.
+          example: AA99BB99CC99
+        customField3:
+          type: string
+          description: Custom Field 3.
+          example: AA99BB99CC99
+        customField4:
+          type: string
+          description: Custom Field 4.
+          example: AA99BB99CC99
         customTracking:
           type: string
           description: The customer tracking number associated with the original transaction.
@@ -8469,6 +8683,11 @@ components:
           description: Interchange charge fee rate per transaction.
           format: double
           example: 0.99999
+        iCFeePerTranRate1:
+          type: number
+          description: Interchange charge fee rate per transaction.
+          format: double
+          example: 0.99999
         icCardConditonCode:
           type: string
           description: Identifies the card condition previously read.
@@ -8491,6 +8710,105 @@ components:
           description: Interchange charge fee amount per transaction.
           format: double
           example: 0.99999
+        icFeePerTranAmount1:
+          type: number
+          description: Interchange charge fee amount per transaction.
+          format: double
+          example: 0.99999
+        icFeePerTranAmount2:
+          type: number
+          description: Interchange charge fee amount per transaction.
+          format: double
+        icFeePerTranAmount3:
+          type: number
+          description: Interchange charge fee amount per transaction.
+          format: double
+        icNetwork1:
+          type: string
+          description: Name of the authorizing network associated with the transaction.
+          example: Accel
+          enum:
+            - Unknown
+            - Amex
+            - Visa
+            - Master
+            - Discover
+            - Pulse
+            - Accel
+            - Interlink
+            - Jeanie
+            - Maestro
+            - NYCE
+            - CU24
+            - Shazam
+            - EBT
+            - AFFN
+            - Telecheck
+            - Diners
+            - PayPal
+            - ValueLink
+            - Private
+            - Debit
+            - Voyager
+            - ATH
+            - JCB
+            - StarNE
+            - StarSE
+            - StarW
+            - StarAccess
+            - FleetCor
+            - SVS
+            - WEX
+            - Incomm
+            - Interac
+            - NA
+            - Moneris
+            - VaultedCard
+            - PAVD
+            - MCSend
+            - UnionPay
+            - FraudFlex
+            - Certegy
+            - MCI
+            - PaypalVenmo
+            - Conduent
+            - FISG
+            - INMR
+            - PWMB
+            - SOLU
+            - WCHP
+            - AliPay
+            - EFunds
+            - ACS
+            - ConnectPay
+            - Buypass
+            - APM
+            - ATB
+            - ATG
+            - Alaska
+            - eFunds
+            - StarEast
+            - MaestroInternational
+            - Rupay
+            - CUP
+            - EFTPos
+            - SCBOnUs
+            - AmexOptBlue
+            - Comdata
+            - Paypoint
+        icNetwork1Key:
+          type: string
+          description: Name of the authorizing network associated with the transaction. (Code)
+          example: '6'
+        icProcessedTransactionAmount1:
+          type: number
+          description: Settlement amount associated with the transaction.
+          format: double
+          example: 999.99
+        icplanCodeDesc1:
+          type: string
+          description: Interchange rate / plan code description.
+          example: '999 : PLAN CODE DESC'
         ifFeeAmount:
           type: number
           description: Infrastructure fee amount.
@@ -9285,6 +9603,28 @@ components:
             - ProsaMastercard
             - ProsaPrivateLabel
             - AmexOptBlue
+            - Proprietary
+            - Intrabank
+            - AUSDomCredit
+            - UKDM
+            - Pagobancomat
+            - Loyalty
+            - SpainDD
+            - NetherlandsDD
+            - UKDD
+            - TPAgoDDA
+            - RuPay
+            - RuPayJCB
+            - RuPayCUP
+            - RuPayDiscover
+            - BankServAMEX
+            - BCMC
+            - iDeal
+            - LP
+            - Davivienda
+            - Mercury
+            - Jets
+            - Links
         productCodeKey:
           type: string
           description: Name of the card brand associated with the transaction. (Code)
@@ -9743,6 +10083,7 @@ components:
             - InterchangePayment
             - PaymentToThirdParty
             - Tip
+            - IncrementalAuth
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -10264,6 +10605,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -11908,6 +12309,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         billingCurrencyKey:
           type: string
           description: Identifies cardholder billing currency. (Code)
@@ -15484,6 +15945,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -17929,105 +18450,6 @@ components:
             - CreditFeeContractual
             - SwitchFee
             - NetworkFee
-            - ExchangeFee80
-            - ExchangeFee81
-            - ExchangeFee82
-            - ExchangeFee83
-            - ExchangeFee84
-            - ExchangeFee85
-            - ExchangeFee86
-            - ExchangeFee87
-            - ExchangeFee88
-            - ExchangeFee89
-            - ExchangeFee90
-            - ExchangeFee91
-            - ExchangeFee92
-            - ExchangeFee93
-            - ExchangeFee94
-            - ExchangeFee95
-            - ExchangeFee96
-            - ExchangeFee97
-            - ExchangeFee98
-            - ExchangeFee99
-            - ExchangeFee100
-            - ExchangeFee101
-            - ExchangeFee102
-            - ExchangeFee103
-            - ExchangeFee104
-            - ExchangeFee105
-            - ExchangeFee106
-            - ExchangeFee107
-            - ExchangeFee108
-            - ExchangeFee109
-            - ExchangeFee110
-            - ExchangeFee111
-            - ExchangeFee112
-            - ExchangeFee113
-            - ExchangeFee114
-            - ExchangeFee115
-            - ExchangeFee116
-            - ExchangeFee117
-            - ExchangeFee118
-            - ExchangeFee119
-            - ExchangeFee120
-            - ExchangeFee121
-            - ExchangeFee122
-            - ExchangeFee123
-            - ExchangeFee124
-            - ExchangeFee125
-            - ExchangeFee126
-            - ExchangeFee127
-            - ExchangeFee128
-            - ExchangeFee129
-            - ExchangeFee130
-            - ExchangeFee131
-            - ExchangeFee132
-            - ExchangeFee133
-            - ExchangeFee134
-            - ExchangeFee135
-            - ExchangeFee136
-            - ExchangeFee137
-            - ExchangeFee138
-            - ExchangeFee139
-            - ExchangeFee140
-            - ExchangeFee141
-            - ExchangeFee142
-            - ExchangeFee143
-            - ExchangeFee144
-            - ExchangeFee145
-            - ExchangeFee146
-            - ExchangeFee147
-            - ExchangeFee148
-            - ExchangeFee149
-            - ExchangeFee150
-            - ExchangeFee151
-            - ExchangeFee152
-            - ExchangeFee153
-            - ExchangeFee154
-            - ExchangeFee155
-            - ExchangeFee156
-            - ExchangeFee157
-            - ExchangeFee158
-            - ExchangeFee159
-            - ExchangeFee160
-            - ExchangeFee161
-            - ExchangeFee162
-            - ExchangeFee163
-            - ExchangeFee164
-            - ExchangeFee165
-            - ExchangeFee166
-            - ExchangeFee167
-            - ExchangeFee168
-            - ExchangeFee169
-            - ExchangeFee170
-            - ExchangeFee171
-            - ExchangeFee172
-            - ExchangeFee173
-            - ExchangeFee174
-            - ExchangeFee175
-            - ExchangeFee176
-            - ExchangeFee177
-            - ExchangeFee178
             - CloverSaasPlanFeeDr
             - CloverAppUsageFeeDr
             - CloverMobileDataFeeDr
@@ -18092,106 +18514,72 @@ components:
             - AssessmentFeesContractual
             - TransactionFeesContractual
             - ProcessingFeesContractual
-            - ExchangeReporting1
-            - ExchangeReporting2
-            - ExchangeReporting3
-            - ExchangeReporting4
-            - ExchangeReporting5
-            - ExchangeReporting6
-            - ExchangeReporting7
-            - ExchangeReporting8
-            - ExchangeReporting9
-            - ExchangeReporting10
-            - ExchangeReporting11
-            - ExchangeReporting12
-            - ExchangeReporting13
-            - ExchangeReporting14
-            - ExchangeReporting15
-            - ExchangeReporting16
-            - ExchangeReporting17
-            - ExchangeReporting18
-            - ExchangeReporting19
-            - ExchangeReporting20
-            - ExchangeFee1
-            - ExchangeFee2
-            - ExchangeFee3
-            - ExchangeFee4
-            - ExchangeFee5
-            - ExchangeFee6
-            - ExchangeFee7
-            - ExchangeFee8
-            - ExchangeFee9
-            - ExchangeFee10
-            - ExchangeFee11
-            - ExchangeFee12
-            - ExchangeFee13
-            - ExchangeFee14
-            - ExchangeFee15
-            - ExchangeFee16
-            - ExchangeFee17
-            - ExchangeFee18
-            - ExchangeFee19
-            - ExchangeFee20
-            - ExchangeFee21
-            - ExchangeFee22
-            - ExchangeFee23
-            - ExchangeFee24
-            - ExchangeFee25
-            - ExchangeFee26
-            - ExchangeFee27
-            - ExchangeFee28
-            - ExchangeFee29
-            - ExchangeFee30
-            - ExchangeFee31
-            - ExchangeFee32
-            - ExchangeFee33
-            - ExchangeFee34
-            - ExchangeFee35
-            - ExchangeFee36
-            - ExchangeFee37
-            - ExchangeFee38
-            - ExchangeFee39
-            - ExchangeFee40
-            - ExchangeFee41
-            - ExchangeFee42
-            - ExchangeFee43
-            - ExchangeFee44
-            - ExchangeFee45
-            - ExchangeFee46
-            - ExchangeFee47
-            - ExchangeFee48
-            - ExchangeFee49
-            - ExchangeFee50
-            - ExchangeFee51
-            - ExchangeFee52
-            - ExchangeFee53
-            - ExchangeFee54
-            - ExchangeFee55
-            - ExchangeFee56
-            - ExchangeFee57
-            - ExchangeFee58
-            - ExchangeFee59
-            - ExchangeFee60
-            - ExchangeFee61
-            - ExchangeFee62
-            - ExchangeFee63
-            - ExchangeFee64
-            - ExchangeFee65
-            - ExchangeFee66
-            - ExchangeFee67
-            - ExchangeFee68
-            - ExchangeFee69
-            - ExchangeFee70
-            - ExchangeFee71
-            - ExchangeFee72
-            - ExchangeFee73
-            - ExchangeFee74
-            - ExchangeFee75
-            - ExchangeFee76
-            - ExchangeFee77
-            - ExchangeFee78
-            - ExchangeFee79
             - DinersMsf
+            - VisaUsApfFeeDebitIntl
+            - VisaUsApfFeeCreditIntl
+            - McCanEcommDevFee
+            - PciDssManagementNetFeeDr
+            - PciDssManagementVatFeeDr
+            - SecurityManagedServNetFeeDr
+            - CardNotPresentFee
+            - InternationalFee
+            - McPsd2KeyedCpTranFee
+            - McChipTranwithoutCvm
+            - McClearPosUniqeTranFee
+            - VisaCpServiceFee
+            - VisaCnpServiceFee
+            - McCnpVolumeFee
+            - McCpVolumeFee
+            - McEmvAcqEnblmentFee
+            - VisaAcctVerfyServce
+            - VisaAdrsVerfyServce
+            - VisaExcessDeclineFee
+            - VisaIssNeverApproveFee
+            - Mc3dsAuthenNonRecFee
+            - Mc3dsAuthenRecFee
+            - McAuthFee
+            - McAuthReversalFee
+            - McEuPsd2KeyCp
+            - LpMerchantCollections
+            - McAcquirerAuthDomfee1
+            - McAcquirerAuthDomfee2
+            - McAcquirerAuthIntfee1
+            - McAcquirerAuthIntfee2
+            - VisaMarketDevFundFee
+            - VcrAcceptfee2
+            - VcrAcceptfee3
+            - DCCMarginDB
+            - DCCMarginCR
+            - TRFVeriFoneEngageV200C
+            - TRFVeriFoneEngageV240M
+            - TRFVeriFoneEngageE285
+            - TRFIngenicoMOVE2500
+            - TRFIngenicoMOVE5000
+            - TRFIngenicoLink2500
+            - TRFLACVx520DualIPDial
+            - TRFLACVx6803G
+            - TRFVerifoneVx680WiFiGPRS
+            - TRFLACVx820DualIPDial
+            - TRFVerifoneVx805Pinpad
+            - PCIAttestationFee
+            - KeyEnteredTransactionFee
+            - TAXonMDRRefund
+            - TAXonMDR
+            - AnnualProfitThresholdPenalty
+            - MonthlyProfitThresholdPenaltyfee
+            - DeclineAuthorizationFee
+            - SubMerchantExchangeBilling
+            - MonthlySaaSFee
+            - FundingFee
+            - RiskManagementFee
+            - AMLManagementFee
+            - SubMerchantMaintenenaceFee
+            - StatementGenerationFee
+            - TransactionMonitoringFee
+            - MinimumMonthlyFee
+            - SubMerchantPortalFee
+            - DebitCardSettlement
+            - ACHProcessingFee
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -18437,6 +18825,28 @@ components:
             - ProsaMastercard
             - ProsaPrivateLabel
             - AmexOptBlue
+            - Proprietary
+            - Intrabank
+            - AUSDomCredit
+            - UKDM
+            - Pagobancomat
+            - Loyalty
+            - SpainDD
+            - NetherlandsDD
+            - UKDD
+            - TPAgoDDA
+            - RuPay
+            - RuPayJCB
+            - RuPayCUP
+            - RuPayDiscover
+            - BankServAMEX
+            - BCMC
+            - iDeal
+            - LP
+            - Davivienda
+            - Mercury
+            - Jets
+            - Links
         productCodeKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -19421,6 +19831,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         timeZone:
           type: string
           description: TimeZone of the transaction.
@@ -19743,6 +20213,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         currencyKey:
           type: string
           description: Currency of the transaction. (Code)
@@ -19792,6 +20322,10 @@ components:
           type: string
           description: The name on the check of the transaction.
           example: John Deo
+        networkTransactionId:
+          type: string
+          description: Card Network transaction identifier.
+          example: '239438358'
         origId:
           type: string
           description: Originator id of the merchant.
@@ -20339,6 +20873,7 @@ components:
               - MerchantStatusKey
               - Mid
               - NameOnCheck
+              - NetworkTransactionId
               - OrigId
               - PaymentAmount
               - PaymentChannel
@@ -20609,6 +21144,7 @@ components:
               - InterchangePayment
               - PaymentToThirdParty
               - Tip
+              - IncrementalAuth
         currency:
           type: array
           description: Transactions associated with a particular
@@ -20808,6 +21344,66 @@ components:
               - ZMW
               - SLE
               - LEK
+              - PLZ
+              - PTE
+              - TPE
+              - ROL
+              - SKK
+              - SIT
+              - ZWD
+              - YUM
+              - ESP
+              - SDD
+              - SRG
+              - TJR
+              - LUF
+              - MGF
+              - MLF
+              - MTL
+              - MZM
+              - NLG
+              - GRD
+              - IEP
+              - ITL
+              - CNX
+              - ZRN
+              - CYP
+              - CSK
+              - ECS
+              - GQE
+              - EEK
+              - FIM
+              - FRF
+              - DDM
+              - DEM
+              - GHC
+              - ADP
+              - AON
+              - AZM
+              - ATS
+              - BEF
+              - BRC
+              - BGL
+              - BYB
+              - TRL
+              - PTL
+              - TMM
+              - UAK
+              - RUR
+              - VEB
+              - YUD
+              - CSD
+              - XEU
+              - AOR
+              - ECV
+              - EZN
+              - AYM
+              - CNH
+              - ARX
+              - ZWN
+              - MRU
+              - STN
+              - AFA
         authCode:
           type: string
           description: Auth Code, Full match
@@ -21673,6 +22269,7 @@ components:
             - InterchangePayment
             - PaymentToThirdParty
             - Tip
+            - IncrementalAuth
         txnTypeKey:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization. (Code)'
@@ -22040,6 +22637,8 @@ components:
               - DispositionKey
               - ECIndicator
               - ECIndicatorKey
+              - MultiAcquierPassThroughInd
+              - MultiAcquierPassThroughIndKey
               - Reason
               - ReasonKey
               - AccountNumber
@@ -22334,6 +22933,14 @@ components:
           type: string
           description: Electronic Commerce Indicator (ECI) is a value returned by Visa, MasterCard, JCB, and American Express etc. indicating the outcome of authentication attempted on transactions. (Code)
           example: '4'
+        MultiAcquierPassThroughInd:
+          type: string
+          description: Identifies pass-through chargeback record for a multi acquirer merchant.The merchant is funded directly by their acquirer for this dispute
+          example: ''
+        MultiAcquierPassThroughIndKey:
+          type: string
+          description: Identifies pass-through chargeback record for a multi acquirer merchant.The merchant is funded directly by their acquirer for this dispute (Code)
+          example: 'Yes'
         Reason:
           type: string
           description: Descriptive reason associated with a specific chargeback.
@@ -23114,6 +23721,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -23401,6 +24068,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         diputeCurrencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -23676,6 +24403,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         merchantFundingCurrencyKey:
           type: string
           description: Currency in which the original presentment was funded to the merchant. (Code)
@@ -23839,6 +24626,28 @@ components:
             - ProsaMastercard
             - ProsaPrivateLabel
             - AmexOptBlue
+            - Proprietary
+            - Intrabank
+            - AUSDomCredit
+            - UKDM
+            - Pagobancomat
+            - Loyalty
+            - SpainDD
+            - NetherlandsDD
+            - UKDD
+            - TPAgoDDA
+            - RuPay
+            - RuPayJCB
+            - RuPayCUP
+            - RuPayDiscover
+            - BankServAMEX
+            - BCMC
+            - iDeal
+            - LP
+            - Davivienda
+            - Mercury
+            - Jets
+            - Links
         merchantProductCodeKey:
           type: string
           description: Merchant network of the cerdit card utilized for the transaction. (Code)
@@ -23851,11 +24660,11 @@ components:
         message:
           type: string
           description: Alert Message Description.
-          example: Submission under review
+          example: ''
         messageKey:
           type: string
           description: Alert Message Description. (Code)
-          example: '1'
+          example: ''
         mobileIndicator:
           type: string
           description: Mobile indicator.
@@ -24113,6 +24922,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         networkSettleCurrencyKey:
           type: string
           description: Currency settled with the payment network for the presentment before the deduction of any charges. (Code)
@@ -24529,6 +25398,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         submittedTxnCurrencyCodeKey:
           type: string
           description: ISO 4217 3 digit code representing the currency the transaction was processed in at the POS. (Code)
@@ -25011,6 +25940,7 @@ components:
               - InterchangePayment
               - PaymentToThirdParty
               - Tip
+              - IncrementalAuth
         siteIDs:
           type: array
           description: Transactions associated with one of the Site IDs specified
@@ -25201,6 +26131,8 @@ components:
               - CashBackIndicatorKey
               - CatLevelIndicator
               - CavvDowngradeReason
+              - CredentialOnFile
+              - CredentialOnFileKey
               - CrossBorderIndicator
               - CshbAmount
               - Currency
@@ -25271,7 +26203,6 @@ components:
               - MasterCardBanknetDt
               - McPromotionCode
               - McServiceProviderID
-              - McrIndicator
               - MerchandiseCode
               - MerchandiseCodeKey
               - MerchantCategory
@@ -25301,6 +26232,7 @@ components:
               - NetworkAuthIndicator3Key
               - NetworkKey
               - NetworkTokenEligibleIndicator
+              - NetworkTokenExpiryDate
               - NetworkTokenNumber
               - NetworkTokenOfferingType
               - NetworkTokenOfferingTypeKey
@@ -25860,6 +26792,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         DCCCurrencyKey:
           type: string
           description: Identifies non-local merchant enabled dynamic currency code. (Code)
@@ -27182,6 +28174,14 @@ components:
           type: string
           description: Identifies the Mastercard CAVV downgrade reason.
           example: T
+        credentialOnFile:
+          type: string
+          description: Credential on File Indicator
+          example: ''
+        credentialOnFileKey:
+          type: string
+          description: Credential on File Indicator (Code)
+          example: 'Yes'
         crossBorderIndicator:
           type: string
           description: Indicates whether the transaction qualifies as a fee program transaction.
@@ -27385,6 +28385,66 @@ components:
             - ZMW
             - SLE
             - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
         currencyKey:
           type: string
           description: Currency code used for the transaction. (Code)
@@ -27865,10 +28925,6 @@ components:
           type: string
           description: MSP tag, MasterCard Service Provider ID is a unique Company ID (CID) assigned by MasterCard for each of the Payment Gateway Service Provider.
           example: ABC123
-        mcrIndicator:
-          type: string
-          description: MERCHANT CHOICE ROUTER IND.
-          example: '0000'
         merchandiseCode:
           type: string
           description: Describes the type of fuel purchased.
@@ -28324,6 +29380,10 @@ components:
           type: string
           description: Network Token Eligible Indicator.
           example: 'Y'
+        networkTokenExpiryDate:
+          type: string
+          description: Network Token Expiry Date
+          example: '2408'
         networkTokenNumber:
           type: string
           description: Network token number.
@@ -34409,6 +35469,7 @@ components:
             - InterchangePayment
             - PaymentToThirdParty
             - Tip
+            - IncrementalAuth
         typeKey:
           type: string
           description: Transaction type code e.g., sale, refund etc. (Code)
@@ -34682,7 +35743,6 @@ components:
           items:
             $ref: '#/components/schemas/ApplicationDto'
         dataAccesses:
-          uniqueItems: true
           type: array
           description: User Data access Detail
           items:
