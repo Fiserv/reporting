@@ -7,7 +7,7 @@ Here is a sample Merchant Dashboard we created to show case the APIs. Click here
 ![merchantportal](../../assets/images/merchantportal.png)
 
 
-#### ![oneicon](../../assets/images/oneicon(1).png)  Funding Summary
+## ![oneicon](../../assets/images/oneicon(1).png)  Funding Summary
 
 Funding summary pulled for the dates specified for the 2 stores. There are many other summary options available, this specific example is pulling the overall summary. Check out the Funding summary API for these options.
 
