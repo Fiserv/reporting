@@ -1,9 +1,11 @@
 # Meta Data
 
-### What is Meta Data?
+## What is Meta Data?
+
 Meta data are the fields and pivots that comprise a report.  What fields a user would like to be shown in an itemized report or what pivots a user would like to use in a summary report. By calling the `metaData` API for a particular report type, the developer will get access to all the available fields and pivots to build their own customizable report. 
 
 ### Example Meta Data
+
 ```json
 {
   "fields": [

@@ -2,7 +2,7 @@
 
 If traditional restful APIs do not satisfy your requirements and you would rather get data feeds, we have multiple ways to get your data to you easily and in a timely manner. Choose from one of the following options to consume your data across the value chain.
  
-### Snowflake
+## Snowflake
 
 ![snowflake](../../assets/images/snowflake.jpeg)
 
