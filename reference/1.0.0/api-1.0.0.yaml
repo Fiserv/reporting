@@ -6523,7 +6523,6 @@ components:
               - IcFeePerTranAmount1
               - IcFeePerTranAmount2
               - IcFeePerTranAmount3
-              - IcNetwork1
               - IcNetwork1Key
               - IcProcessedTransactionAmount1
               - IcplanCodeDesc1
@@ -8723,79 +8722,6 @@ components:
           type: number
           description: Interchange charge fee amount per transaction.
           format: double
-        icNetwork1:
-          type: string
-          description: Name of the authorizing network associated with the transaction.
-          example: Accel
-          enum:
-            - Unknown
-            - Amex
-            - Visa
-            - Master
-            - Discover
-            - Pulse
-            - Accel
-            - Interlink
-            - Jeanie
-            - Maestro
-            - NYCE
-            - CU24
-            - Shazam
-            - EBT
-            - AFFN
-            - Telecheck
-            - Diners
-            - PayPal
-            - ValueLink
-            - Private
-            - Debit
-            - Voyager
-            - ATH
-            - JCB
-            - StarNE
-            - StarSE
-            - StarW
-            - StarAccess
-            - FleetCor
-            - SVS
-            - WEX
-            - Incomm
-            - Interac
-            - NA
-            - Moneris
-            - VaultedCard
-            - PAVD
-            - MCSend
-            - UnionPay
-            - FraudFlex
-            - Certegy
-            - MCI
-            - PaypalVenmo
-            - Conduent
-            - FISG
-            - INMR
-            - PWMB
-            - SOLU
-            - WCHP
-            - AliPay
-            - EFunds
-            - ACS
-            - ConnectPay
-            - Buypass
-            - APM
-            - ATB
-            - ATG
-            - Alaska
-            - eFunds
-            - StarEast
-            - MaestroInternational
-            - Rupay
-            - CUP
-            - EFTPos
-            - SCBOnUs
-            - AmexOptBlue
-            - Comdata
-            - Paypoint
         icNetwork1Key:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -11241,7 +11167,7 @@ components:
           type: array
           description: Specify specific fields to be pulled back instead of the entire set (default behavior)
           example:
-            - Reason
+            - InquiryDescription
             - AccountNumber
             - AuthNetwork
             - Currency
@@ -11251,7 +11177,7 @@ components:
           items:
             type: string
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            example: '["Reason","AccountNumber","AuthNetwork","Currency","InvoiceNumber","Status","TrackingNumber"]'
+            example: '["InquiryDescription","AccountNumber","AuthNetwork","Currency","InvoiceNumber","Status","TrackingNumber"]'
             enum:
               - UserData2
               - AccountNumber
@@ -35598,13 +35524,13 @@ components:
             type: string
             description: Determines the user attribute value for respective application
             example: '["4"]'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     AttributeOptionDto:
@@ -35847,13 +35773,13 @@ components:
           description: Selectable options for respective attribute if type = SELECT/MULTISELECT
           items:
             $ref: '#/components/schemas/AttributeOptionDto'
-        isReferencedValue:
-          type: boolean
-          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
-          example: true
         isRequired:
           type: boolean
           description: Determines if respective attribute is required to provision the application for user
+          example: true
+        isReferencedValue:
+          type: boolean
+          description: If true, the attribute value holds the reference ID from attribute option. If false, the attribute value holds direct value for respective attribute
           example: true
       description: '// Respective Application specific attributes(For example: Entitlements)'
     FeatureAssignable:
