@@ -4,7 +4,7 @@
 
 Reporting has different environments that allow the consumption of our RESTful APIs for client development, customer acceptance testing, and production. As part of OAuth v2 Authentication, Merchant must make 2 API calls. More information on OAuthV2 can be found out on [wiki page](https://en.wikipedia.org/wiki/OAuth)
 
-1.	One for the token generation where the access token is valid only for 59 minutes. After 59 minutes, merchant must generate the access token again by calling the /token/generate API call.
+1.	One for the token generation where the access token is valid only for 15 minutes. After 15 minutes, merchant must generate the access token again by calling the /token/generate API call.
 2.	Subsequent call is the actual API Reporting call.
 
 ### Below is the Type of Authorization tab to be selected, complete the following relevant details.
@@ -68,7 +68,7 @@ From the token API call, we get the response in the below format
     "access_token": "{{string-Needed access token}}",
     "application_name": "{{string}}",
     "scope": "",
-    "expires_in": "3599",
+    "expires_in": "899",
     "refresh_count": "0",
     "status": "approved"
 }
