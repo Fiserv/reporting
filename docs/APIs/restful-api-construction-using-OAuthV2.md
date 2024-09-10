@@ -68,7 +68,7 @@ From the token API call, we get the response in the below format
     "access_token": "{{string-Needed access token}}",
     "application_name": "{{string}}",
     "scope": "",
-    "expires_in": "3599",
+    "expires_in": "899",
     "refresh_count": "0",
     "status": "approved"
 }
