@@ -6523,9 +6523,6 @@ components:
               - IcFeePerTranAmount1
               - IcFeePerTranAmount2
               - IcFeePerTranAmount3
-              - IcNetwork1Key
-              - IcProcessedTransactionAmount1
-              - IcplanCodeDesc1
               - IfFeeAmount
               - InfrastructureFeeCapInd
               - InfrastructureFeeID
@@ -8722,19 +8719,6 @@ components:
           type: number
           description: Interchange charge fee amount per transaction.
           format: double
-        icNetwork1Key:
-          type: string
-          description: Name of the authorizing network associated with the transaction. (Code)
-          example: '6'
-        icProcessedTransactionAmount1:
-          type: number
-          description: Settlement amount associated with the transaction.
-          format: double
-          example: 999.99
-        icplanCodeDesc1:
-          type: string
-          description: Interchange rate / plan code description.
-          example: '999 : PLAN CODE DESC'
         ifFeeAmount:
           type: number
           description: Infrastructure fee amount.
@@ -11172,12 +11156,12 @@ components:
             - AuthNetwork
             - Currency
             - InvoiceNumber
-            - Status
+            - InquiryStatus
             - TrackingNumber
           items:
             type: string
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            example: '["InquiryDescription","AccountNumber","AuthNetwork","Currency","InvoiceNumber","Status","TrackingNumber"]'
+            example: '["InquiryDescription","AccountNumber","AuthNetwork","Currency","InvoiceNumber","InquiryStatus","TrackingNumber"]'
             enum:
               - UserData2
               - AccountNumber
