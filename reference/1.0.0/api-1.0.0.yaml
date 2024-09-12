@@ -6523,10 +6523,6 @@ components:
               - IcFeePerTranAmount1
               - IcFeePerTranAmount2
               - IcFeePerTranAmount3
-              - IcNetwork1
-              - IcNetwork1Key
-              - IcProcessedTransactionAmount1
-              - IcplanCodeDesc1
               - IfFeeAmount
               - InfrastructureFeeCapInd
               - InfrastructureFeeID
@@ -8723,92 +8719,6 @@ components:
           type: number
           description: Interchange charge fee amount per transaction.
           format: double
-        icNetwork1:
-          type: string
-          description: Name of the authorizing network associated with the transaction.
-          example: Accel
-          enum:
-            - Unknown
-            - Amex
-            - Visa
-            - Master
-            - Discover
-            - Pulse
-            - Accel
-            - Interlink
-            - Jeanie
-            - Maestro
-            - NYCE
-            - CU24
-            - Shazam
-            - EBT
-            - AFFN
-            - Telecheck
-            - Diners
-            - PayPal
-            - ValueLink
-            - Private
-            - Debit
-            - Voyager
-            - ATH
-            - JCB
-            - StarNE
-            - StarSE
-            - StarW
-            - StarAccess
-            - FleetCor
-            - SVS
-            - WEX
-            - Incomm
-            - Interac
-            - NA
-            - Moneris
-            - VaultedCard
-            - PAVD
-            - MCSend
-            - UnionPay
-            - FraudFlex
-            - Certegy
-            - MCI
-            - PaypalVenmo
-            - Conduent
-            - FISG
-            - INMR
-            - PWMB
-            - SOLU
-            - WCHP
-            - AliPay
-            - EFunds
-            - ACS
-            - ConnectPay
-            - Buypass
-            - APM
-            - ATB
-            - ATG
-            - Alaska
-            - eFunds
-            - StarEast
-            - MaestroInternational
-            - Rupay
-            - CUP
-            - EFTPos
-            - SCBOnUs
-            - AmexOptBlue
-            - Comdata
-            - Paypoint
-        icNetwork1Key:
-          type: string
-          description: Name of the authorizing network associated with the transaction. (Code)
-          example: '6'
-        icProcessedTransactionAmount1:
-          type: number
-          description: Settlement amount associated with the transaction.
-          format: double
-          example: 999.99
-        icplanCodeDesc1:
-          type: string
-          description: Interchange rate / plan code description.
-          example: '999 : PLAN CODE DESC'
         ifFeeAmount:
           type: number
           description: Infrastructure fee amount.
@@ -11241,17 +11151,17 @@ components:
           type: array
           description: Specify specific fields to be pulled back instead of the entire set (default behavior)
           example:
-            - Reason
+            - InquiryDescription
             - AccountNumber
             - AuthNetwork
             - Currency
             - InvoiceNumber
-            - Status
+            - InquiryStatus
             - TrackingNumber
           items:
             type: string
             description: Specify specific fields to be pulled back instead of the entire set (default behavior)
-            example: '["Reason","AccountNumber","AuthNetwork","Currency","InvoiceNumber","Status","TrackingNumber"]'
+            example: '["InquiryDescription","AccountNumber","AuthNetwork","Currency","InvoiceNumber","InquiryStatus","TrackingNumber"]'
             enum:
               - UserData2
               - AccountNumber
@@ -19190,7 +19100,7 @@ components:
           example: Invoice
         document:
           type: string
-          description: 'Document uploaded with the response. Acceptable image types: TIFF, BMP, GIF, JPEG, PNG, PDF. Multiple documents may be uploaded, total image size must be 5MB or less. Format: Base64.'
+          description: 'Document uploaded with the response. Acceptable image types: TIFF, BMP, GIF, JPEG, PNG, PDF. Multiple documents may be uploaded (Up to 25 separate documents), total image size must be 5MB or less. Format: Base64.'
           example: Base64 string
     ImagesDTO:
       type: object

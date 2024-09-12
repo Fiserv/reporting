@@ -6,7 +6,7 @@
 
 > To ensure data integrity, prevent replay attacks, and eliminate stale requests, Authentication is required as part of the Header.
 
-### Details
+## Details
 - Signature Algorithm: SHA256 HMAC 
 - Signature Encoding: Base64
 
