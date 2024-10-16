@@ -19443,7 +19443,7 @@ components:
           example: '21740'
         countryCode:
           type: string
-          description: 'Country code line of Cardholders full shipping address. Please reference the country code listing for a complete list of country codes. Only supplied for "Compelling Remedy" and "PayPal Network" disputes. For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and both "undisputedTranDetail".'
+          description: "[Country code line of Cardholders full shipping address.Please reference the country code listing for a complete list of country codes.Only supplied for Compelling Remedy and PayPal Network disputes.For compelling remedy only, Enter the same one of these 2 fields customerLoginId, address for disputedTranDetail and both undisputedTranDetail](../../docs/APIs/CLXDisputes.md)"
           example: '840'
     DisputedTranDetail:
       type: object
