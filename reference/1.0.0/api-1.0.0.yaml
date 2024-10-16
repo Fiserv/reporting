@@ -19188,7 +19188,7 @@ components:
           example: '21740'
         countryCode:
           type: string
-          description: "[Country code line of Cardholders full shipping address.Please reference the country code listing for a complete list of country codes.Only supplied for Compelling Remedy and PayPal Network disputes.For compelling remedy only, Enter the same one of these 2 fields customerLoginId, address for disputedTranDetail and both undisputedTranDetail](../../docs/APIs/CLXDisputes.md)"
+          description: "[Countrycode(?path=docs/APIs/CLXDisputes.md) line of Cardholders full shipping address.Please reference the country code listing for a complete list of country codes.Only supplied for Compelling Remedy and PayPal Network disputes.For compelling remedy only, Enter the same one of these 2 fields customerLoginId, address for disputedTranDetail and both undisputedTranDetail]"
           example: '840'
     ActionCBRequestDTO:
       required:
