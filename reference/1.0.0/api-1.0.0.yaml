@@ -2859,143 +2859,121 @@ paths:
                 value:
                   actionId: '301'
                   actionType: 1DCB
-                  arnCe04: ''
-                  arnCe09: ''
-                  arnCe13: ''
+                  amount04: '55.23'
+                  arnCe04: '1111111111111111111'
                   autoFileFlag: ''
                   compellingSelection: 'Y'
                   compellingSelections:
                     - compellingTypeCode: CE04
-                  customerLoginIdCe09: ''
-                  deviceFingerprintCe09: ''
-                  deviceIdCe04: Test
-                  deviceIdCe09: ''
-                  deviceNameCe04: Test
-                  digitalGoodsSelections: Y,Y,N,N,N,N
-                  disputeID: '111111111111'
+                  deviceIdCe04: s45u32i789ff436iiu2987
+                  deviceNameCe04: Seans Iphone
+                  digitalGoodsSelections: N,Y,N,Y,N,N
+                  disputeID: '11111111111'
                   disputeType: CB
-                  downloadDateCe04: 01/01/24
-                  downloadTimeCe04: '10:01'
-                  emailAddressCe09: ''
-                  geographicalLocationCe04: Hagerstown
+                  downloadDateCe04: 04/01/24
+                  downloadTimeCe04: '10:15'
+                  geographicalLocationCe04: ''
                   images:
                     documents:
                       - document: ''
                         documentName: ''
-                  ipAddressCe09: ''
-                  notesText: This is a test of CE04
-                  phoneNumberCe09: ''
-                  physicalAddressCe09: ''
-                  productCode: '00002'
+                  notesText: This is a test
+                  productCode: '0002'
                   purchaserEmailCe04: ''
-                  purchaserIpAddressCe04: 111.22.333
+                  purchaserIpAddressCe04: ''
                   purchaserNameCe04: ''
-                  tranDateCe04: ''
-                  tranDateCe09: ''
-                  tranDateCe13: ''
+                  tranDateCe04: 06/01/24
               Action Id 301 compelling evidence CE09:
                 description: Action Id 301 compelling evidence CE09
                 value:
                   actionId: '301'
                   actionType: 1DCB
-                  arnCe04: ''
-                  arnCe09: '1111111111111'
-                  arnCe13: ''
+                  amount09: '16'
+                  arnCe09: '121212121212121'
                   autoFileFlag: ''
                   compellingSelection: 'Y'
                   compellingSelections:
                     - compellingTypeCode: CE09
-                  customerLoginIdCe09: ''
+                  customerLoginIdCe09: stest01
                   deviceFingerprintCe09: ''
-                  deviceIdCe04: ''
                   deviceIdCe09: ''
-                  deviceNameCe04: ''
-                  digitalGoodsSelections: ''
-                  disputeID: '1111111111111'
+                  disputeID: '11111111111'
                   disputeType: CB
-                  downloadDateCe04: ''
-                  downloadTimeCe04: ''
                   emailAddressCe09: test@test.com
-                  geographicalLocationCe04: ''
-                  images:
-                    documents:
-                      - document: ''
-                        documentName: ''
-                  ipAddressCe09: 111.22.33
-                  notesText: ''
-                  phoneNumberCe09: '5554446789'
-                  physicalAddressCe09: ''
-                  productCode: '00002'
-                  purchaserEmailCe04: ''
-                  purchaserIpAddressCe04: ''
-                  purchaserNameCe04: ''
-                  tranDateCe04: ''
-                  tranDateCe09: 01/01/24
-                  tranDateCe13: ''
-              Action Id 301 compelling evidence CE13:
-                description: Action Id 301 compelling evidence CE13
-                value:
-                  actionId: '301'
-                  actionType: 1DCB
-                  arnCe04: ''
-                  arnCe09: ''
-                  arnCe13: '11111111111'
-                  autoFileFlag: ''
-                  compellingSelection: 'Y'
-                  compellingSelections:
-                    - compellingTypeCode: CE13
-                  customerLoginIdCe09: ''
-                  deviceFingerprintCe09: ''
-                  deviceIdCe04: ''
-                  deviceIdCe09: ''
-                  deviceNameCe04: ''
-                  digitalGoodsSelections: ''
-                  disputeID: '111111111111'
-                  disputeType: CB
-                  downloadDateCe04: ''
-                  downloadTimeCe04: ''
-                  emailAddressCe09: ''
-                  geographicalLocationCe04: ''
                   images:
                     documents:
                       - document: ''
                         documentName: ''
                   ipAddressCe09: ''
-                  notesText: This is a test
-                  phoneNumberCe09: ''
+                  notesText: Add notes or attach images
+                  phoneNumberCe09: '5551234569'
                   physicalAddressCe09: ''
                   productCode: '00002'
-                  purchaserEmailCe04: ''
-                  purchaserIpAddressCe04: ''
-                  purchaserNameCe04: ''
-                  tranDateCe04: ''
-                  tranDateCe09: ''
-                  tranDateCe13: 01/01/24
+                  tranDateCe09: 08/15/24
+              Action Id 301 compelling evidence CE13:
+                description: Action Id 301 compelling evidence CE13
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  amount13: '67.32'
+                  arnCe13: '3421345678765334'
+                  autoFileFlag: ''
+                  compellingSelection: 'Y'
+                  compellingSelections:
+                    - compellingTypeCode: CE13
+                  disputeID: '11111111111'
+                  disputeType: CB
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  notesText: This is a test of CE13
+                  productCode: '00002'
+                  tranDateCe13: 07/20/24
+              Action Id 301 compelling evidence CE16:
+                description: Action Id 301 compelling evidence CE16
+                value:
+                  actionId: '301'
+                  actionType: 1DCB
+                  autoFileFlag: ''
+                  compellingSelection: 'Y'
+                  compellingSelections:
+                    - compellingTypeCode: CE16
+                  disputeID: '11111111111'
+                  disputeType: CB
+                  images:
+                    documents:
+                      - document: ''
+                        documentName: ''
+                  notesText: This is a test of CE16
+                  destWalletAddress: 1ac1be1ac11111111111ef1r1fe1113e4w
+                  blockChainTxnHash: 1ac1be1ac11111111111ef1r1fe1121w3r
+                  productCode: '00002'
               Action Id 301 compelling remedy:
                 description: Action Id 301 compelling remedy
                 value:
                   actionId: '301'
                   actionType: 1DCB
                   autoFileFlag: ''
-                  disputeID: '111111111111'
+                  disputeID: '11111111111'
                   disputeType: CB
                   disputedTranDetail:
-                    customerLoginId: rtest101
+                    customerLoginId: ''
                     deliveryAddress:
-                      address1: ''
+                      address1: 123 Lanie St
                       address2: ''
-                      cityTownVillage: ''
-                      countryCode: ''
-                      stateProvincePrefecture: ''
-                      zipPostalCode: ''
+                      cityTownVillage: Greencastle
+                      countryCode: '840'
+                      stateProvincePrefecture: PA
+                      zipPostalCode: '17225'
                     deliveryStatus: ''
-                    deviceFingerprint: ''
-                    deviceId: '13456789873456'
+                    deviceFingerprint: 5380djdglj3950
+                    deviceId: ''
                     deviceType: ''
                     ipAddress: ''
-                    merchandiseServicesDesc: The shopper purchased an antique cat sofa and it was delivered to their address on May 1st signed by R.Test
+                    merchandiseServicesDesc: Test. This is the description of the disputed merchandise.
                     merchandiseServicesInd: M
-                    providedDate: ''
+                    providedDate: 08/22/24
                     trackingInfo: ''
                   images:
                     documents:
@@ -3007,42 +2985,42 @@ paths:
                   subProductCode: ''
                   trackingNumber: ''
                   undisputedTranDetails:
-                    - arn: '111111111111111111'
-                      customerLoginId: asmith01
+                    - arn: ''
+                      customerLoginId: ''
                       deliveryAddress:
-                        address1: ''
+                        address1: 455 James Way
                         address2: ''
-                        cityTownVillage: ''
-                        countryCode: ''
-                        stateProvincePrefecture: ''
-                        zipPostalCode: ''
-                      deviceFingerprint: ''
-                      deviceId: '131313131313'
+                        cityTownVillage: Hagerstown
+                        countryCode: '840'
+                        stateProvincePrefecture: MD
+                        zipPostalCode: '21740'
+                      deviceFingerprint: ertyu68305830835jdfljdfjldf
+                      deviceId: ''
                       deviceType: ''
                       ipAddress: ''
-                      merchandiseServicesDesc: This is a test
-                      rolTranId: ''
-                      tranAmount: '50'
-                      tranDate: 01/01/24
+                      merchandiseServicesDesc: Test. This is the description of the 1st undisputed transaction.
+                      rolTranId: '24222424242'
+                      tranAmount: '67.83'
+                      tranDate: 03/12/24
                       tranId: ''
                     - arn: ''
-                      customerLoginId: odesk023
+                      customerLoginId: ''
                       deliveryAddress:
-                        address1: ''
+                        address1: 500 Jog St
                         address2: ''
-                        cityTownVillage: ''
-                        countryCode: ''
-                        stateProvincePrefecture: ''
-                        zipPostalCode: ''
-                      deviceFingerprint: ''
-                      deviceId: '245654367899'
+                        cityTownVillage: Fort Lauderdale
+                        countryCode: '840'
+                        stateProvincePrefecture: FL
+                        zipPostalCode: '33309'
+                      deviceFingerprint: vbnh8383jdjd838383
+                      deviceId: ''
                       deviceType: ''
                       ipAddress: ''
-                      merchandiseServicesDesc: This is a test
+                      merchandiseServicesDesc: Test. This is the description of the 2nd undisputed transaction.
                       rolTranId: ''
-                      tranAmount: '500'
-                      tranDate: 03/25/24
-                      tranId: '14534676'
+                      tranAmount: '483.02'
+                      tranDate: 05/22/24
+                      tranId: '2345678'
               Action Id 301 non compelling all others:
                 description: Action Id 301 non compelling all others
                 value:
@@ -9350,6 +9328,7 @@ components:
             - DDP
             - Base24
             - Galaxy
+            - BankWorks
         processorKey:
           type: string
           description: Identifies the settlement platform. (Code)
@@ -9373,7 +9352,7 @@ components:
             - Jbs
             - Telecheck
             - CheckWarranty
-            - SwitchDebit
+            - OnlineWic
             - PurchasingCard
             - ElectronicBenefitsTransfer
             - GatewayDebitCard
@@ -9534,7 +9513,7 @@ components:
             - Davivienda
             - Mercury
             - Jets
-            - Links
+            - Linx
         productCodeKey:
           type: string
           description: Name of the card brand associated with the transaction. (Code)
@@ -10301,6 +10280,7 @@ components:
             - DDP
             - Base24
             - Galaxy
+            - BankWorks
         backendProcessorKey:
           type: string
           description: Internal settlement platform. (Code)
@@ -10990,11 +10970,11 @@ components:
         message:
           type: string
           description: Alert Message Description.
-          example: Submission under review
+          example: ''
         messageKey:
           type: string
           description: Alert Message Description. (Code)
-          example: '1'
+          example: ''
         mobileIndicator:
           type: string
           description: Indicator that a transaction originated from the uCom gateway.
@@ -11270,6 +11250,7 @@ components:
             - DDP
             - Base24
             - Galaxy
+            - BankWorks
       description: Various filter options for sites queries
     SitesSearchRequest:
       type: object
@@ -11467,6 +11448,7 @@ components:
             - DDP
             - Base24
             - Galaxy
+            - BankWorks
         platformKey:
           type: string
           description: Identifies the processor for the merchant. (Code)
@@ -18490,6 +18472,73 @@ components:
             - SubMerchantPortalFee
             - DebitCardSettlement
             - ACHProcessingFee
+            - ECommerceFee
+            - PerTranFeeMonthly
+            - InterlinkDigitalCommercFee
+            - ViExtendedAuthServiceFee
+            - ViLacDigEnhancementSvcFee
+            - NwVisaPrearbCnpRdyRejDms
+            - NwIntkPrearbCnpRdyRejSms
+            - DigitalCommerceSvcFeeMn
+            - IlkHighIntegRiskFeeVol
+            - IlkHighIntegRiskFee
+            - IklCommercialSolutionFee
+            - IlkDbtNeverApprvReAatempt
+            - MonthlyTurnOverFeeSubGroup
+            - ITBMSAccountStartupFee
+            - ITBMSMerchantRetrievalfee
+            - ITBMSMonthlyServiceCharge
+            - ITBMSAnnualTurnover
+            - ITBMSAnnualMembership
+            - ITBMSMerchantCBKfee
+            - ITBMSChargebackRevFee
+            - ITBMSTurnoverfeeMember
+            - ITBMSTurnoverfeeSubgroup
+            - ITBMSPerTranFee
+            - TaxRetentionVATDR
+            - TaxRetentionVATCR
+            - VisaHighEmvFallFeeUs
+            - VspsRptAuthDecFeeUs
+            - VspsRptAuthDecFeeCan
+            - VZeroDlrDomCrAvmFeeUs
+            - VZeroDlrDomDrAvmFeeUs
+            - VZeroDlrIntrnlAvmFeeUs
+            - VZeroDlrDomAvmFeeCan
+            - VZeroDlrIntrnlAvmFeeCan
+            - VZeroDlrDomAvmFeeEu
+            - VZeroDlrIntraAvmFeeEu
+            - VZeroDlrIntrnlAvmFeeEu
+            - McCredContPrgFeeUs
+            - McCredContPrgFeeCan
+            - McMacTpeFeeUs
+            - McMacTpeFeeCan
+            - McMacTpeFeeEu
+            - MCPreauthDomesticFee
+            - MCPreauthCrossBorderFee
+            - PINDebitFeeDebit
+            - PINDebitFeeCredit
+            - SelectTheOption
+            - AmexArbitrationChargeBackFee
+            - AmexDiscountAdjRev
+            - AmexDiscountRebate
+            - AmexInterchangeFeeAdjRev
+            - McArbitrationChargeBackFee
+            - McDiscountAdjRev
+            - McDiscountRebate
+            - McInterchangeFeeAdjRev
+            - VisaArbitrationChargebackfee
+            - VisaDiscountAdjRev
+            - VisaDiscountRebate
+            - VisaInterchangeFeeAdjRev
+            - ChargebackAdjustment
+            - MerchantPaymentInErrorAmex
+            - MerchantPaymentInErrorMC
+            - MerchantPaymentInErrorVisa
+            - nonAuthFine
+            - RecalcDiscountFee
+            - ResearchFee
+            - SemiAnnualSvcFee
+            - TrainingFee
         minorCategoryKey:
           type: string
           description: Identifies the minor category for the merchant. (Code)
@@ -18572,6 +18621,7 @@ components:
             - DDP
             - Base24
             - Galaxy
+            - BankWorks
         processorKey:
           type: string
           description: Identifies the funding platform. (Code)
@@ -18595,7 +18645,7 @@ components:
             - Jbs
             - Telecheck
             - CheckWarranty
-            - SwitchDebit
+            - OnlineWic
             - PurchasingCard
             - ElectronicBenefitsTransfer
             - GatewayDebitCard
@@ -18756,7 +18806,7 @@ components:
             - Davivienda
             - Mercury
             - Jets
-            - Links
+            - Linx
         productCodeKey:
           type: string
           description: Name of the authorizing network associated with the transaction. (Code)
@@ -19138,8 +19188,8 @@ components:
           example: '21740'
         countryCode:
           type: string
-          description: 'Country code line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
-          example: USA
+          description: '<a href="../docs/?path=docs/APIs/CLXDisputes.md">Countrycode</a> line of Cardholders full shipping address.Please reference the country code listing for a complete list of country codes.Only supplied for Compelling Remedy and PayPal Network disputes.For compelling remedy only, Enter the same one of these 2 fields customerLoginId, address for disputedTranDetail and both undisputedTranDetail'
+          example: '840'
     ActionCBRequestDTO:
       required:
         - actionId
@@ -19261,6 +19311,10 @@ components:
           type: string
           description: Transaction Date. Only supplied for Compelling Evidence (CE04). ARN & Tran Date must be supplied together. Must provide 2 of these 6 combinations.
           example: 01/01/2024
+        amount04:
+          type: string
+          description: Transaction amount of the previous non-disputed transaction on the same card. Only supplied for Compelling Evidence (CE04).
+          example: '10.0'
         arnCe09:
           type: string
           description: 23-digit Outgoing Acquirer reference number (ARN) that is used by the Acquirer, Network, and Issuer to identify the transaction. Only supplied for Compelling Evidence (CE09).
@@ -19289,6 +19343,10 @@ components:
           type: string
           description: Unique identifier of the cardholder’s device that the cardholder can verify, such as a device serial number (e.g., International Mobile Equipment Identity [IMEI]). Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. .
           example: '11111111111111'
+        amount09:
+          type: string
+          description: Transaction amount of the non-disputed payment. Only supplied for Compelling Evidence (CE09).
+          example: '10.0'
         deviceFingerprintCe09:
           type: string
           description: 'Unique identifier of the cardholder’s device that is derived from a combination of at least two hardware and software attributes such as the operating system and its version or device model, etc. Only supplied for Compelling Evidence (CE09). Enter at least 2 of these 7 fields. '
@@ -19305,6 +19363,16 @@ components:
           type: string
           description: Transaction Date. Only supplied for Compelling Evidence (CE13).
           example: 01/01/2024
+        amount13:
+          type: string
+          description: Transaction amount of the prior non-disputed recurring transaction. Only supplied for Compelling Evidence (CE13).
+          example: '10.0'
+        destWalletAddress:
+          type: string
+          description: Provide destination wallet address which is a unique string of alphanumeric characters. Only supplied for Compelling Evidence (CE16).
+        blockChainTxnHash:
+          type: string
+          description: Provide blockchain transaction hash which is a unique identifier containing alphanumeric characters. Only supplied for Compelling Evidence (CE16).
         autoFileFlag:
           type: string
           description: 'Only required for merchants setup as "Auto Post". Indicate if you want to or do not want to pursue filing if the issuer does not accept this response. '
@@ -19375,8 +19443,8 @@ components:
           example: '21740'
         countryCode:
           type: string
-          description: 'Country code line of Cardholders full shipping address. Only supplied for "Compelling Remedy" and "PayPal Network" disputes.  For compelling remedy only: Enter the same one of these 2 fields: customerLoginId, address for "disputedTranDetail" and  both "undisputedTranDetail".'
-          example: USA
+          description: '<a href="../docs/?path=docs/APIs/CLXDisputes.md">Countrycode</a> line of Cardholders full shipping address.Please reference the country code listing for a complete list of country codes.Only supplied for Compelling Remedy and PayPal Network disputes.For compelling remedy only, Enter the same one of these 2 fields customerLoginId, address for disputedTranDetail and both undisputedTranDetail'
+          example: '840'
     DisputedTranDetail:
       type: object
       properties:
@@ -19824,6 +19892,8 @@ components:
             - Brisbane
             - Adelaide
             - Sydney
+            - Maldives
+            - Dhaka
       description: Various filter options for Disbursements queries
     DisbursementsObj:
       type: object
@@ -20187,6 +20257,269 @@ components:
           type: string
           description: Currency of the transaction. (Code)
           example: '1'
+        dfaAmount:
+          type: number
+          description: Amount that been transferred.
+          format: double
+          example: 999.99
+        dfaCurrencyCode:
+          type: string
+          description: Transferred currency code.
+          example: JMD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+            - SLE
+            - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
+        dfaCurrencyCodeKey:
+          type: string
+          description: Transferred currency code. (Code)
+          example: '67'
         email:
           type: string
           description: Recipient email address.
@@ -20204,6 +20537,11 @@ components:
           type: string
           description: Disbursement funding account.
           example: '123456789123'
+        margin:
+          type: number
+          description: The margin of the transferred currency.
+          format: double
+          example: 1
         merchantId:
           type: string
           description: System generated unique merchant id.
@@ -20340,6 +20678,269 @@ components:
           type: string
           description: The zip code where the recipient resides.
           example: '99999'
+        presentedAmount:
+          type: number
+          description: The amount of the presented amount.
+          format: double
+          example: 999.99
+        presentedCurrency:
+          type: string
+          description: The currency code of the presented amount.
+          example: USD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+            - SLE
+            - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
+        presentedCurrencyKey:
+          type: string
+          description: The currency code of the presented amount. (Code)
+          example: '1'
         recipientClient:
           type: string
           description: Client company name.
@@ -20573,6 +21174,264 @@ components:
           type: string
           description: The settlement status of the transaction. (Code)
           example: '2'
+        sourceCurrency:
+          type: string
+          description: The currency code of the source amount.
+          example: JMD
+          enum:
+            - Unknown
+            - USD
+            - AFN
+            - DZD
+            - ARS
+            - AMD
+            - AWG
+            - AUD
+            - AZN
+            - BSD
+            - BHD
+            - THB
+            - PAB
+            - BBD
+            - BYR
+            - BZD
+            - BMD
+            - VEF
+            - BOB
+            - BRL
+            - BND
+            - BGN
+            - BIF
+            - CAD
+            - CVE
+            - KYD
+            - XOF
+            - XAF
+            - XPF
+            - CLP
+            - COP
+            - KMF
+            - BAM
+            - NIO
+            - CRC
+            - HRK
+            - CUP
+            - CZK
+            - GMD
+            - DKK
+            - MKD
+            - DJF
+            - STD
+            - DOP
+            - VND
+            - XCD
+            - EGP
+            - SVC
+            - ETB
+            - EUR
+            - FKP
+            - FJD
+            - HUF
+            - CDF
+            - GHS
+            - GIP
+            - HTG
+            - PYG
+            - GNF
+            - GWP
+            - GYD
+            - HKD
+            - UAH
+            - ISK
+            - INR
+            - IRR
+            - IQD
+            - JMD
+            - JOD
+            - KES
+            - PGK
+            - LAK
+            - KWD
+            - MWK
+            - ZMK
+            - AOA
+            - MMK
+            - GEL
+            - LVL
+            - LBP
+            - ALL
+            - HNL
+            - SLL
+            - LRD
+            - LYD
+            - SZL
+            - LTL
+            - LSL
+            - MGA
+            - MYR
+            - MUR
+            - MZN
+            - MXN
+            - MXV
+            - MDL
+            - MAD
+            - BOV
+            - NGN
+            - ERN
+            - NAD
+            - NPR
+            - ANG
+            - ILS
+            - RON
+            - TWD
+            - TRY
+            - NZD
+            - BTN
+            - KPW
+            - NOK
+            - PEN
+            - MRO
+            - TOP
+            - PKR
+            - MOP
+            - UYU
+            - PHP
+            - GBP
+            - BWP
+            - QAR
+            - GTQ
+            - ZAR
+            - OMR
+            - KHR
+            - MVR
+            - IDR
+            - RUB
+            - RWF
+            - SHP
+            - SAR
+            - XDR
+            - RSD
+            - SCR
+            - SGD
+            - SBD
+            - KGS
+            - SOS
+            - TJS
+            - LKR
+            - SDG
+            - SRD
+            - SEK
+            - CHF
+            - SYP
+            - BDT
+            - WST
+            - TZS
+            - KZT
+            - TTD
+            - MNT
+            - TND
+            - AED
+            - UGX
+            - COU
+            - CLF
+            - UYI
+            - USN
+            - USS
+            - UZS
+            - VUV
+            - CHE
+            - CHW
+            - KRW
+            - YER
+            - JPY
+            - CNY
+            - PLN
+            - XBA
+            - XTS
+            - XBB
+            - XBD
+            - XBC
+            - XAU
+            - XPD
+            - XPT
+            - XAG
+            - XXX
+            - XFU
+            - TMT
+            - ZWL
+            - CUC
+            - SSP
+            - XUA
+            - XSU
+            - BYN
+            - VES
+            - ZMW
+            - SLE
+            - LEK
+            - PLZ
+            - PTE
+            - TPE
+            - ROL
+            - SKK
+            - SIT
+            - ZWD
+            - YUM
+            - ESP
+            - SDD
+            - SRG
+            - TJR
+            - LUF
+            - MGF
+            - MLF
+            - MTL
+            - MZM
+            - NLG
+            - GRD
+            - IEP
+            - ITL
+            - CNX
+            - ZRN
+            - CYP
+            - CSK
+            - ECS
+            - GQE
+            - EEK
+            - FIM
+            - FRF
+            - DDM
+            - DEM
+            - GHC
+            - ADP
+            - AON
+            - AZM
+            - ATS
+            - BEF
+            - BRC
+            - BGL
+            - BYB
+            - TRL
+            - PTL
+            - TMM
+            - UAK
+            - RUR
+            - VEB
+            - YUD
+            - CSD
+            - XEU
+            - AOR
+            - ECV
+            - EZN
+            - AYM
+            - CNH
+            - ARX
+            - ZWN
+            - MRU
+            - STN
+            - AFA
+        sourceCurrencyKey:
+          type: string
+          description: The currency code of the source amount. (Code)
+          example: '67'
         state:
           type: string
           description: The state where the recipient resides.
@@ -20773,10 +21632,14 @@ components:
               - CreateDate
               - Currency
               - CurrencyKey
+              - DfaAmount
+              - DfaCurrencyCode
+              - DfaCurrencyCodeKey
               - Email
               - ExpiryDate
               - FeeAmount
               - FundingAccount
+              - Margin
               - MerchantId
               - MerchantName
               - MerchantStatus
@@ -20798,6 +21661,9 @@ components:
               - PaymentTypeKey
               - PaymentVendorId
               - PostalCode
+              - PresentedAmount
+              - PresentedCurrency
+              - PresentedCurrencyKey
               - RecipientClient
               - RecipientComments
               - RecipientCompany
@@ -20845,6 +21711,8 @@ components:
               - SettlementDate
               - SettlementStatus
               - SettlementStatusKey
+              - SourceCurrency
+              - SourceCurrencyKey
               - State
               - StateKey
               - StreetOne
@@ -21402,7 +22270,15 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.acsReferenceNumber. Description: 3DS ACS Reference number.'
           example: ABCD1234-EFGH2345-IJKL14...
+        acsReferenceNumberVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.acsReferenceNumber. Description: 3DS ACS Reference number.'
+          example: ABCD1234-EFGH2345-IJKL14...
         acsTransactionId3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.acsTransactionId. Description: ACS Transaction ID.'
+          example: ABCD1234-EFGH2345-IJKL14...
+        acsTransactionIdVerify3DS:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.acsTransactionId. Description: ACS Transaction ID.'
           example: ABCD1234-EFGH2345-IJKL14...
@@ -21441,6 +22317,38 @@ components:
           description: 'Commerce Hub Data Model Name: Request.amountComponents.subTotal. Description: The sub total of the Order'
           format: double
           example: 9.99
+        aoAccStatus:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.transactionDetails.authOptimizationDetails.accountStatus. Description: Authorization Optimization field showing the Account status of the Card, whether it is Closed or Expiration date has changed, etc.'
+          example: ''
+        aoAccUpdErrCd:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.transactionDetails.authOptimizationDetails.accountUpdaterErrorCode. Description: Authorization Optimization field showing Account Updater Error/Reason Code'
+          example: V0001
+        aoAccUpdErrMsg:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.transactionDetails.authOptimizationDetails.accountUpdaterErrorDescription. Description: Authorization Optimization field showing Description of Account Updater Error/Reason Code.'
+          example: The Txn was Declined
+        aoAccUpdReqType:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.transactionDetails.authOptimizationDetails.accountUpdateRequestType. Description: Authorization Optimization field showing the type of Account update requested.'
+          example: ''
+        aoOrigHostRespCd:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.transactionDetails.authOptimizationDetails.originalHostResponseCode. Description: Authorization Optimization field showing Response Code when the Original Auth fails.'
+          example: '99'
+        aoOrigHostRespMsg:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.transactionDetails.authOptimizationDetails.originalHostResponseMessage. Description: Authorization Optimization field showing Description of  Response Code when the Original Auth fails.'
+          example: DECLINED
+        aoUpdatedAcnu:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.source.card.cardData. Description: Authorization Optimization field showing updated Account #.'
+          example: 666666XXXXXX4444
+        aoUpdatedExp:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.source.card.expirationMonth + expirationYear. Description: Authorization Optimization field showing updated expiry date of the Account #'
+          example: 01/12
         apiTraceID:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.TransactionProcessingDetails.apiTraceId. Description: Request identifier in API that can be used to request logs from the support team.'
@@ -21469,7 +22377,15 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.authenticationAttemptResult. Description: 3DS Authentication Attempt Result.'
           example: '0'
+        authenticationAttemptResultVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.authenticationAttemptResult. Description: 3DS Authentication Attempt Result.'
+          example: '0'
         authenticationStatus3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.authenticationStatus. Description: 3DS Transaction Status.'
+          example: 'N'
+        authenticationStatusVerify3DS:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.authenticationStatus. Description: 3DS Transaction Status.'
           example: 'N'
@@ -21569,11 +22485,23 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.cavv. Description: The Cardholder Authentication Verification Value (CAVV) is a cryptographic value derived by the issuer during payment authentication that can provide evidence of the results of payment authentication during an online purchase.'
           example: AAAABBBBBCCCCCDDDDD
+        cavvVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.cavv. Description: The Cardholder Authentication Verification Value (CAVV) is a cryptographic value derived by the issuer during payment authentication that can provide evidence of the results of payment authentication during an online purchase.'
+          example: AAAABBBBBCCCCCDDDDD
         challengeStatus:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.challengeStatus. Description: 3DS Challenge Indicator.'
           example: '0'
+        challengeStatusVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.challengeStatus. Description: 3DS Challenge Indicator.'
+          example: '0'
         channel3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.additionalData3DS.channel. Description: Channel (e.g. Browser, APP, 3RI)'
+          example: APP
+        channelVerify3DS:
           type: string
           description: 'Commerce Hub Data Model Name: Request.additionalData3DS.channel. Description: Channel (e.g. Browser, APP, 3RI)'
           example: APP
@@ -21657,6 +22585,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.eci. Description: ECI / UCAF (UCAF is applicable for MasterCard only).'
           example: ECI
+        eciVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.eci. Description: ECI / UCAF (UCAF is applicable for MasterCard only).'
+          example: ECI
         encryptBlock:
           type: string
           description: 'Commerce Hub Data Model Name: Request.Source.EncryptionData.encryptionBlock. Description: Encryption Block.'
@@ -21689,6 +22621,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.Source.Card.cardData. Description: First 6 digits of the card number or encrypted data.'
           example: '666666'
+        hcoPageId:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.MerchantDetails.hcoPageId. Description: When merchant initiates HCO transaction and passes page id as an identifier.'
+          example: XXXX-YYYY-ZZZZ
         highAcct:
           type: string
           description: 'Commerce Hub Data Model Name: Request.cardDetails.highBin. Description: Highest numerical account number associated with this bin.'
@@ -21697,6 +22633,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.TransactionDetails.merchantInvoiceNumber. Description: Merchant invoice number (aka reference number).'
           example: '11111111'
+        ipAddress:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.customer.ipAddress. Description: Customer IP Address'
+          example: 100.1.100.1
         issuer:
           type: string
           description: 'Commerce Hub Data Model Name: Request.cardDetails.issuerName. Description: Identifies the issuing bank institution.'
@@ -21770,6 +22710,10 @@ components:
           description: 'Commerce Hub Data Model Name: Request.merchantDetails.vatRegistrationNumber. Description: Merchant VAT Registration Number.'
           example: MVAT33333
         messageCategory:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.messageCategory. Description: 3DS Message Category.'
+          example: XX
+        messageCategoryVerify3DS:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.messageCategory. Description: 3DS Message Category.'
           example: XX
@@ -21853,6 +22797,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Transaction type as indicated by source.'
           example: CHARGE
+        parID:
+          type: string
+          description: 'Commerce Hub Data Model Name: response.paymentReceipt.ProcessorResponseDetails.paymentAccountReference. Description: PAR ID is non finance reference assigned to each unique PAN and used to link a payment account represented by that PAN to affiliated Network Tokens.'
+          example: '9999999999999'
         paymentMethod:
           type: string
           description: 'Commerce Hub Data Model Name: Response.TransactionInteraction.posEntryMode. Description: An identifier used to indicate how the account number was entered on the transaction.'
@@ -21905,9 +22853,13 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.AdditionalDataCommon.recurringTypeIndicator. Description: Describes the recurrence type for the transaction.'
           example: ''
+        referenceMerchantTransactionId:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.referenceTransactionDetails.referenceMerchantTransactionId. Description: Merchant/client generated merchantOrderId from the original transaction used for reference in a secondary transaction.'
+          example: '100000010011'
         refundType:
           type: string
-          description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction Type will help identify if a refund is processed as an Open Refund or Tagged Refund.'
+          description: 'Commerce Hub Data Model Name: Response.transactionDetails:transactionType. Description: Transaction Type will help identify if a refund is processed as an Open Refund, Tagged Matched Refund or Tagged Unmatched Refund.'
           example: ''
         requestAmount:
           type: number
@@ -21930,6 +22882,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.serverTransactionId. Description: 3DS Server Transaction ID.'
           example: ABCD1234-EFGH2345-IJKL14...
+        serverTransactionIdVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.serverTransactionId. Description: 3DS Server Transaction ID.'
+          example: ABCD1234-EFGH2345-IJKL14...
         serviceEntitlement:
           type: string
           description: 'Commerce Hub Data Model Name: Request.DynamicDescriptors.serviceEntitlement. Description: The Service Entitlements of the processing merchant.'
@@ -21942,6 +22898,14 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.serviceProviderTransactionId. Description: 3DS service provider transaction id.'
           example: APP
+        serviceProviderTransactionIdVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.serviceProviderTransactionId. Description: 3DS service provider transaction id.'
+          example: APP
+        serviceProviderVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.serviceProvider. Description: 3DS Provider.'
+          example: VER
         shipFromPostalCode:
           type: string
           description: 'Commerce Hub Data Model Name: Request.shipperAddress.address.postalCode. Description: The Zip/Postal Code provided on the shipper address.'
@@ -21986,6 +22950,10 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Request.shippingAddress.address.street. Description: The Street on the shipping address.'
           example: Connell Drive
+        sourceTokenNumber:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.event.source.tokenData. Description: Token created from the token source.'
+          example: '9999999999999'
         sourceType:
           type: string
           description: 'Commerce Hub Data Model Name: Request.Source.sourceType. Description: Payment source for a transaction request.'
@@ -22002,11 +22970,19 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.statusReason. Description: 3DS Transaction Status Reason.'
           example: HOLD
+        statusReasonVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.statusReason. Description: 3DS Transaction Status Reason.'
+          example: HOLD
         storeID:
           type: string
           description: 'Commerce Hub Data Model Name: Request.MerchantDetails.storeId. Description: The unique ID or number used to identify the unique location, store, or site.'
           example: '01234567899999'
         tavv:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.tavv. Description: Cryptographic value that is generated during the Visa transaction authentication process for a payment token transaction.'
+          example: AAAABBBBBCCCCCDDDDD
+        tavvVerify3DS:
           type: string
           description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.tavv. Description: Cryptographic value that is generated during the Visa transaction authentication process for a payment token transaction.'
           example: AAAABBBBBCCCCCDDDDD
@@ -22048,7 +23024,7 @@ components:
           example: 123456XXXXXXXX5555
         tokenProvider:
           type: string
-          description: 'Commerce Hub Data Model Name: Request.Source.tokenProvider. Description: Token generated outside of Fiserv(Third party Network token) will populate in this field.'
+          description: 'Commerce Hub Data Model Name: Request.TransactionDetails.tokenProvider. Description: Token generated outside of Fiserv(Third party Network token) will populate in this field.'
           example: ''
         tokenProvider1:
           type: string
@@ -22088,7 +23064,11 @@ components:
           example: 5fcd13e2ec114c58b5216c542a4ce4d7
         transactionInitiator:
           type: string
-          description: 'Commerce Hub Data Model Name: Response.transactionDetails.transactionInitiator. Description: 3DS Ownership (e.g. Merchant Managed , Fiserv Managed).'
+          description: 'Commerce Hub Data Model Name: Request.transactionDetails.transactionInitiator. Description: 3DS Ownership (e.g. Merchant Managed , Fiserv Managed).'
+          example: Merchant Managed
+        transactionInitiatorVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Request.transactionDetails.transactionInitiator. Description: 3DS Ownership (e.g. Merchant Managed , Fiserv Managed).'
           example: Merchant Managed
         transactionTime:
           type: integer
@@ -22184,9 +23164,21 @@ components:
           type: string
           description: 'Commerce Hub Data Model Name: Response.GatewayResponse.transactionType. Description: Identifies the type of the authorization. (Code)'
           example: '2'
+        verify3DSVersion:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.versionData.recommendedVersion. Description: Specific Protocol version supported by 3DS.'
+          example: 'N'
+        verifyDSTranID:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.dsTransactionId. Description: DS Transaction ID.'
+          example: ABCD1234-EFGH2345-IJKL14...
         xid:
           type: string
-          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.xid. Description: 3-D Secure/Verified by Visa value returned by the 3DS provider.'
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.XID. Description: 3-D Secure/Verified by Visa value returned by the 3DS provider.'
+          example: AAAABBBBBCCCCCDDDDD
+        xidVerify3DS:
+          type: string
+          description: 'Commerce Hub Data Model Name: Response.additionalData3DS.mpiData.XID. Description: 3-D Secure/Verified by Visa value returned by the 3DS provider.'
           example: AAAABBBBBCCCCCDDDDD
     CommerceHubV2SearchRequest:
       required:
@@ -22230,7 +23222,9 @@ components:
               - AccountNumber
               - AccountType
               - AcsReferenceNumber3DS
+              - AcsReferenceNumberVerify3DS
               - AcsTransactionId3DS
+              - AcsTransactionIdVerify3DS
               - Amount
               - AmountConvFee
               - AmountDuty
@@ -22238,13 +23232,23 @@ components:
               - AmountGross
               - AmountNet
               - AmountSubTotal
+              - AoAccStatus
+              - AoAccUpdErrCd
+              - AoAccUpdErrMsg
+              - AoAccUpdReqType
+              - AoOrigHostRespCd
+              - AoOrigHostRespMsg
+              - AoUpdatedAcnu
+              - AoUpdatedExp
               - ApiTraceID
               - ApprovalCode
               - ApprovalCodeKey
               - AssocRespCode
               - AuthCode
               - AuthenticationAttemptResult
+              - AuthenticationAttemptResultVerify3DS
               - AuthenticationStatus3DS
+              - AuthenticationStatusVerify3DS
               - AuthorizationTypeIndicator
               - BillPaymentType
               - BillingAddress
@@ -22269,8 +23273,11 @@ components:
               - CardRegulator
               - CardSubCategory
               - Cavv
+              - CavvVerify3DS
               - ChallengeStatus
+              - ChallengeStatusVerify3DS
               - Channel3DS
+              - ChannelVerify3DS
               - CheckAccountNumber
               - CheckNumber
               - CheckRoutingNumber
@@ -22291,6 +23298,7 @@ components:
               - DirectedRoutingNetwork
               - DsTranID
               - Eci3DS
+              - EciVerify3DS
               - EncryptBlock
               - EncryptDeviceType
               - EncryptTarget
@@ -22299,8 +23307,10 @@ components:
               - ErrorMessage
               - FallbackReason
               - First6
+              - HcoPageId
               - HighAcct
               - InvoiceNumber
+              - IpAddress
               - Issuer
               - L2l3Filter
               - Last4
@@ -22320,6 +23330,7 @@ components:
               - MerchantTaxID
               - MerchantVatRegNum
               - MessageCategory
+              - MessageCategoryVerify3DS
               - MobileInteraction
               - MobileWallet
               - MrchInvcNum
@@ -22342,6 +23353,7 @@ components:
               - OriginMOTOType
               - OriginalRouteType
               - OriginalTxnType
+              - ParID
               - PaymentMethod
               - PosConditionCode
               - PrimTranID
@@ -22355,15 +23367,19 @@ components:
               - ReauthorizationInitiator
               - ReauthorizationReason
               - RecurringTypeInd
+              - ReferenceMerchantTransactionId
               - RefundType
               - RequestAmount
               - RespCode
               - RespMsg
               - RouteType
               - ServerTransactionId3DS
+              - ServerTransactionIdVerify3DS
               - ServiceEntitlement
               - ServiceProvider3DS
               - ServiceProviderTransactionId
+              - ServiceProviderTransactionIdVerify3DS
+              - ServiceProviderVerify3DS
               - ShipFromPostalCode
               - ShipToCity
               - ShipToCountry
@@ -22375,13 +23391,16 @@ components:
               - ShipToPostalCode
               - ShipToState
               - ShipToStreet
+              - SourceTokenNumber
               - SourceType
               - SpecialPymtInd
               - SplitSettlementDetails
               - SplitTenderId
               - StatusReason3DS
+              - StatusReasonVerify3DS
               - StoreID
               - Tavv
+              - TavvVerify3DS
               - TerminalID
               - ThreeDSVersion
               - TokenAssuranceMethod
@@ -22403,6 +23422,7 @@ components:
               - TransactionDateTime
               - TransactionID
               - TransactionInitiator
+              - TransactionInitiatorVerify3DS
               - TransactionTime
               - TxnMerchantID
               - TxnMode
@@ -22410,7 +23430,10 @@ components:
               - TxnTerminalID
               - TxnType
               - TxnTypeKey
+              - Verify3DSVersion
+              - VerifyDSTranID
               - Xid
+              - XidVerify3DS
         filters:
           $ref: '#/components/schemas/CommerceHubV2ReportingFilters'
       description: Request details for authorization search
@@ -23214,6 +24237,7 @@ components:
             - GoodsOrServicesNotDeliverableECommerceOnly
             - IncomingComplianceFiledCompliance
             - DigitalGoods
+            - NoAuthorizationLatePresentment
         ReasonKey:
           type: string
           description: Descriptive reason associated with a specific chargeback. (Code)
@@ -23365,6 +24389,7 @@ components:
             - DDP
             - Base24
             - Galaxy
+            - BankWorks
         backendProcessorKey:
           type: string
           description: Internal settlement platform. (Code)
@@ -24396,7 +25421,7 @@ components:
             - Jbs
             - Telecheck
             - CheckWarranty
-            - SwitchDebit
+            - OnlineWic
             - PurchasingCard
             - ElectronicBenefitsTransfer
             - GatewayDebitCard
@@ -24557,7 +25582,7 @@ components:
             - Davivienda
             - Mercury
             - Jets
-            - Links
+            - Linx
         merchantProductCodeKey:
           type: string
           description: Merchant network of the cerdit card utilized for the transaction. (Code)
@@ -29469,6 +30494,7 @@ components:
             - DDP
             - Base24
             - Galaxy
+            - BankWorks
         processorKey:
           type: string
           description: Identifies the originating platform (Switch). (Code)
