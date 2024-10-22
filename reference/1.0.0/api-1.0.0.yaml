@@ -19372,7 +19372,7 @@ components:
           description: Provide destination wallet address which is a unique string of alphanumeric characters. Only supplied for Compelling Evidence (CE16).
         blockChainTxnHash:
           type: string
-          description: Provide blockchain transaction hash which is a unique identifier containing alphanumeric characters. Only supplied for Compelling.
+          description: Provide blockchain transaction hash which is a unique identifier containing alphanumeric characters. Only supplied for Compelling Evidence (CE16).
         autoFileFlag:
           type: string
           description: 'Only required for merchants setup as "Auto Post". Indicate if you want to or do not want to pursue filing if the issuer does not accept this response. '
